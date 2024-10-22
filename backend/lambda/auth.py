@@ -1,70 +1,37 @@
 import json
 import requests
-import os
-
-# Lambdaの環境変数からGitHub OAuthのクライアントIDとクライアントシークレットを取得
-GITHUB_CLIENT_ID = os.environ['GITHUB_CLIENT_ID']
-GITHUB_CLIENT_SECRET = os.environ['GITHUB_CLIENT_SECRET']
 
 def lambda_handler(event, context):
-    # API Gateway経由で受け取るGitHub認証コード
-    body = json.loads(event['body'])
-    code = body.get('code')
+    # リクエストヘッダーからGitHubアクセストークンを取得
+    token = event['authorizationToken']
+    
+    # GitHub APIでトークンを検証
+    user_info_url = 'https://api.github.com/user'
+    headers = {'Authorization': f'token {token}'}
+    response = requests.get(user_info_url, headers=headers)
+    
+    if response.status_code == 200:
+        # トークンが有効なら、ユーザー情報を元にポリシーを生成
+        user_info = response.json()
+        return generate_policy(user_info['id'], 'Allow', event['methodArn'])
+    
+    # トークンが無効なら、拒否ポリシーを返す
+    return generate_policy('user', 'Deny', event['methodArn'])
 
-    if not code:
-        return {
-            'statusCode': 400,
-            'body': json.dumps({'error': 'GitHub authorization code not provided.'})
-        }
-
-    # GitHubからアクセストークンを取得するためのリクエスト
-    token_url = "https://github.com/login/oauth/access_token"
-    headers = {'Accept': 'application/json'}
-    data = {
-        'client_id': GITHUB_CLIENT_ID,
-        'client_secret': GITHUB_CLIENT_SECRET,
-        'code': code
+def generate_policy(principal_id, effect, resource):
+    """IAMポリシーを生成"""
+    auth_response = {
+        'principalId': principal_id
     }
-
-    try:
-        # アクセストークンの取得
-        token_response = requests.post(token_url, headers=headers, data=data).json()
-
-        if 'access_token' not in token_response:
-            return {
-                'statusCode': 400,
-                'body': json.dumps({'error': 'Failed to retrieve access token.'})
-            }
-
-        access_token = token_response['access_token']
-
-        # GitHubのユーザー情報を取得するリクエスト
-        user_info_url = 'https://api.github.com/user'
-        user_info_response = requests.get(
-            user_info_url,
-            headers={'Authorization': f'token {access_token}'}
-        ).json()
-
-        if 'id' not in user_info_response:
-            return {
-                'statusCode': 400,
-                'body': json.dumps({'error': 'Failed to retrieve user information.'})
-            }
-
-        # GitHubのユーザー情報をレスポンスとして返す
-        return {
-            'statusCode': 200,
-            'body': json.dumps({
-                'id': user_info_response['id'],
-                'login': user_info_response['login'],
-                'email': user_info_response.get('email', 'No public email'),
-                'avatar_url': user_info_response['avatar_url'],
-                'html_url': user_info_response['html_url']
-            })
+    if effect and resource:
+        auth_response['policyDocument'] = {
+            'Version': '2012-10-17',
+            'Statement': [
+                {
+                    'Action': 'execute-api:Invoke',
+                    'Effect': effect,
+                    'Resource': resource
+                }
+            ]
         }
-
-    except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': json.dumps({'error': str(e)})
-        }
+    return auth_response
