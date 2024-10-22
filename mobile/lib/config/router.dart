@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/pages/DressUpPage.dart';
 import 'package:mobile/pages/HomePage.dart';
 import 'package:mobile/pages/LaunchPage.dart';
+import 'package:mobile/pages/MakeoverPage.dart';
+import 'package:mobile/pages/RankingPage.dart';
+import 'package:mobile/pages/SettingPage.dart';
 import 'package:mobile/pages/TopPage.dart';
 
 /// プロジェクトの画面遷移に関するルーティング設定です。
@@ -11,7 +14,6 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/launch',
-      name: 'launch',
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
@@ -21,7 +23,6 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/',
-      name: 'home',
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
@@ -31,7 +32,6 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/top',
-      name: 'top',
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
@@ -41,7 +41,6 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/dress-up',
-      name: 'dress-up',
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
@@ -51,31 +50,28 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/makeover',
-      name: 'makeover',
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
-          child: const DressUpPage(),
+          child: const MakeoverPage(),
         );
       },
     ),
     GoRoute(
       path: '/ranking',
-      name: 'ranking',
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
-          child: const DressUpPage(),
+          child: const RankingPage(),
         );
       },
     ),
     GoRoute(
-      path: '/settings',
-      name: 'settings',
+      path: '/setting',
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
-          child: const DressUpPage(),
+          child: const SettingPage(),
         );
       },
     ),
