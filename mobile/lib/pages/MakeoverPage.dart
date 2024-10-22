@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
-class MakeOverPage extends StatelessWidget {
-  const MakeOverPage({super.key});
+class MakeoverPage extends StatelessWidget {
+  const MakeoverPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('MakeoverPage'),
+      ),
+      body: const Center(
+        child: Text('MakeoverPage'),
+      ),
+    );
   }
 }
