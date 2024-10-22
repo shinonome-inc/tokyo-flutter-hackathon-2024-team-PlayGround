@@ -5,6 +5,13 @@ class RankingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('RankingPage'),
+      ),
+      body: const Center(
+        child: Text('RankingPage'),
+      ),
+    );
   }
 }
