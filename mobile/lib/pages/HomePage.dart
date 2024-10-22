@@ -14,25 +14,25 @@ class HomePage extends StatelessWidget {
             const Text('HomePage'),
             TextButton(
               onPressed: () {
-                context.go('/ranking');
+                context.push('/ranking');
               },
               child: const Text('ランキング'),
             ),
             TextButton(
               onPressed: () {
-                context.go('/dress-up');
+                context.push('/dress-up');
               },
               child: const Text('着せ替え'),
             ),
             TextButton(
               onPressed: () {
-                context.go('/makeover');
+                context.push('/makeover');
               },
               child: const Text('模様替え'),
             ),
             TextButton(
               onPressed: () {
-                context.go('/setting');
+                context.push('/setting');
               },
               child: const Text('設定'),
             ),
