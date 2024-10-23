@@ -1,3 +1,4 @@
+import aws_cdk as cdk
 from aws_cdk import (
     Duration,
     Stack,
@@ -12,40 +13,45 @@ import os
 from dotenv import load_dotenv
 from constructs import Construct
 
+load_dotenv()
+
 class BackendStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # DynamoDBテーブルの作成
-        
+        github_client_id = os.getenv('GITHUB_CLIENT_ID')
+        github_client_secret = os.getenv('GITHUB_CLIENT_SECRET')
 
         # GitHub認証コードを使ってアクセストークンを取得するLambda関数
         get_token_lambda = _lambda.Function(
             self, "GetTokenLambda",
-            runtime=_lambda.Runtime.PYTHON_3_8,
+            runtime=_lambda.Runtime.PYTHON_3_12,
             handler="get_token.lambda_handler",
             code=_lambda.Code.from_asset("lambda"),
+            timeout=Duration.seconds(10),
             environment={
-                'GITHUB_CLIENT_ID': '',
-                'GITHUB_CLIENT_SECRET': ''
+                'GITHUB_CLIENT_ID': github_client_id,
+                'GITHUB_CLIENT_SECRET': github_client_secret
             }
         )
 
         # Lambdaオーソライザ (GitHubアクセストークンを検証)
         auth_lambda = _lambda.Function(
             self, "AuthLambda",
-            runtime=_lambda.Runtime.PYTHON_3_8,
+            runtime=_lambda.Runtime.PYTHON_3_12,
             handler="auth.lambda_handler",
-            code=_lambda.Code.from_asset("lambda")
+            code=_lambda.Code.from_asset("lambda"),
+            timeout=Duration.seconds(10),
         )
 
         # アプリロジック用のLambda関数
-        app_logic_lambda = _lambda.Function(
+        app_lambda = _lambda.Function(
             self, "AppLogicLambda",
-            runtime=_lambda.Runtime.PYTHON_3_8,
-            handler="app_logic.lambda_handler",
-            code=_lambda.Code.from_asset("lambda")
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="app.lambda_handler",
+            code=_lambda.Code.from_asset("lambda"),
+            timeout=Duration.seconds(10),
         )
 
         # API Gatewayの定義
@@ -67,11 +73,28 @@ class BackendStack(Stack):
         token_resource.add_method("GET", token_integration)
 
         # /userエンドポイント (アプリロジック用、Lambdaオーソライザを使用)
-        user_resource = api.root.add_resource("user")
-        user_integration = apigateway.LambdaIntegration(app_logic_lambda)
+        user_resource = api.root.add_resource("contributes")
+        user_integration = apigateway.LambdaIntegration(app_lambda)
         user_resource.add_method(
             "GET", 
             user_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
+        )
+
+        # CORSを有効にする
+        token_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"],  
+        )
+        user_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"],  
+        )
+
+        cdk.CfnOutput(
+            self, "ApiUrl",
+            value=api.url
         )

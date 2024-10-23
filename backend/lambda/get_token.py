@@ -28,43 +28,37 @@ def lambda_handler(event, context):
 
     try:
         # アクセストークンの取得
-        token_response = requests.post(token_url, headers=headers, data=data).json()
+        token_response = requests.post(token_url, headers=headers, data=data, timeout=10)
+        token_data = token_response.json()
 
-        if 'access_token' not in token_response:
+        if 'access_token' not in token_data:
             return {
                 'statusCode': 400,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',  
+                },
                 'body': json.dumps({'error': 'Failed to retrieve access token.'})
             }
 
-        access_token = token_response['access_token']
+        access_token = token_data['access_token']
 
-        # GitHubのユーザー情報を取得するリクエスト
-        user_info_url = 'https://api.github.com/user'
-        user_info_response = requests.get(
-            user_info_url,
-            headers={'Authorization': f'token {access_token}'}
-        ).json()
-
-        if 'id' not in user_info_response:
-            return {
-                'statusCode': 400,
-                'body': json.dumps({'error': 'Failed to retrieve user information.'})
-            }
-
-        # GitHubのユーザー情報をレスポンスとして返す
+        # GitHubのアクセストークンをレスポンスとして返す
         return {
             'statusCode': 200,
-            'body': json.dumps({
-                'id': user_info_response['id'],
-                'login': user_info_response['login'],
-                'email': user_info_response.get('email', 'No public email'),
-                'avatar_url': user_info_response['avatar_url'],
-                'html_url': user_info_response['html_url']
-            })
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',  
+            },
+            'body': json.dumps({'access_token': access_token})
         }
 
-    except Exception as e:
+    except requests.exceptions.RequestException as e:
         return {
             'statusCode': 500,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',  
+            },
             'body': json.dumps({'error': str(e)})
         }
