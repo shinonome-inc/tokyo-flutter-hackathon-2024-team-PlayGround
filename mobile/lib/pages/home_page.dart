@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
+import 'package:mobile/providers/home_notifier.dart';
 import 'package:mobile/widgets/circlar_elevated_button.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(homeNotifierProvider);
+    final notifier = ref.read(homeNotifierProvider.notifier);
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
@@ -40,34 +44,42 @@ class HomePage extends StatelessWidget {
                     const Spacer(),
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              context.go(RouterPaths.ranking);
-                            },
-                            child: const Text('ランキング'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.go(RouterPaths.makeover);
-                            },
-                            child: const Text('模様替え'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.go(RouterPaths.dressUp);
-                            },
-                            child: const Text('着せ替え'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.go(RouterPaths.setting);
-                            },
-                            child: const Text('設定'),
-                          ),
+                          if (state.showMenuSubButtons)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context.go(RouterPaths.ranking);
+                                  },
+                                  child: const Text('ランキング'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context.go(RouterPaths.makeover);
+                                  },
+                                  child: const Text('模様替え'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context.go(RouterPaths.dressUp);
+                                  },
+                                  child: const Text('着せ替え'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context.go(RouterPaths.setting);
+                                  },
+                                  child: const Text('設定'),
+                                ),
+                                const SizedBox(height: 16.0),
+                              ],
+                            ),
                           CircularElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              notifier.toggleShowMenuSubButtons();
+                            },
                             child: const Text('メニュー'),
                           ),
                         ],
