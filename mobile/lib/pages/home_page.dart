@@ -17,7 +17,10 @@ class HomePage extends StatelessWidget {
             fit: BoxFit.cover,
             width: double.infinity,
           ),
-          const Text('ここにダッシュちゃん'),
+          Image.asset(
+            ImagePaths.dash,
+            width: 200,
+          ),
           Row(
             children: [
               Spacer(),
