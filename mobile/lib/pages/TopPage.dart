@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/repositories/SecureStorageRepository.dart';
 
 class TopPage extends StatelessWidget {
@@ -15,7 +16,7 @@ class TopPage extends StatelessWidget {
         child: TextButton(
           onPressed: () async {
             await SecureStorageRepository().writeToken('test_token');
-            context.go('/');
+            context.go(RouterPaths.home);
           },
           child: const Text('GitHubでサインイン'),
         ),

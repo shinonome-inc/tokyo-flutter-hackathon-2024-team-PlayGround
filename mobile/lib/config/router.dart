@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/pages/DressUpPage.dart';
 import 'package:mobile/pages/HomePage.dart';
 import 'package:mobile/pages/LaunchPage.dart';
@@ -10,10 +11,10 @@ import 'package:mobile/pages/TopPage.dart';
 
 /// プロジェクトの画面遷移に関するルーティング設定です。
 final router = GoRouter(
-  initialLocation: '/launch',
+  initialLocation: RouterPaths.launch,
   routes: [
     GoRoute(
-      path: '/launch',
+      path: RouterPaths.launch,
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
@@ -22,7 +23,7 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/',
+      path: RouterPaths.home,
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
@@ -31,7 +32,7 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/top',
+      path: RouterPaths.top,
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
@@ -40,7 +41,7 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/dress-up',
+      path: RouterPaths.dressUp,
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
@@ -49,7 +50,7 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/makeover',
+      path: RouterPaths.makeover,
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
@@ -58,7 +59,7 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/ranking',
+      path: RouterPaths.ranking,
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
@@ -67,7 +68,7 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/setting',
+      path: RouterPaths.setting,
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,

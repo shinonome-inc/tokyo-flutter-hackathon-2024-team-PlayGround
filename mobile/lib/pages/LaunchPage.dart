@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/repositories/SecureStorageRepository.dart';
 
 class LaunchPage extends StatefulWidget {
@@ -17,10 +18,10 @@ class _LaunchPageState extends State<LaunchPage> {
       final token = await SecureStorageRepository().readToken();
       if (!mounted) return;
       if (token == null) {
-        context.go('/top');
+        context.go(RouterPaths.top);
         return;
       }
-      context.go('/');
+      context.go(RouterPaths.home);
     });
   }
 

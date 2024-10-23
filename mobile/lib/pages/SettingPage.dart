@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/repositories/SecureStorageRepository.dart';
 
 class SettingPage extends StatelessWidget {
@@ -19,7 +20,7 @@ class SettingPage extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 await SecureStorageRepository().deleteToken();
-                context.go('/top');
+                context.go(RouterPaths.top);
               },
               child: const Text('ログアウト'),
             ),

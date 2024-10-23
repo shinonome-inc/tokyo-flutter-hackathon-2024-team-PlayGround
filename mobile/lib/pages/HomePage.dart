@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/constants/router_paths.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,25 +15,25 @@ class HomePage extends StatelessWidget {
             const Text('HomePage'),
             TextButton(
               onPressed: () {
-                context.push('/ranking');
+                context.push(RouterPaths.ranking);
               },
               child: const Text('ランキング'),
             ),
             TextButton(
               onPressed: () {
-                context.push('/dress-up');
+                context.push(RouterPaths.dressUp);
               },
               child: const Text('着せ替え'),
             ),
             TextButton(
               onPressed: () {
-                context.push('/makeover');
+                context.push(RouterPaths.makeover);
               },
               child: const Text('模様替え'),
             ),
             TextButton(
               onPressed: () {
-                context.push('/setting');
+                context.push(RouterPaths.setting);
               },
               child: const Text('設定'),
             ),
