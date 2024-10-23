@@ -47,6 +47,19 @@ class _TopPageState extends State<TopPage> {
       );
   }
 
+  // サインインボタンを押したときにアクセストークンを確認
+  Future<void> _signInWithGitHub() async {
+    final accessToken = await SecureStorageRepository().readToken();
+    if (accessToken != null) {
+      // アクセストークンが存在する場合、そのまま次の画面へ遷移
+      print('アクセストークンが存在しています: $accessToken');
+      context.go(RouterPaths.home); // アクセストークンがあればホーム画面に遷移
+    } else {
+      print('アクセストークンが存在しません。認証を開始します。');
+      _launchGitHubAuth(); // アクセストークンがなければ認証を開始
+    }
+  }
+
   // GitHubの認証ページをWebViewで表示
   void _launchGitHubAuth() {
     final authorizationUrl =
@@ -83,10 +96,13 @@ class _TopPageState extends State<TopPage> {
       appBar: AppBar(
         title: const Text('TopPage'),
       ),
-      body: WebViewWidget(controller: _controller),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _launchGitHubAuth,
-        child: Icon(Icons.login),
+      body: Column(
+        children: [
+          Expanded(child: WebViewWidget(controller: _controller)),
+          ElevatedButton(
+              onPressed: _signInWithGitHub,
+              child: const Text('Sign in with GitHub')),
+        ],
       ),
     );
   }
