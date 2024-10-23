@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:mobile/repositories/api_client.dart'; // Retrofit APIクライアント
 import 'package:dio/dio.dart';
 import 'package:mobile/constants/router_paths.dart';
@@ -19,19 +18,40 @@ class _TopPageState extends State<TopPage> {
   final clientId = dotenv.env['GITHUB_CLIENT_ID']!;
   final String redirectUri = 'http://localhost:3000/callback';
   late ApiClient _apiClient;
-  WebViewController? _controller;
+  late WebViewController _controller;
 
   @override
   void initState() {
     super.initState();
-    _apiClient = ApiClient(Dio()); // RetrofitのAPIクライアントを初期化
+    _apiClient = ApiClient(Dio());
+
+    // WebViewControllerのカスタマイズ
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {
+            // ページのURLがGitHubのリダイレクトURLになったとき認証コードを取得
+            if (url.startsWith(redirectUri)) {
+              final uri = Uri.parse(url);
+              final code = uri.queryParameters['code'];
+              if (code != null) {
+                handleAuthCallback(code); // 認証コードを処理
+              }
+            }
+          },
+          onWebResourceError: (error) {
+            print('WebView error: $error');
+          },
+        ),
+      );
   }
 
   // GitHubの認証ページをWebViewで表示
   void _launchGitHubAuth() {
     final authorizationUrl =
         'https://github.com/login/oauth/authorize?client_id=$clientId&redirect_uri=$redirectUri&scope=repo';
-    _controller?.loadRequest(Uri.parse(authorizationUrl));
+    _controller.loadRequest(Uri.parse(authorizationUrl));
   }
 
   // 認証後にリダイレクトされたURLから認証コードを取得
@@ -45,6 +65,10 @@ class _TopPageState extends State<TopPage> {
         // アクセストークンをセキュアストレージに保存
         await SecureStorageRepository().writeToken(accessToken);
         print('アクセストークンを保存しました: $accessToken');
+
+        if (mounted) {
+          context.go(RouterPaths.home); // 認証成功時にホーム画面に遷移
+        }
       } else {
         print('アクセストークンの取得に失敗しました: ${response.response.statusMessage}');
       }
@@ -59,14 +83,10 @@ class _TopPageState extends State<TopPage> {
       appBar: AppBar(
         title: const Text('TopPage'),
       ),
-      body: Center(
-        child: TextButton(
-          onPressed: () async {
-            await SecureStorageRepository().writeToken('test_token');
-            context.go(RouterPaths.home);
-          },
-          child: const Text('GitHubでサインイン'),
-        ),
+      body: WebViewWidget(controller: _controller),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _launchGitHubAuth,
+        child: Icon(Icons.login),
       ),
     );
   }
