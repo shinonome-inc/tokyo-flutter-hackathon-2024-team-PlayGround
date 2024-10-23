@@ -45,5 +45,8 @@ app.*.map.json
 # lock
 *.lock
 
+# .g.dart
+*.g.dart
+
 # freezed
 *.freezed.dart
