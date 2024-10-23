@@ -86,12 +86,14 @@ class BackendStack(Stack):
         token_resource.add_cors_preflight(
             allow_origins=["*"],  
             allow_methods=["GET", "POST", "OPTIONS"],  
-            allow_headers=["Authorization", "Content-Type"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
         )
         user_resource.add_cors_preflight(
             allow_origins=["*"],  
             allow_methods=["GET", "POST", "OPTIONS"],  
-            allow_headers=["Authorization", "Content-Type"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
         )
 
         cdk.CfnOutput(

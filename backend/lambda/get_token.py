@@ -1,5 +1,6 @@
 import json
-import requests
+import urllib.parse
+import urllib.request
 import os
 
 # Lambdaの環境変数からGitHub OAuthのクライアントIDとクライアントシークレットを取得
@@ -8,8 +9,8 @@ GITHUB_CLIENT_SECRET = os.environ['GITHUB_CLIENT_SECRET']
 
 def lambda_handler(event, context):
     # API Gateway経由で受け取るGitHub認証コード
-    body = json.loads(event['body'])
-    code = body.get('code')
+    print(event)
+    code = event.get('queryStringParameters', {}).get('code')
 
     if not code:
         return {
@@ -28,8 +29,12 @@ def lambda_handler(event, context):
 
     try:
         # アクセストークンの取得
-        token_response = requests.post(token_url, headers=headers, data=data, timeout=10)
-        token_data = token_response.json()
+        data_encoded = urllib.parse.urlencode(data).encode('utf-8')
+        request = urllib.request.Request(token_url, data=data_encoded, headers=headers)
+
+        with urllib.request.urlopen(request, timeout=10) as response:
+            token_response = response.read().decode('utf-8')
+            token_data = json.loads(token_response)
 
         if 'access_token' not in token_data:
             return {
@@ -53,7 +58,7 @@ def lambda_handler(event, context):
             'body': json.dumps({'access_token': access_token})
         }
 
-    except requests.exceptions.RequestException as e:
+    except urllib.error.URLError as e:
         return {
             'statusCode': 500,
             'headers': {

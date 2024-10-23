@@ -14,7 +14,8 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'https://your-api-gateway-url';
+    baseUrl ??=
+        'https://fyc67kc5i3.execute-api.ap-northeast-1.amazonaws.com/prod/';
   }
 
   final Dio _dio;

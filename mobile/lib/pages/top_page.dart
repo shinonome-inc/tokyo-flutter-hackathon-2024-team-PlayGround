@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:mobile/repositories/api_client.dart'; // Retrofit APIクライアント
+import 'package:mobile/repositories/api_client.dart';
 import 'package:dio/dio.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
@@ -16,7 +16,7 @@ class TopPage extends StatefulWidget {
 
 class _TopPageState extends State<TopPage> {
   final clientId = dotenv.env['GITHUB_CLIENT_ID']!;
-  final String redirectUri = 'http://localhost:3000/callback';
+  final String redirectUri = 'https://shinonome.com';
   late ApiClient _apiClient;
   late WebViewController _controller;
 
