@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/router_paths.dart';
-import 'package:mobile/repositories/SecureStorageRepository.dart';
+import 'package:mobile/repositories/secure_storage_repository.dart';
 
 class TopPage extends StatelessWidget {
   const TopPage({super.key});

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/router_paths.dart';
-import 'package:mobile/pages/DressUpPage.dart';
-import 'package:mobile/pages/HomePage.dart';
-import 'package:mobile/pages/LaunchPage.dart';
-import 'package:mobile/pages/MakeoverPage.dart';
-import 'package:mobile/pages/RankingPage.dart';
-import 'package:mobile/pages/SettingPage.dart';
-import 'package:mobile/pages/TopPage.dart';
+import 'package:mobile/pages/dress_up_page.dart';
+import 'package:mobile/pages/home_page.dart';
+import 'package:mobile/pages/launch_page.dart';
+import 'package:mobile/pages/makeover_page.dart';
+import 'package:mobile/pages/ranking_page.dart';
+import 'package:mobile/pages/setting_page.dart';
+import 'package:mobile/pages/top_page.dart';
 
 /// プロジェクトの画面遷移に関するルーティング設定です。
 final router = GoRouter(
