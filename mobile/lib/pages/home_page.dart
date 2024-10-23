@@ -9,44 +9,53 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(ImagePaths.backgroundSummer),
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          Image.asset(
+            ImagePaths.backgroundSummer,
             fit: BoxFit.cover,
+            width: double.infinity,
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('HomePage'),
-            TextButton(
-              onPressed: () {
-                context.push(RouterPaths.ranking);
-              },
-              child: const Text('ランキング'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.push(RouterPaths.dressUp);
-              },
-              child: const Text('着せ替え'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.push(RouterPaths.makeover);
-              },
-              child: const Text('模様替え'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.push(RouterPaths.setting);
-              },
-              child: const Text('設定'),
-            ),
-          ],
-        ),
+          const Text('ここにダッシュちゃん'),
+          Row(
+            children: [
+              Spacer(),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Spacer(),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.go(RouterPaths.ranking);
+                      },
+                      child: const Text('ランキング'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.go(RouterPaths.makeover);
+                      },
+                      child: const Text('メイクオーバー'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.go(RouterPaths.dressUp);
+                      },
+                      child: const Text('ドレスアップ'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.go(RouterPaths.setting);
+                      },
+                      child: const Text('設定'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
