@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
+import 'package:mobile/widgets/circlar_elevated_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -21,42 +22,61 @@ class HomePage extends StatelessWidget {
             ImagePaths.dash,
             width: 200,
           ),
-          Row(
-            children: [
-              Spacer(),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 28.0),
+            child: Column(
+              children: [
+                const Spacer(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Spacer(),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.go(RouterPaths.ranking);
-                      },
-                      child: const Text('ランキング'),
+                    Expanded(
+                      child: CircularElevatedButton(
+                        onPressed: () {},
+                        child: const Text('エサをあげる'),
+                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.go(RouterPaths.makeover);
-                      },
-                      child: const Text('メイクオーバー'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.go(RouterPaths.dressUp);
-                      },
-                      child: const Text('ドレスアップ'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.go(RouterPaths.setting);
-                      },
-                      child: const Text('設定'),
+                    const Spacer(),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              context.go(RouterPaths.ranking);
+                            },
+                            child: const Text('ランキング'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.go(RouterPaths.makeover);
+                            },
+                            child: const Text('模様替え'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.go(RouterPaths.dressUp);
+                            },
+                            child: const Text('着せ替え'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.go(RouterPaths.setting);
+                            },
+                            child: const Text('設定'),
+                          ),
+                          CircularElevatedButton(
+                            onPressed: () {},
+                            child: const Text('メニュー'),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
