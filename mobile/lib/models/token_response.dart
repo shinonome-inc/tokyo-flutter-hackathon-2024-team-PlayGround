@@ -1,17 +1,14 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'token_response.freezed.dart';
 part 'token_response.g.dart';
 
-@JsonSerializable()
-class TokenResponse {
-  final String access_token;
+@freezed
+class TokenResponse with _$TokenResponse {
+  const factory TokenResponse({
+    required String accessToken,
+  }) = _TokenResponse;
 
-  TokenResponse({required this.access_token});
-
-  // fromJsonメソッド
-  factory TokenResponse.fromJson(Map<String, dynamic> json) =>
+  factory TokenResponse.fromJson(Map<String, Object?> json) =>
       _$TokenResponseFromJson(json);
-
-  // toJsonメソッド
-  Map<String, dynamic> toJson() => _$TokenResponseToJson(this);
 }

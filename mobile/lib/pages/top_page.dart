@@ -102,7 +102,7 @@ class _TopPageState extends State<TopPage> {
       final response = await _apiClient.getAccessToken(code);
 
       if (response.response.statusCode == 200) {
-        final accessToken = response.data.access_token;
+        final accessToken = response.data.accessToken;
 
         // アクセストークンをセキュアストレージに保存
         await SecureStorageRepository().writeToken(accessToken);
