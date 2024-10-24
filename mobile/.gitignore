@@ -44,3 +44,6 @@ app.*.map.json
 
 # lock
 *.lock
+
+# secret
+.env
