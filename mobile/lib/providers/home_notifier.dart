@@ -5,6 +5,7 @@ part 'home_notifier.g.dart';
 
 @riverpod
 class HomeNotifier extends _$HomeNotifier {
+  @override
   HomeState build() {
     return initialHomeState;
   }

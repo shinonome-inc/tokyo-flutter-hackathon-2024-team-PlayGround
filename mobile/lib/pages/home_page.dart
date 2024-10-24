@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
+import 'package:mobile/models/dash.dart';
 import 'package:mobile/providers/home_notifier.dart';
 import 'package:mobile/widgets/circlar_elevated_button.dart';
+import 'package:mobile/widgets/level_prograss_bar.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -31,6 +33,12 @@ class HomePage extends ConsumerWidget {
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 28.0),
             child: Column(
               children: [
+                const SizedBox(height: 28.0),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 64.0),
+                  // TODO: 仮のデータなので取得したデータに置き換える。
+                  child: LevelProgressBar(dash: sampleDash),
+                ),
                 const Spacer(),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,

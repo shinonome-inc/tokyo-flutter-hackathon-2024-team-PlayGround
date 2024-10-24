@@ -16,3 +16,9 @@ const initialDash = Dash(
   currentExp: 0,
   maxExp: 1,
 );
+
+const sampleDash = Dash(
+  level: 12,
+  currentExp: 45,
+  maxExp: 100,
+);
