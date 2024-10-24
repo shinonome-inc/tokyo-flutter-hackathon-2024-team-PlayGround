@@ -13,10 +13,7 @@ class _ApiClient implements ApiClient {
     this._dio, {
     this.baseUrl,
     this.errorLogger,
-  }) {
-    baseUrl ??=
-        'https://fyc67kc5i3.execute-api.ap-northeast-1.amazonaws.com/prod/';
-  }
+  });
 
   final Dio _dio;
 

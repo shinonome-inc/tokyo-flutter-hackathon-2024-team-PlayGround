@@ -16,6 +16,7 @@ class TopPage extends StatefulWidget {
 
 class _TopPageState extends State<TopPage> {
   final clientId = dotenv.env['GITHUB_CLIENT_ID']!;
+  final baseUrl = dotenv.env['ENDPOINT']!;
   final String redirectUri = 'https://shinonome.com';
   late ApiClient _apiClient;
   late WebViewController _controller;
@@ -23,7 +24,7 @@ class _TopPageState extends State<TopPage> {
   @override
   void initState() {
     super.initState();
-    _apiClient = ApiClient(Dio());
+    _apiClient = ApiClient(Dio(), baseUrl: baseUrl);
     _controller = WebViewController();
 
     // WebViewControllerのカスタマイズ
