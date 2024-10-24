@@ -1,11 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:mobile/repositories/api_client.dart';
-import 'package:dio/dio.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
+import 'package:mobile/services/api_client.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class TopPage extends StatefulWidget {
   const TopPage({super.key});
