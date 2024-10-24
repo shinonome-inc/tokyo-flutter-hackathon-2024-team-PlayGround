@@ -1,17 +1,17 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mobile/models/token_response.dart';
 import 'package:retrofit/retrofit.dart';
-
-import '../models/token_response.dart';
 
 part 'api_client.g.dart';
 
-@RestApi(
-    baseUrl:
-        "https://fyc67kc5i3.execute-api.ap-northeast-1.amazonaws.com/prod/")
+@RestApi()
 abstract class ApiClient {
-  factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
+  factory ApiClient(Dio dio, {String? baseUrl}) {
+    return _ApiClient(dio, baseUrl: dotenv.env['API_BASE_URL']);
+  }
 
-  @GET("/token")
+  @GET('/token')
   Future<HttpResponse<TokenResponse>> getAccessToken(
-      @Query("code") String code);
+      @Query('code') String code);
 }
