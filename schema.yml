@@ -196,6 +196,9 @@ components:
         AvatarUrl:
           type: string
           description: githubのアバター画像のURL
+        CharacterName:
+          type: string
+          description: キャラクター名
         CharacterLevel:
           type: integer
           description: キャラクターの現在のレベル
