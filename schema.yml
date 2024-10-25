@@ -184,37 +184,37 @@ components:
     HomeResponse:
       type: object
       properties:
-        UserID:
+        user_id:
           type: string
           description: ユーザーの一意の識別子
-        UserName:
+        user_name:
           type: string
           description: GitHubのユーザー名
-        Email:
-          type: string
-          description: ユーザーのメールアドレス
-        AvatarUrl:
+        avatar_url:
           type: string
           description: githubのアバター画像のURL
-        CharacterName:
+        character_name:
           type: string
           description: キャラクター名
-        CharacterLevel:
+        character_level:
           type: integer
           description: キャラクターの現在のレベル
-        CharacterExperience:
+        character_experience:
           type: integer
           description: キャラクターの累積経験値
-        CharacterClothing:
+        character_clothes:
           type: string
           description: キャラクターの服装
+        character_background:
+          type: string
+          description: キャラクターの背景
     ProfileRequest:
       type: object
       properties:
-        userId:
+        user_id:
           type: string
           description: プロフィールを変更するユーザーのID
-        characterName:
+        character_name:
           type: string
           description: 変更するキャラクター名
       required:
@@ -237,32 +237,32 @@ components:
           items:
             type: object
             properties:
-              UserID:
+              user_id:
                 type: string
                 description: ユーザーの一意の識別子
-              UserName:
+              user_name:
                 type: string
                 description: ユーザー名
-              AvatarUrl:
+              avatar_url:
                 type: string
                 description: githubのアバター画像のURL
-              CharacterName:
+              character_name:
                 type: string
                 description: キャラクター名
-              CharacterLevel:
+              character_level:
                 type: integer
                 description: キャラクターレベル
-              CharacterClothing:
+              character_clothing:
                 type: string
                 description: キャラクターの服装
-              CharacterBackground:
+              character_background:
                 type: string
                 description: キャラクターの背景
           description: キャラクターレベルの高い順にソートされたユーザーのリスト
     ClothesRequest:
       type: object
       properties:
-        userId:
+        user_id:
           type: string
           description: プロフィールを変更するユーザーのID
         item:
@@ -274,12 +274,12 @@ components:
             - winter
           description: 変更する服装
       required:
-        - userId
+        - user_id
         - item
     BackgroundRequest:
       type: object
       properties:
-        userId:
+        user_id:
           type: string
           description: プロフィールを変更するユーザーのID
         item:
@@ -291,5 +291,5 @@ components:
             - winter
           description: 変更する背景
       required:
-        - userId
+        - user_id
         - item
