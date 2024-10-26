@@ -19,7 +19,6 @@ class _TopPageState extends ConsumerState<TopPage> {
 
   Future<void> _onUrlChange(UrlChange urlChange) async {
     if (!mounted) return;
-
     final notifier = ref.read(topNotifierProvider.notifier);
     if (urlChange.url == null) return;
     try {
@@ -33,17 +32,6 @@ class _TopPageState extends ConsumerState<TopPage> {
 
   Future<void> _onPressedSignInWithGitHubButton() async {
     if (!mounted) return;
-
-    final state = ref.read(topNotifierProvider);
-    if (state.isLoading) return;
-
-    final notifier = ref.read(topNotifierProvider.notifier);
-    final isSignedIn = await notifier.isSignedIn();
-    if (isSignedIn) {
-      if (!mounted) return;
-      context.go(RouterPaths.home);
-      return;
-    }
     _controller.loadRequest(Uri.parse(authorizationUrl));
   }
 

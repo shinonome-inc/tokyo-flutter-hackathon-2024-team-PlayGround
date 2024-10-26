@@ -18,26 +18,6 @@ class TopNotifier extends _$TopNotifier {
     state = state.copyWith(isLoading: isLoading);
   }
 
-  Future<bool> isSignedIn() async {
-    if (state.isLoading) return false;
-    setLoading(true);
-
-    final accessToken = await SecureStorageRepository().readToken();
-    if (accessToken == null) {
-      return false;
-    }
-
-    try {
-      await GithubService().fetchUser();
-    } catch (e) {
-      return false;
-    } finally {
-      setLoading(false);
-    }
-
-    return true;
-  }
-
   Future<void> signIn(String url) async {
     if (state.isLoading) return;
     setLoading(true);
@@ -53,9 +33,8 @@ class TopNotifier extends _$TopNotifier {
     if (code == null) return;
 
     // コードを使用してアクセストークンを取得
-    final notifier = ref.read(topNotifierProvider.notifier);
     try {
-      await notifier.fetchAccessToken(code);
+      await fetchAccessToken(code);
     } catch (e) {
       return;
     }
