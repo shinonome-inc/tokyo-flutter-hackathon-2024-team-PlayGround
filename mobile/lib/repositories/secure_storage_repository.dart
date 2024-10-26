@@ -20,8 +20,9 @@ class SecureStorageRepository {
   ///
   /// [token] は保存するトークンの文字列です。
   /// 非同期処理で保存が完了します。
-  Future<void> writeToken(String token) async {
+  Future<void> writeToken(String? token) async {
     await _storage.write(key: _token, value: token);
+    print('アクセストークンを保存しました: $token');
   }
 
   /// 保存されているトークンを読み込みます
