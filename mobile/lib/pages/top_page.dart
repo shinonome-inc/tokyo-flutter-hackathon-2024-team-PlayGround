@@ -23,7 +23,8 @@ class _TopPageState extends ConsumerState<TopPage> {
     final redirectUri = dotenv.env['GITHUB_REDIRECT_URL'];
     if (urlChange.url == null || redirectUri == null) return;
 
-    if (!urlChange.url!.startsWith(redirectUri)) return;
+    final isNotRedirectUri = !urlChange.url!.startsWith(redirectUri);
+    if (isNotRedirectUri) return;
 
     final notifier = ref.read(topNotifierProvider.notifier);
     try {
