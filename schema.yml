@@ -221,40 +221,40 @@ components:
     HomeResponse:
       type: object
       properties:
-        user_id:
+        userId:
           type: string
           description: ユーザーの一意の識別子
-        user_name:
+        userName:
           type: string
           description: GitHubのユーザー名
-        avatar_url:
+        avatarUrl:
           type: string
           description: githubのアバター画像のURL
-        character_name:
+        characterName:
           type: string
           description: キャラクター名
-        character_level:
+        characterLevel:
           type: integer
           description: キャラクターの現在のレベル
-        character_experience:
+        characterExperience:
           type: integer
           description: キャラクターの累積経験値
-        character_clothes:
+        characterClothes:
           type: string
           description: キャラクターの服装
-        character_background:
+        characterBackground:
           type: string
           description: キャラクターの背景
-        feed_count:
+        feedCount:
           type: integer
           description: 今日の残り餌やり回数
     ProfileRequest:
       type: object
       properties:
-        user_id:
+        userId:
           type: string
           description: プロフィールを変更するユーザーのID
-        character_name:
+        characterName:
           type: string
           description: 変更するキャラクター名
       required:
@@ -263,7 +263,7 @@ components:
     GetFeedRequest:
       type: object
       properties:
-        user_id:
+        userId:
           type: string
           description: 餌を取得するユーザーのID
       required:
@@ -277,21 +277,21 @@ components:
     FeedRequest:
       type: object
       properties:
-        user_id:
+        userId:
           type: string
           description: 餌をあげるユーザーのID
       required:
-        - user_id
+        - userId
     FeedResponse:
       type: object
       properties:
-        character_experience:
+        characterExperience:
           type: integer
           description: 更新後の経験値
-        character_level:
+        characterLevel:
           type: integer
           description: 更新後のレベル
-        feed_count:
+        feedCount:
           type: integer
           description: 更新後の残り餌やり回数
     RankingResponse:
@@ -302,32 +302,32 @@ components:
           items:
             type: object
             properties:
-              user_id:
+              userId:
                 type: string
                 description: ユーザーの一意の識別子
-              user_name:
+              userName:
                 type: string
                 description: ユーザー名
-              avatar_url:
+              avatarUrl:
                 type: string
                 description: githubのアバター画像のURL
-              character_name:
+              characterName:
                 type: string
                 description: キャラクター名
-              character_level:
+              characterLevel:
                 type: integer
                 description: キャラクターレベル
-              character_clothing:
+              characterClothing:
                 type: string
                 description: キャラクターの服装
-              character_background:
+              characterBackground:
                 type: string
                 description: キャラクターの背景
           description: キャラクターレベルの高い順にソートされたユーザーのリスト
     ClothesRequest:
       type: object
       properties:
-        user_id:
+        userId:
           type: string
           description: プロフィールを変更するユーザーのID
         item:
@@ -339,12 +339,12 @@ components:
             - winter
           description: 変更する服装
       required:
-        - user_id
+        - userId
         - item
     BackgroundRequest:
       type: object
       properties:
-        user_id:
+        userId:
           type: string
           description: プロフィールを変更するユーザーのID
         item:
@@ -356,5 +356,5 @@ components:
             - winter
           description: 変更する背景
       required:
-        - user_id
+        - userId
         - item

@@ -23,6 +23,30 @@ class BackendStack(Stack):
         github_client_id = os.getenv('GITHUB_CLIENT_ID')
         github_client_secret = os.getenv('GITHUB_CLIENT_SECRET')
 
+        # DynamoDBテーブル作成
+        users_table = dynamodb.Table(
+            self, "UsersTable",
+            table_name="Users",
+            partition_key=dynamodb.Attribute(
+                name="userID",
+                type=dynamodb.AttributeType.STRING
+            ),
+            billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,  # オンデマンド課金（書き込み1.25$/1M, 読み出し0.25$/1M）
+            removal_policy=cdk.RemovalPolicy.DESTROY  # スタック削除時にテーブルを削除
+        )
+        users_table.add_global_secondary_index(
+            index_name="RankIndex",
+            partition_key=dynamodb.Attribute(
+                name="gsiPk",
+                type=dynamodb.AttributeType.STRING
+            ),
+            sort_key=dynamodb.Attribute(
+                name="characterLevel",
+                type=dynamodb.AttributeType.NUMBER
+            ),
+            projection_type=dynamodb.ProjectionType.ALL
+        )
+
         # GitHub認証コードを使ってアクセストークンを取得するLambda関数
         get_token_lambda = _lambda.Function(
             self, "GetTokenLambda",
