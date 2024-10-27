@@ -71,6 +71,36 @@ paths:
           description: 認証エラー
         "500":
           description: サーバーエラー
+  /get_feed:
+    post:
+      summary: 餌を取得
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: "アクセストークン（例: Bearer {token}）"
+      requestBody:
+        description: 餌取得リクエスト
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetFeedRequest"
+      responses:
+        "200":
+          description: 餌の取得に成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetFeedResponse"
+        "400":
+          description: 餌の取得が許可されていない
+        "401":
+          description: 認証エラー
+        "500":
+          description: サーバーエラー
   /feed:
     post:
       summary: 餌をあげて経験値を増やす
@@ -81,6 +111,13 @@ paths:
             type: string
           required: true
           description: "アクセストークン（例: Bearer {token}）"
+      requestBody:
+        description: 餌やりリクエスト
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeedRequest"
       responses:
         "200":
           description: 餌やりに成功
@@ -208,6 +245,9 @@ components:
         character_background:
           type: string
           description: キャラクターの背景
+        feed_count:
+          type: integer
+          description: 今日の残り餌やり回数
     ProfileRequest:
       type: object
       properties:
@@ -220,15 +260,40 @@ components:
       required:
         - userId
         - characterName
+    GetFeedRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: 餌を取得するユーザーのID
+      required:
+        - user_id
+    GetFeedResponse:
+      type: object
+      properties:
+        feed_count:
+          type: integer
+          description: 更新後の残り餌やり回数
+    FeedRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: 餌をあげるユーザーのID
+      required:
+        - user_id
     FeedResponse:
       type: object
       properties:
-        CharacterExperience:
+        character_experience:
           type: integer
           description: 更新後の経験値
-        CharacterLevel:
+        character_level:
           type: integer
           description: 更新後のレベル
+        feed_count:
+          type: integer
+          description: 更新後の残り餌やり回数
     RankingResponse:
       type: object
       properties:
