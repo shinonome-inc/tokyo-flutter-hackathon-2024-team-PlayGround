@@ -329,7 +329,7 @@ components:
       properties:
         userId:
           type: string
-          description: プロフィールを変更するユーザーのID
+          description: キャラの服装を変更するユーザーのID
         item:
           type: string
           enum:
@@ -346,10 +346,11 @@ components:
       properties:
         userId:
           type: string
-          description: プロフィールを変更するユーザーのID
+          description: キャラの背景を変更するユーザーのID
         item:
           type: string
           enum:
+            - default
             - spring
             - summer
             - autumn
