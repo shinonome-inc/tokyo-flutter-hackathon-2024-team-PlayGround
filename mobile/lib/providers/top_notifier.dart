@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/models/top_state.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
 import 'package:mobile/services/github_service.dart';
@@ -18,39 +16,28 @@ class TopNotifier extends _$TopNotifier {
     state = state.copyWith(isLoading: isLoading);
   }
 
-  Future<void> signIn(String url) async {
+  Future<void> signInByRedirectUrl(String redirectUrl) async {
     if (state.isLoading) return;
     setLoading(true);
 
-    final redirectUri = dotenv.env['GITHUB_REDIRECT_URL'];
-    if (redirectUri == null || !url.startsWith(redirectUri)) {
-      return;
-    }
-
-    // ページのURLがリダイレクトURLになったとき認証コードを取得
-    final uri = Uri.parse(url);
+    final uri = Uri.parse(redirectUrl);
     final code = uri.queryParameters['code'];
-    if (code == null) return;
-
-    // コードを使用してアクセストークンを取得
-    try {
-      await fetchAccessToken(code);
-    } catch (e) {
-      return;
+    if (code == null) {
+      throw Exception('Failed to get code from URL: $redirectUrl');
     }
+
+    final token = await _fetchAccessToken(code);
+    await SecureStorageRepository().writeToken(token);
+    setLoading(false);
   }
 
   /// アクセストークンを取得する。
-  Future<void> fetchAccessToken(String code) async {
-    if (state.isLoading) return;
-    setLoading(true);
+  Future<String?> _fetchAccessToken(String code) async {
     try {
-      final token = await GithubService().fetchAccessToken(code);
-      await SecureStorageRepository().writeToken(token);
+      final token = await GitHubService().fetchAccessToken(code);
+      return token;
     } catch (e) {
-      debugPrint('Failed to fetch access token: $e');
-    } finally {
-      setLoading(false);
+      throw Exception('Failed to fetch access token: $e');
     }
   }
 }

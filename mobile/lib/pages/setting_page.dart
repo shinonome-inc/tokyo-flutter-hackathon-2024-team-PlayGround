@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
+import 'package:mobile/services/github_service.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -20,6 +21,7 @@ class SettingPage extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 await SecureStorageRepository().deleteToken();
+                GitHubService().reset();
                 context.go(RouterPaths.top);
               },
               child: const Text('ログアウト'),

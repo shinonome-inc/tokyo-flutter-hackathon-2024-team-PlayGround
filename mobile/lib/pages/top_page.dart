@@ -19,10 +19,15 @@ class _TopPageState extends ConsumerState<TopPage> {
 
   Future<void> _onUrlChange(UrlChange urlChange) async {
     if (!mounted) return;
+
+    final redirectUri = dotenv.env['GITHUB_REDIRECT_URL'];
+    if (urlChange.url == null || redirectUri == null) return;
+
+    if (!urlChange.url!.startsWith(redirectUri)) return;
+
     final notifier = ref.read(topNotifierProvider.notifier);
-    if (urlChange.url == null) return;
     try {
-      await notifier.signIn(urlChange.url!);
+      await notifier.signInByRedirectUrl(urlChange.url!);
     } catch (e) {
       return;
     }

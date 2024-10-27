@@ -26,8 +26,9 @@ class LaunchNotifier extends _$LaunchNotifier {
       return false;
     }
 
+    GitHubService().initialize(accessToken);
     try {
-      await GithubService().fetchUser();
+      await GitHubService().fetchUser();
     } catch (e) {
       return false;
     } finally {
@@ -42,7 +43,7 @@ class LaunchNotifier extends _$LaunchNotifier {
     if (state.isLoading) return;
     setLoading(true);
     try {
-      final token = await GithubService().fetchAccessToken(code);
+      final token = await GitHubService().fetchAccessToken(code);
       await SecureStorageRepository().writeToken(token);
     } catch (e) {
       debugPrint('Failed to fetch access token: $e');

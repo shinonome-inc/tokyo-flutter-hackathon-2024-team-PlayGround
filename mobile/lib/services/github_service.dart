@@ -1,13 +1,27 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class GithubService {
-  final Dio _dio;
+class GitHubService {
+  static final GitHubService _instance = GitHubService._internal();
 
-  GithubService({Dio? dio}) : _dio = dio ?? Dio();
+  final Dio _dio = Dio();
 
   final baseUrl = dotenv.env['GITHUB_API_BASE_URL'];
   final tokenRequestUrl = dotenv.env['GITHUB_TOKEN_REQUEST_URL'];
+
+  factory GitHubService() {
+    return _instance;
+  }
+
+  GitHubService._internal();
+
+  void initialize(String? accessToken) {
+    _dio.options.headers['Authorization'] = 'token $accessToken';
+  }
+
+  void reset() {
+    _dio.options.headers.remove('Authorization');
+  }
 
   /// アクセストークンを取得する。
   Future<String?> fetchAccessToken(String code) async {
@@ -26,7 +40,10 @@ class GithubService {
     if (response.statusCode == 200) {
       final queryParams = Uri.splitQueryString(response.data);
       final accessToken = queryParams['access_token'];
-      _dio.options.headers['Authorization'] = 'token $accessToken';
+      if (accessToken == null) {
+        throw Exception('Failed to fetch access token. Access token is null.');
+      }
+      initialize(accessToken);
       return accessToken;
     } else {
       throw Exception(
