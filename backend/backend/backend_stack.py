@@ -28,7 +28,7 @@ class BackendStack(Stack):
             self, "UsersTable",
             table_name="Users",
             partition_key=dynamodb.Attribute(
-                name="userID",
+                name="userId",
                 type=dynamodb.AttributeType.STRING
             ),
             billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,  # オンデマンド課金（書き込み1.25$/1M, 読み出し0.25$/1M）
@@ -59,6 +59,8 @@ class BackendStack(Stack):
                 'GITHUB_CLIENT_SECRET': github_client_secret
             }
         )
+        # get_token_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_write_data(get_token_lambda)
 
         # Lambdaオーソライザ (GitHubアクセストークンを検証)
         auth_lambda = _lambda.Function(
