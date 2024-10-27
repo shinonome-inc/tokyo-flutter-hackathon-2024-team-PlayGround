@@ -3,6 +3,7 @@ import urllib.parse
 import urllib.request
 import os
 import boto3
+import datetime
 
 # Lambdaの環境変数からGitHub OAuthのクライアントIDとクライアントシークレットを取得
 GITHUB_CLIENT_ID = os.environ['GITHUB_CLIENT_ID']
@@ -67,7 +68,7 @@ def lambda_handler(event, context):
         # 必要なフィールドを抽出
         item = {
             'userId': str(user_info.get('id')),  
-            'userName': user_info.get('name'),
+            'userName': user_info.get('login'),
             'avatarUrl': user_info.get('avatar_url'),
             'characterName': 'DASH',
             'characterLevel': int(1),
@@ -75,7 +76,7 @@ def lambda_handler(event, context):
             'characterClothes': 'default',
             'characterBackground': 'default',
             'feedCount': int(0),
-            'created_at': user_info.get('created_at'),
+            'created_at': datetime.datetime.utcnow().isoformat(),
             'gsiPk': 'RANK',
         }
 
