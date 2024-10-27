@@ -1,0 +1,295 @@
+openapi: 3.0.1
+info:
+  title: ReposiTori
+  version: 1.0.0
+servers:
+  - url: https://*/prod/
+paths:
+  /token:
+    get:
+      summary: GitHubの認可コードをアクセストークンに交換
+      parameters:
+        - in: query
+          name: code
+          schema:
+            type: string
+          required: true
+          description: GitHubの認可コード
+      responses:
+        "200":
+          description: アクセストークンの取得に成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+        "400":
+          description: リクエストが無効
+        "500":
+          description: サーバーエラー
+  /home:
+    get:
+      summary: 認証されたユーザーのDASHデータを取得
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: "アクセストークン（例: Bearer {token}）"
+      responses:
+        "200":
+          description: DASHデータの取得に成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomeResponse"
+        "401":
+          description: 認証エラー
+        "500":
+          description: サーバーエラー
+  /profile:
+    post:
+      summary: DASHのプロフィールを変更
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: "アクセストークン（例: Bearer {token}）"
+      requestBody:
+        description: DASHのプロフィール変更リクエスト
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileRequest"
+      responses:
+        "200":
+          description: プロフィールの変更に成功
+        "401":
+          description: 認証エラー
+        "500":
+          description: サーバーエラー
+  /feed:
+    post:
+      summary: 餌をあげて経験値を増やす
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: "アクセストークン（例: Bearer {token}）"
+      responses:
+        "200":
+          description: 餌やりに成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeedResponse"
+        "400":
+          description: 餌やりが許可されていない
+        "401":
+          description: 認証エラー
+        "500":
+          description: サーバーエラー
+  /ranking:
+    get:
+      summary: キャラクターのランキングを取得
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: "アクセストークン（例: Bearer {token}）"
+      responses:
+        "200":
+          description: ランキングの取得に成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RankingResponse"
+        "401":
+          description: 認証エラー
+        "500":
+          description: サーバーエラー
+  /clothes:
+    post:
+      summary: 服装を変更
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: "アクセストークン（例: Bearer {token}）"
+      requestBody:
+        description: 服装変更のリクエスト
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClothesRequest"
+      responses:
+        "200":
+          description: 服装の変更に成功
+        "400":
+          description: リクエストが無効
+        "401":
+          description: 認証エラー
+        "500":
+          description: サーバーエラー
+  /background:
+    post:
+      summary: 背景を変更
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: "アクセストークン（例: Bearer {token}）"
+        - in: query
+          name: item
+          schema:
+            type: string
+          required: true
+          description: 変更する背景
+      requestBody:
+        description: 服装変更のリクエスト
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BackgroundRequest"
+      responses:
+        "200":
+          description: 背景の変更に成功
+        "400":
+          description: リクエストが無効
+        "401":
+          description: 認証エラー
+        "500":
+          description: サーバーエラー
+components:
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: 認証されたリクエストに使用するアクセストークン
+    HomeResponse:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: ユーザーの一意の識別子
+        user_name:
+          type: string
+          description: GitHubのユーザー名
+        avatar_url:
+          type: string
+          description: githubのアバター画像のURL
+        character_name:
+          type: string
+          description: キャラクター名
+        character_level:
+          type: integer
+          description: キャラクターの現在のレベル
+        character_experience:
+          type: integer
+          description: キャラクターの累積経験値
+        character_clothes:
+          type: string
+          description: キャラクターの服装
+        character_background:
+          type: string
+          description: キャラクターの背景
+    ProfileRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: プロフィールを変更するユーザーのID
+        character_name:
+          type: string
+          description: 変更するキャラクター名
+      required:
+        - userId
+        - characterName
+    FeedResponse:
+      type: object
+      properties:
+        CharacterExperience:
+          type: integer
+          description: 更新後の経験値
+        CharacterLevel:
+          type: integer
+          description: 更新後のレベル
+    RankingResponse:
+      type: object
+      properties:
+        rankings:
+          type: array
+          items:
+            type: object
+            properties:
+              user_id:
+                type: string
+                description: ユーザーの一意の識別子
+              user_name:
+                type: string
+                description: ユーザー名
+              avatar_url:
+                type: string
+                description: githubのアバター画像のURL
+              character_name:
+                type: string
+                description: キャラクター名
+              character_level:
+                type: integer
+                description: キャラクターレベル
+              character_clothing:
+                type: string
+                description: キャラクターの服装
+              character_background:
+                type: string
+                description: キャラクターの背景
+          description: キャラクターレベルの高い順にソートされたユーザーのリスト
+    ClothesRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: プロフィールを変更するユーザーのID
+        item:
+          type: string
+          enum:
+            - spring
+            - summer
+            - autumn
+            - winter
+          description: 変更する服装
+      required:
+        - user_id
+        - item
+    BackgroundRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: プロフィールを変更するユーザーのID
+        item:
+          type: string
+          enum:
+            - spring
+            - summer
+            - autumn
+            - winter
+          description: 変更する背景
+      required:
+        - user_id
+        - item

@@ -45,8 +45,9 @@ app.*.map.json
 # lock
 *.lock
 
-# .g.dart
+# Generated
+*.freezed.dart
 *.g.dart
 
-# freezed
-*.freezed.dart
+# secret
+*.env
