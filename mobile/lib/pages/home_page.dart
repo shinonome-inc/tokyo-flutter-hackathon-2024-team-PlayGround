@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/components/circlar_elevated_button.dart';
+import 'package:mobile/components/level_prograss_bar.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/models/dash.dart';
 import 'package:mobile/providers/home_notifier.dart';
-import 'package:mobile/widgets/circlar_elevated_button.dart';
-import 'package:mobile/widgets/level_prograss_bar.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
