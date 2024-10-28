@@ -267,11 +267,11 @@ components:
           type: string
           description: 餌を取得するユーザーのID
       required:
-        - user_id
+        - userId
     GetFeedResponse:
       type: object
       properties:
-        feed_count:
+        feedCount:
           type: integer
           description: 更新後の残り餌やり回数
     FeedRequest:
