@@ -93,7 +93,7 @@ class _TopPageState extends State<TopPage> {
   // GitHubの認証ページをWebViewで表示
   void _launchGitHubAuth() {
     final authorizationUrl =
-        'https://github.com/login/oauth/authorize?client_id=$clientId&redirect_uri=$redirectUri&scope=repo';
+        'https://github.com/login/oauth/authorize?client_id=$clientId&redirect_uri=$redirectUri&scope=repo,read:org,read:user,user:email';
     _controller.loadRequest(Uri.parse(authorizationUrl));
   }
 

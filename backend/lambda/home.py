@@ -10,6 +10,7 @@ class DecimalEncoder(json.JSONEncoder):
         return super(DecimalEncoder, self).default(obj)
 
 def lambda_handler(event, context):
+    print(event)
     # LambdaAuthorizerから渡されたユーザーID
     user_id = event['requestContext']['authorizer']['userId']
 

@@ -121,8 +121,8 @@ class BackendStack(Stack):
             authorizer=authorizer
         )
 
-        # /feedエンドポイント (Lambdaオーソライザを使用)
-        feed_resource = api.root.add_resource("feed")
+        # /get_feedエンドポイント (Lambdaオーソライザを使用)
+        feed_resource = api.root.add_resource("get_feed")
         feed_integration = apigateway.LambdaIntegration(get_feed_lambda)
         feed_resource.add_method(
             "POST", 

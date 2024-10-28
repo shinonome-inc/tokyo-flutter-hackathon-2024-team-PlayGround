@@ -26,7 +26,7 @@ def lambda_handler(event, context):
     data = {
         'client_id': GITHUB_CLIENT_ID,
         'client_secret': GITHUB_CLIENT_SECRET,
-        'code': code
+        'code': code,
     }
 
     try:
