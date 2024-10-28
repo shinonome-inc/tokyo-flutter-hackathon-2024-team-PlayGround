@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/components/circlar_elevated_button.dart';
 import 'package:mobile/components/level_prograss_bar.dart';
@@ -26,18 +27,17 @@ class HomePage extends ConsumerWidget {
           ),
           Image.asset(
             ImagePaths.dash,
-            width: 200,
+            width: 200.w,
           ),
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 28.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 28.h),
             child: Column(
               children: [
-                const SizedBox(height: 28.0),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 64.0),
+                SizedBox(height: 28.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 64.w),
                   // TODO: 仮のデータなので取得したデータに置き換える。
-                  child: LevelProgressBar(dash: sampleDash),
+                  child: const LevelProgressBar(dash: sampleDash),
                 ),
                 const Spacer(),
                 Row(
@@ -81,7 +81,7 @@ class HomePage extends ConsumerWidget {
                                   },
                                   child: const Text('設定'),
                                 ),
-                                const SizedBox(height: 16.0),
+                                SizedBox(height: 16.h),
                               ],
                             ),
                           CircularElevatedButton(
