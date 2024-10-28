@@ -71,9 +71,9 @@ class BackendStack(Stack):
             timeout=Duration.seconds(10),
         )
 
-        # アプリロジック用のLambda関数
+        # home画面遷移時に必要な情報を返すLambda関数
         home_lambda = _lambda.Function(
-            self, "AppLogicLambda",
+            self, "HomeLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="home.lambda_handler",
             code=_lambda.Code.from_asset("lambda"),
@@ -81,6 +81,17 @@ class BackendStack(Stack):
         )
         # home_lambdaにDynamoDBテーブルへのアクセス権限を付与
         users_table.grant_read_write_data(home_lambda)
+        
+        # 餌を取得するLambda関数
+        get_feed_lambda = _lambda.Function(
+            self, "GetFeedLambda",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="get_feed.lambda_handler",
+            code=_lambda.Code.from_asset("lambda"),
+            timeout=Duration.seconds(10),
+        )
+        # get_feed_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_write_data(get_feed_lambda)
 
         # API Gatewayの定義
         api = apigateway.RestApi(
@@ -100,12 +111,22 @@ class BackendStack(Stack):
         token_integration = apigateway.LambdaIntegration(get_token_lambda)
         token_resource.add_method("GET", token_integration)
 
-        # /homeエンドポイント (アプリロジック用、Lambdaオーソライザを使用)
+        # /homeエンドポイント (Lambdaオーソライザを使用)
         home_resource = api.root.add_resource("home")
         home_integration = apigateway.LambdaIntegration(home_lambda)
         home_resource.add_method(
             "POST", 
             home_integration,
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
+            authorizer=authorizer
+        )
+
+        # /get_feedエンドポイント (Lambdaオーソライザを使用)
+        feed_resource = api.root.add_resource("get_feed")
+        feed_integration = apigateway.LambdaIntegration(get_feed_lambda)
+        feed_resource.add_method(
+            "POST", 
+            feed_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
         )
@@ -118,6 +139,12 @@ class BackendStack(Stack):
             allow_credentials=True 
         )
         home_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
+        )
+        feed_resource.add_cors_preflight(
             allow_origins=["*"],  
             allow_methods=["GET", "POST", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
