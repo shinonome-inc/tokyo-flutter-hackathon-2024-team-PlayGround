@@ -66,16 +66,16 @@ class BackendStack(Stack):
         auth_lambda = _lambda.Function(
             self, "AuthLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
-            handler="auth.lambda_handler",
+            handler="authorizer.lambda_handler",
             code=_lambda.Code.from_asset("lambda"),
             timeout=Duration.seconds(10),
         )
 
         # アプリロジック用のLambda関数
-        app_lambda = _lambda.Function(
+        home_lambda = _lambda.Function(
             self, "AppLogicLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
-            handler="app.lambda_handler",
+            handler="home.lambda_handler",
             code=_lambda.Code.from_asset("lambda"),
             timeout=Duration.seconds(10),
         )
@@ -100,7 +100,7 @@ class BackendStack(Stack):
 
         # /userエンドポイント (アプリロジック用、Lambdaオーソライザを使用)
         user_resource = api.root.add_resource("contributes")
-        user_integration = apigateway.LambdaIntegration(app_lambda)
+        user_integration = apigateway.LambdaIntegration(home_lambda)
         user_resource.add_method(
             "GET", 
             user_integration,
