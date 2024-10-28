@@ -2,6 +2,8 @@ import json
 import urllib.parse
 import urllib.request
 import os
+import boto3
+import datetime
 
 # Lambdaの環境変数からGitHub OAuthのクライアントIDとクライアントシークレットを取得
 GITHUB_CLIENT_ID = os.environ['GITHUB_CLIENT_ID']
@@ -47,6 +49,38 @@ def lambda_handler(event, context):
             }
 
         access_token = token_data['access_token']
+
+        # ユーザー情報の取得
+        user_url = 'https://api.github.com/user'
+        user_headers = {
+            'Authorization': f'token {access_token}',
+            'Accept': 'application/json'
+        }
+
+        user_request = urllib.request.Request(user_url, headers=user_headers)
+        with urllib.request.urlopen(user_request) as user_response:
+            user_info = json.loads(user_response.read().decode('utf-8'))
+
+        # DynamoDBにユーザー情報を保存
+        dynamodb = boto3.resource('dynamodb')
+        table = dynamodb.Table('Users') 
+
+        # 必要なフィールドを抽出
+        item = {
+            'userId': str(user_info.get('id')),  
+            'userName': user_info.get('login'),
+            'avatarUrl': user_info.get('avatar_url'),
+            'characterName': 'DASH',
+            'characterLevel': int(1),
+            'characterExperience': int(0),
+            'characterClothes': 'default',
+            'characterBackground': 'spring',
+            'feedCount': int(0),
+            'created_at': datetime.datetime.utcnow().isoformat(),
+            'gsiPk': 'RANK',
+        }
+
+        table.put_item(Item=item)
 
         # GitHubのアクセストークンをレスポンスとして返す
         return {

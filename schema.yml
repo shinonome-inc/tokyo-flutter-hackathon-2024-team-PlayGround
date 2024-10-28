@@ -71,6 +71,29 @@ paths:
           description: 認証エラー
         "500":
           description: サーバーエラー
+  /get_feed:
+    post:
+      summary: 餌を取得
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: "アクセストークン（例: Bearer {token}）"
+      responses:
+        "200":
+          description: 餌の取得に成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetFeedResponse"
+        "400":
+          description: 餌の取得が許可されていない
+        "401":
+          description: 認証エラー
+        "500":
+          description: サーバーエラー
   /feed:
     post:
       summary: 餌をあげて経験値を増やす
@@ -184,51 +207,59 @@ components:
     HomeResponse:
       type: object
       properties:
-        user_id:
+        userId:
           type: string
           description: ユーザーの一意の識別子
-        user_name:
+        userName:
           type: string
           description: GitHubのユーザー名
-        avatar_url:
+        avatarUrl:
           type: string
           description: githubのアバター画像のURL
-        character_name:
+        characterName:
           type: string
           description: キャラクター名
-        character_level:
+        characterLevel:
           type: integer
           description: キャラクターの現在のレベル
-        character_experience:
+        characterExperience:
           type: integer
           description: キャラクターの累積経験値
-        character_clothes:
+        characterClothes:
           type: string
           description: キャラクターの服装
-        character_background:
+        characterBackground:
           type: string
           description: キャラクターの背景
+        feedCount:
+          type: integer
+          description: 今日の残り餌やり回数
     ProfileRequest:
       type: object
       properties:
-        user_id:
-          type: string
-          description: プロフィールを変更するユーザーのID
-        character_name:
+        characterName:
           type: string
           description: 変更するキャラクター名
       required:
-        - userId
         - characterName
+    GetFeedResponse:
+      type: object
+      properties:
+        feedCount:
+          type: integer
+          description: 更新後の残り餌やり回数
     FeedResponse:
       type: object
       properties:
-        CharacterExperience:
+        characterExperience:
           type: integer
           description: 更新後の経験値
-        CharacterLevel:
+        characterLevel:
           type: integer
           description: 更新後のレベル
+        feedCount:
+          type: integer
+          description: 更新後の残り餌やり回数
     RankingResponse:
       type: object
       properties:
@@ -237,34 +268,31 @@ components:
           items:
             type: object
             properties:
-              user_id:
+              userId:
                 type: string
                 description: ユーザーの一意の識別子
-              user_name:
+              userName:
                 type: string
                 description: ユーザー名
-              avatar_url:
+              avatarUrl:
                 type: string
                 description: githubのアバター画像のURL
-              character_name:
+              characterName:
                 type: string
                 description: キャラクター名
-              character_level:
+              characterLevel:
                 type: integer
                 description: キャラクターレベル
-              character_clothing:
+              characterClothing:
                 type: string
                 description: キャラクターの服装
-              character_background:
+              characterBackground:
                 type: string
                 description: キャラクターの背景
           description: キャラクターレベルの高い順にソートされたユーザーのリスト
     ClothesRequest:
       type: object
       properties:
-        user_id:
-          type: string
-          description: プロフィールを変更するユーザーのID
         item:
           type: string
           enum:
@@ -274,22 +302,18 @@ components:
             - winter
           description: 変更する服装
       required:
-        - user_id
         - item
     BackgroundRequest:
       type: object
       properties:
-        user_id:
-          type: string
-          description: プロフィールを変更するユーザーのID
         item:
           type: string
           enum:
+            - default
             - spring
             - summer
             - autumn
             - winter
           description: 変更する背景
       required:
-        - user_id
         - item
