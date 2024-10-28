@@ -98,12 +98,12 @@ class BackendStack(Stack):
         token_integration = apigateway.LambdaIntegration(get_token_lambda)
         token_resource.add_method("GET", token_integration)
 
-        # /userエンドポイント (アプリロジック用、Lambdaオーソライザを使用)
-        user_resource = api.root.add_resource("contributes")
-        user_integration = apigateway.LambdaIntegration(home_lambda)
-        user_resource.add_method(
-            "GET", 
-            user_integration,
+        # /homeエンドポイント (アプリロジック用、Lambdaオーソライザを使用)
+        home_resource = api.root.add_resource("home")
+        home_integration = apigateway.LambdaIntegration(home_lambda)
+        home_resource.add_method(
+            "POST", 
+            home_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
         )
@@ -115,7 +115,7 @@ class BackendStack(Stack):
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
-        user_resource.add_cors_preflight(
+        home_resource.add_cors_preflight(
             allow_origins=["*"],  
             allow_methods=["GET", "POST", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
