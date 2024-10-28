@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/gradients.dart';
+import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/models/ranking.dart';
+import 'package:mobile/widgets/circle_icon_image.dart';
 
 class RankingItem extends StatelessWidget {
   const RankingItem({
@@ -45,6 +47,7 @@ class RankingItem extends StatelessWidget {
             width: 24.w,
             child: Text(
               rank.toString(),
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -67,10 +70,10 @@ class RankingItem extends StatelessWidget {
                 Positioned(
                   right: 0,
                   bottom: 0,
-                  child: Image.network(
-                    ranking.userImageUrl,
-                    width: 16.w,
-                    height: 16.w,
+                  child: CircleIconImage(
+                    imageUrl: ranking.userImageUrl,
+                    diameter: 20.w,
+                    errorImagePath: ImagePaths.defaultUser,
                   ),
                 ),
               ],
