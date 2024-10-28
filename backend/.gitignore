@@ -11,3 +11,4 @@ cdk.out
 
 # 秘匿
 .env
+requests.http
