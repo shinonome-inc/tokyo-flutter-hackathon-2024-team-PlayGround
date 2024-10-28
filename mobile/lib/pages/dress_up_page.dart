@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/panel_grid_view.dart';
 
 class DressUpPage extends StatelessWidget {
   const DressUpPage({super.key});
@@ -10,7 +11,10 @@ class DressUpPage extends StatelessWidget {
         title: const Text('DressUpPage'),
       ),
       body: const Center(
-        child: Text('DressUpPage'),
+        child: PanelGridView(
+          title: 'きせかえ',
+          subtitle: 'コーディネート一覧',
+        ),
       ),
     );
   }

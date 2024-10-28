@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/widgets/panel_grid_view.dart';
 
 class MakeoverPage extends StatelessWidget {
   const MakeoverPage({super.key});
@@ -10,7 +11,10 @@ class MakeoverPage extends StatelessWidget {
         title: const Text('MakeoverPage'),
       ),
       body: const Center(
-        child: Text('MakeoverPage'),
+        child: PanelGridView(
+          title: '模様替え',
+          subtitle: '背景一覧',
+        ),
       ),
     );
   }
