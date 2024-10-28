@@ -81,13 +81,6 @@ paths:
             type: string
           required: true
           description: "アクセストークン（例: Bearer {token}）"
-      requestBody:
-        description: 餌取得リクエスト
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GetFeedRequest"
       responses:
         "200":
           description: 餌の取得に成功
@@ -111,13 +104,6 @@ paths:
             type: string
           required: true
           description: "アクセストークン（例: Bearer {token}）"
-      requestBody:
-        description: 餌やりリクエスト
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/FeedRequest"
       responses:
         "200":
           description: 餌やりに成功
@@ -251,37 +237,17 @@ components:
     ProfileRequest:
       type: object
       properties:
-        userId:
-          type: string
-          description: プロフィールを変更するユーザーのID
         characterName:
           type: string
           description: 変更するキャラクター名
       required:
-        - userId
         - characterName
-    GetFeedRequest:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: 餌を取得するユーザーのID
-      required:
-        - user_id
     GetFeedResponse:
       type: object
       properties:
-        feed_count:
+        feedCount:
           type: integer
           description: 更新後の残り餌やり回数
-    FeedRequest:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: 餌をあげるユーザーのID
-      required:
-        - userId
     FeedResponse:
       type: object
       properties:
@@ -327,9 +293,6 @@ components:
     ClothesRequest:
       type: object
       properties:
-        userId:
-          type: string
-          description: キャラの服装を変更するユーザーのID
         item:
           type: string
           enum:
@@ -339,14 +302,10 @@ components:
             - winter
           description: 変更する服装
       required:
-        - userId
         - item
     BackgroundRequest:
       type: object
       properties:
-        userId:
-          type: string
-          description: キャラの背景を変更するユーザーのID
         item:
           type: string
           enum:
@@ -357,5 +316,4 @@ components:
             - winter
           description: 変更する背景
       required:
-        - userId
         - item

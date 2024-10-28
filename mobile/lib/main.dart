@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/config/router.dart';
 import 'package:mobile/constants/app_colors.dart';
 
-void main() async {
+Future<void> main() async {
   await dotenv.load(fileName: '.env');
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,6 +19,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -24,6 +31,22 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routerConfig: router,
+=======
+    return ScreenUtilInit(
+      designSize: const Size(393, 852),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, child) {
+        return MaterialApp.router(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          routerConfig: router,
+        );
+      },
+>>>>>>> ac16d328ef70db8453c935d38e2cbbc26b5ebfa6
     );
   }
 }

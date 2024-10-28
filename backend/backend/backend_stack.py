@@ -66,19 +66,21 @@ class BackendStack(Stack):
         auth_lambda = _lambda.Function(
             self, "AuthLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
-            handler="auth.lambda_handler",
+            handler="authorizer.lambda_handler",
             code=_lambda.Code.from_asset("lambda"),
             timeout=Duration.seconds(10),
         )
 
         # アプリロジック用のLambda関数
-        app_lambda = _lambda.Function(
+        home_lambda = _lambda.Function(
             self, "AppLogicLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
-            handler="app.lambda_handler",
+            handler="home.lambda_handler",
             code=_lambda.Code.from_asset("lambda"),
             timeout=Duration.seconds(10),
         )
+        # home_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_write_data(home_lambda)
 
         # API Gatewayの定義
         api = apigateway.RestApi(
@@ -98,12 +100,12 @@ class BackendStack(Stack):
         token_integration = apigateway.LambdaIntegration(get_token_lambda)
         token_resource.add_method("GET", token_integration)
 
-        # /userエンドポイント (アプリロジック用、Lambdaオーソライザを使用)
-        user_resource = api.root.add_resource("contributes")
-        user_integration = apigateway.LambdaIntegration(app_lambda)
-        user_resource.add_method(
-            "GET", 
-            user_integration,
+        # /homeエンドポイント (アプリロジック用、Lambdaオーソライザを使用)
+        home_resource = api.root.add_resource("home")
+        home_integration = apigateway.LambdaIntegration(home_lambda)
+        home_resource.add_method(
+            "POST", 
+            home_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
         )
@@ -115,7 +117,7 @@ class BackendStack(Stack):
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
-        user_resource.add_cors_preflight(
+        home_resource.add_cors_preflight(
             allow_origins=["*"],  
             allow_methods=["GET", "POST", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
