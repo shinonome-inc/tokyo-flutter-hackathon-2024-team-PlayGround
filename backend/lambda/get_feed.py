@@ -2,6 +2,8 @@ import json
 import datetime
 import urllib.request
 import boto3
+import decimal
+
 
 def get_github_username(access_token):
     # GitHubのユーザー名を取得する関数
@@ -136,11 +138,17 @@ def lambda_handler(event, context):
                 if any(lang['name'] == 'Dart' for lang in repo['repository']['languages']['nodes'])
             )
         try:
+            item = table.get_item(Key={'userId': user_id})
+            feeded_count = int(item['Item'].get('feededCount', decimal.Decimal(0)))
+
+            # 残りの給餌可能回数を計算
+            feed_count = max(dart_contributions - feeded_count, 0)
+
             table.update_item(
                 Key={'userId': user_id},
-                UpdateExpression="SET feedCount = :dart_contributions",
+                UpdateExpression="SET feedCount = :feed_count",
                 ExpressionAttributeValues={
-                    ':dart_contributions': dart_contributions
+                    ':feed_count': feed_count
                 }
             )
         except Exception as e:
@@ -150,7 +158,7 @@ def lambda_handler(event, context):
             }
         return {
             'statusCode': 200,
-            'body': json.dumps({'feedCount': dart_contributions})
+            'body': json.dumps({'feedCount': feed_count})
         }
     
     except Exception as e:
