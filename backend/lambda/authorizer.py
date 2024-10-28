@@ -1,9 +1,9 @@
 import json
-import requests
 import urllib.request
 
 def lambda_handler(event, context):
     # リクエストヘッダーからGitHubアクセストークンを取得
+    print(event)
     token = event['authorizationToken']
     
     try:
@@ -19,10 +19,12 @@ def lambda_handler(event, context):
 
         # ユーザーIDを取得
         user_id = str(user_info.get('id'))
-        return generate_policy('user', 'Deny', event['methodArn'], {'userId': user_id})
+        return generate_policy('user', 'Allow', event['methodArn'], {'userId': user_id})
     
     except urllib.error.HTTPError as e:
+        error_message = e.read().decode('utf-8')
         print(f"HTTPError: {e.code} - {e.reason}")
+        print(f"Response body: {error_message}")
         return generate_policy('anonymous', 'Deny', event['methodArn'])
     except Exception as e:
         print(f"Error: {e}")

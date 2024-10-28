@@ -79,6 +79,8 @@ class BackendStack(Stack):
             code=_lambda.Code.from_asset("lambda"),
             timeout=Duration.seconds(10),
         )
+        # home_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_write_data(home_lambda)
 
         # API Gatewayの定義
         api = apigateway.RestApi(
