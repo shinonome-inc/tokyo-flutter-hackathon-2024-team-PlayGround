@@ -19,19 +19,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    return MaterialApp.router(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-        scrollbarTheme: const ScrollbarThemeData().copyWith(
-          thumbColor: WidgetStateProperty.all(AppColors.scrollBar),
-          trackColor: WidgetStateProperty.all(AppColors.white),
-        ),
-      ),
-      routerConfig: router,
-=======
     return ScreenUtilInit(
       designSize: const Size(393, 852),
       minTextAdapt: true,
@@ -46,7 +33,6 @@ class MyApp extends StatelessWidget {
           routerConfig: router,
         );
       },
->>>>>>> ac16d328ef70db8453c935d38e2cbbc26b5ebfa6
     );
   }
 }
