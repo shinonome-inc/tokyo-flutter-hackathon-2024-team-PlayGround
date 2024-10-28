@@ -1,6 +1,7 @@
 import json
 import datetime
 import urllib.request
+import boto3
 
 def get_github_username(access_token):
     # GitHubのユーザー名を取得する関数
@@ -19,6 +20,13 @@ def get_github_username(access_token):
         return None
 
 def lambda_handler(event, context):
+    # DynamoDBからユーザー情報を取得
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('Users')
+    
+    # LambdaAuthorizerから渡されたユーザーID
+    user_id = event['requestContext']['authorizer']['userId']
+
     # Authorizationトークンを取得
     authorization_token = event['headers'].get('Authorization')
     if not authorization_token:
@@ -107,7 +115,6 @@ def lambda_handler(event, context):
         'Authorization': f'token {authorization_token}',
         'Content-Type': 'application/json'
     }
-
     request = urllib.request.Request(
         'https://api.github.com/graphql', 
         data=data, 
@@ -128,9 +135,22 @@ def lambda_handler(event, context):
                 for repo in response_data['data']['user']['contributionsCollection'][contribution_type]
                 if any(lang['name'] == 'Dart' for lang in repo['repository']['languages']['nodes'])
             )
+        try:
+            table.update_item(
+                Key={'userId': user_id},
+                UpdateExpression="SET feedCount = :dart_contributions",
+                ExpressionAttributeValues={
+                    ':dart_contributions': dart_contributions
+                }
+            )
+        except Exception as e:
+            return {
+                'statusCode': 500,
+                'body': f"Error updating DynamoDB: {str(e)}"
+            }
         return {
             'statusCode': 200,
-            'body': json.dumps({'contributions': dart_contributions, 'response': response_data})
+            'body': json.dumps({'feedCount': dart_contributions})
         }
     
     except Exception as e:

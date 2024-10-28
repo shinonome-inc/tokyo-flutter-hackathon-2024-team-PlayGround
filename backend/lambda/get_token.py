@@ -76,7 +76,8 @@ def lambda_handler(event, context):
             'characterClothes': 'default',
             'characterBackground': 'spring',
             'feedCount': int(0),
-            'created_at': datetime.datetime.utcnow().isoformat(),
+            'feededCount': int(0),
+            'created_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
             'gsiPk': 'RANK',
         }
 
