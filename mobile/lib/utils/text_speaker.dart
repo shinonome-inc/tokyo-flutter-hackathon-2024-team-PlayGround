@@ -36,7 +36,7 @@ class TextSpeaker {
   /// [text] 読み上げるテキスト
   Future<void> speakText(String text) async {
     final bool useVoiceBox = bool.parse(dotenv.env['USE_VOICE_BOX'] ?? 'false');
-    if (!useVoiceBox) {
+    if (useVoiceBox) {
       await _speakTextWithVoiceBox(text);
     } else {
       await _speakTextWithFlutterTts(text);
