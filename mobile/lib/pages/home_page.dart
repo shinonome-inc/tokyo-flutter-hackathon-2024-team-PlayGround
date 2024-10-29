@@ -25,9 +25,14 @@ class HomePage extends ConsumerWidget {
             fit: BoxFit.cover,
             width: double.infinity,
           ),
-          Image.asset(
-            ImagePaths.dash,
-            width: 200.w,
+          GestureDetector(
+            onTap: () async {
+              await notifier.talkWithDash();
+            },
+            child: Image.asset(
+              ImagePaths.dash,
+              width: 200.w,
+            ),
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 28.h),
