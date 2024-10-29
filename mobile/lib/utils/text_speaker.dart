@@ -6,19 +6,22 @@ import 'package:mobile/utils/file_converter.dart';
 
 /// テキストの音声読み上げを行う。
 class TextSpeaker {
-  TextSpeaker._();
+  TextSpeaker._() {
+    _initializeFlutterTts();
+  }
 
-  static final TextSpeaker _instance = TextSpeaker._();
+  static final instance = TextSpeaker._();
 
-  factory TextSpeaker() {
-    return _instance;
+  final _flutterTts = FlutterTts();
+
+  Future<void> _initializeFlutterTts() async {
+    await _flutterTts.setLanguage('ja-JP');
+    await _flutterTts.setVolume(1.0);
   }
 
   Future<void> _speakTextWithFlutterTts(String text) async {
-    final flutterTts = FlutterTts();
-    await flutterTts.setLanguage('ja-JP');
-    await flutterTts.setVolume(1.0);
-    await flutterTts.speak(text);
+    await _flutterTts.pause();
+    await _flutterTts.speak(text);
   }
 
   Future<void> _speakTextWithVoiceBox(String text) async {

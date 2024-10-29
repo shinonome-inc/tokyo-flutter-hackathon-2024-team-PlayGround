@@ -33,7 +33,7 @@ class HomeNotifier extends _$HomeNotifier {
     setIsSpeaking(true);
     final index = Random().nextInt(TalkScripts.shortMessages.length);
     final shortMessage = TalkScripts.shortMessages.elementAt(index);
-    await TextSpeaker().speakText(shortMessage);
+    await TextSpeaker.instance.speakText(shortMessage);
     setIsSpeaking(false);
   }
 }
