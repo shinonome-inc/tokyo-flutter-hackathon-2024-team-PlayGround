@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// 円形のElevatedButton。
 class CircularElevatedButton extends StatelessWidget {
@@ -16,7 +15,7 @@ class CircularElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = Size.fromWidth(diameter ?? 120.w);
+    final size = Size.fromWidth(diameter ?? 120.0);
     return SizedBox(
       width: size.width,
       height: size.width,
