@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/components/circlar_elevated_button.dart';
 import 'package:mobile/components/level_prograss_bar.dart';
+import 'package:mobile/components/level_up_alert_dialog.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
+import 'package:mobile/extensions/context_extension.dart';
 import 'package:mobile/models/dash.dart';
 import 'package:mobile/providers/home_notifier.dart';
 
@@ -102,6 +104,17 @@ class HomePage extends ConsumerWidget {
                 ),
               ],
             ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              context.showAlertDialog(
+                dialog: LevelUpAlertDialog(
+                  onTapClose: () => context.pop(),
+                  newLevel: 12,
+                ),
+              );
+            },
+            child: const Text('レベルアップ'),
           ),
         ],
       ),
