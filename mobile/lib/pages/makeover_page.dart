@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/constants/background_options.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/widgets/panel_grid_view.dart';
 
@@ -22,6 +23,8 @@ class MakeoverPage extends StatelessWidget {
             child: PanelGridView(
               title: '模様替え',
               subtitle: '背景一覧',
+              onSelected: null,
+              values: BackgroundOptions.values,
             ),
           ),
         ],

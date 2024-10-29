@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/app_colors.dart';
+import 'package:mobile/constants/background_options.dart';
+import 'package:mobile/constants/dress_up_options.dart';
+import 'package:mobile/constants/image_paths.dart';
+import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/constants/text_styles.dart';
 import 'package:mobile/widgets/custom_text_button.dart';
 import 'package:mobile/widgets/select_panel.dart';
 
-class PanelGridView extends StatelessWidget {
-  const PanelGridView({super.key, required this.title, required this.subtitle});
+class PanelGridView<T> extends StatelessWidget {
+  const PanelGridView({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.onSelected,
+    required this.values,
+  });
 
   final String title;
   final String subtitle;
+  final Function? onSelected;
+  final List<T> values;
 
   @override
   Widget build(BuildContext context) {
@@ -46,21 +59,22 @@ class PanelGridView extends StatelessWidget {
                     mainAxisSpacing: 10,
                     childAspectRatio: 100 / 126,
                   ),
-                  itemCount: 20,
+                  itemCount: DressUpOptions.values.length,
                   itemBuilder: (context, index) => SelectPanel(
-                    title: 'Item $index',
-                    index: index,
+                    title: 'title',
+                    imagePath: ImagePaths.backgroundSummer,
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            const Row(
+            Row(
               children: [
                 CustomTextButton(
                   text: 'キャンセル',
                   textColor: AppColors.darkGrey,
                   backgroundColor: AppColors.white,
+                  onPressed: () => context.go(RouterPaths.home),
                 ),
                 SizedBox(width: 10),
                 CustomTextButton(
