@@ -15,7 +15,7 @@ class CustomTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: TextButton(
+      child: ElevatedButton(
         onPressed: () {},
         style: TextButton.styleFrom(
           backgroundColor: backgroundColor,
