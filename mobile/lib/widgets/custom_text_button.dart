@@ -7,16 +7,18 @@ class CustomTextButton extends StatelessWidget {
     required this.text,
     required this.textColor,
     required this.backgroundColor,
+    this.onPressed,
   });
   final String text;
   final Color textColor;
   final Color backgroundColor;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: TextButton.styleFrom(
           backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
