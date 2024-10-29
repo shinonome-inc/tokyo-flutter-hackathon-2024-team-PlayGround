@@ -18,13 +18,22 @@ class HomeNotifier extends _$HomeNotifier {
     state = state.copyWith(showMenuSubButtons: showMenuSubButtons);
   }
 
+  void setIsSpeaking(bool isSpeaking) {
+    state = state.copyWith(isSpeaking: isSpeaking);
+  }
+
   void toggleShowMenuSubButtons() {
     setShowMenuSubButtons(!state.showMenuSubButtons);
   }
 
   Future<void> speakRandomShortMessageByDash() async {
+    if (state.isSpeaking) {
+      return;
+    }
+    setIsSpeaking(true);
     final index = Random().nextInt(TalkScripts.shortMessages.length);
     final shortMessage = TalkScripts.shortMessages.elementAt(index);
     await TextSpeaker().speakText(shortMessage);
+    setIsSpeaking(false);
   }
 }
