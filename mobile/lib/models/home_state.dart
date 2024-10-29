@@ -6,9 +6,13 @@ part 'home_state.freezed.dart';
 class HomeState with _$HomeState {
   const factory HomeState({
     required bool showMenuSubButtons,
+    required bool isRecording,
+    required String userSpeechText,
   }) = _HomeState;
 }
 
 const initialHomeState = HomeState(
   showMenuSubButtons: false,
+  isRecording: false,
+  userSpeechText: '',
 );

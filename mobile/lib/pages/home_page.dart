@@ -44,9 +44,25 @@ class HomePage extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
-                      child: CircularElevatedButton(
-                        onPressed: () {},
-                        child: const Text('エサをあげる'),
+                      child: Column(
+                        children: [
+                          CircularElevatedButton(
+                            onPressed: () {},
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                    state.isRecording ? Icons.stop : Icons.mic),
+                                Text(state.isRecording ? 'ストップ' : 'はなしかける'),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 16.h),
+                          CircularElevatedButton(
+                            onPressed: () {},
+                            child: const Text('エサをあげる'),
+                          ),
+                        ],
                       ),
                     ),
                     const Spacer(),
