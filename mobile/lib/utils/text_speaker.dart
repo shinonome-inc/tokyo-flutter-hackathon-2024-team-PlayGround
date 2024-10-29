@@ -17,6 +17,7 @@ class TextSpeaker {
   Future<void> _speakTextWithFlutterTts(String text) async {
     final flutterTts = FlutterTts();
     await flutterTts.setLanguage('ja-JP');
+    await flutterTts.setVolume(1.0);
     await flutterTts.speak(text);
   }
 
