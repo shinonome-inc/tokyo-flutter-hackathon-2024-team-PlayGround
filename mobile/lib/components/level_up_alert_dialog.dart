@@ -4,9 +4,18 @@ import 'package:mobile/constants/app_colors.dart';
 
 /// レベルアップ時に表示するダイアログ。
 ///
-/// arguments
 /// [onTapClose]: 閉じるボタンを押した際に実行されるコールバック関数。
-/// [newLevel]: レベルアップ後のレベル。2未満はArgumentErrorをスローする。
+/// [newLevel]: レベルアップ後のレベル。2未満は`ArgumentError`をスローする。
+///
+/// 使い方
+/// ```dart
+/// context.showAlertDialog(
+///   dialog: LevelUpAlertDialog(
+///     onTapClose: () => context.pop(),
+///     newLevel: 12,
+///   ),
+/// );
+/// ```
 class LevelUpAlertDialog extends StatelessWidget {
   const LevelUpAlertDialog({
     super.key,
