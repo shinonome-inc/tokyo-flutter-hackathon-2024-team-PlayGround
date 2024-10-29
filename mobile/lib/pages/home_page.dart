@@ -27,7 +27,7 @@ class HomePage extends ConsumerWidget {
           ),
           GestureDetector(
             onTap: () async {
-              await notifier.talkWithDash();
+              await notifier.speakRandomShortMessageByDash();
             },
             child: Image.asset(
               ImagePaths.dash,
