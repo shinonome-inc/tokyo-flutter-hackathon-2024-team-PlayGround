@@ -19,6 +19,13 @@ fvm flutter pub get
 fvm dart run build_runner build --delete-conflicting-outputs
 ```
 
+### VOICEBOXの導入
+1. [VOICEVOX](https://voicevox.hiroshiba.jp/)を開発PCにインストール
+2. VOICEVOXのGUIを起動
+3. http://localhost:50021/にアクセスできればOK
+
+現在はlocalhostでVOICEBOXによる音声読み上げを行なっています。
+
 ## 使用したアセット
 ### 音声読み上げ
 VOICEVOX:ずんだもん
