@@ -1,8 +1,7 @@
 import 'package:mobile/constants/image_options.dart';
 import 'package:mobile/constants/image_paths.dart';
 
-enum DressUpOptions implements ImageOptions {
-  normal,
+enum BackgroundOptions implements ImageOptions {
   spring,
   summer,
   autumn,
@@ -11,15 +10,13 @@ enum DressUpOptions implements ImageOptions {
   @override
   String get imagePath {
     switch (this) {
-      case DressUpOptions.normal:
-        return ImagePaths.dressNormal;
-      case DressUpOptions.spring:
+      case BackgroundOptions.spring:
         return ImagePaths.dressSpring;
-      case DressUpOptions.summer:
+      case BackgroundOptions.summer:
         return ImagePaths.dressSummer;
-      case DressUpOptions.autumn:
+      case BackgroundOptions.autumn:
         return ImagePaths.dressAutumn;
-      case DressUpOptions.winter:
+      case BackgroundOptions.winter:
         return ImagePaths.dressWinter;
     }
   }
