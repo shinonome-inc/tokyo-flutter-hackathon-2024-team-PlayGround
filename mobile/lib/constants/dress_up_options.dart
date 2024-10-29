@@ -1,7 +1,7 @@
-import 'package:mobile/constants/image_options.dart';
+import 'package:mobile/constants/display_options.dart';
 import 'package:mobile/constants/image_paths.dart';
 
-enum DressUpOptions implements ImageOptions {
+enum DressUpOptions implements DisplayOption {
   normal,
   spring,
   summer,
@@ -21,6 +21,22 @@ enum DressUpOptions implements ImageOptions {
         return ImagePaths.dressAutumn;
       case DressUpOptions.winter:
         return ImagePaths.dressWinter;
+    }
+  }
+
+  @override
+  String get name {
+    switch (this) {
+      case DressUpOptions.normal:
+        return 'デフォルト';
+      case DressUpOptions.spring:
+        return '春';
+      case DressUpOptions.summer:
+        return '夏';
+      case DressUpOptions.autumn:
+        return '秋';
+      case DressUpOptions.winter:
+        return '冬';
     }
   }
 }
