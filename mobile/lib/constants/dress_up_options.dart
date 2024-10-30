@@ -1,4 +1,4 @@
-import 'package:mobile/constants/display_options.dart';
+import 'package:mobile/constants/display_option.dart';
 import 'package:mobile/constants/image_paths.dart';
 
 enum DressUpOptions implements DisplayOption {

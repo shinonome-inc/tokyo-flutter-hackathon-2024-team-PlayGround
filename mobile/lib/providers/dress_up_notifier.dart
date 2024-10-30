@@ -1,4 +1,4 @@
-import 'package:mobile/constants/display_options.dart';
+import 'package:mobile/constants/display_option.dart';
 import 'package:mobile/constants/dress_up_options.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
