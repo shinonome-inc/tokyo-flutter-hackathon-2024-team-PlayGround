@@ -33,7 +33,7 @@ class LevelUpAlertDialog extends StatelessWidget {
     if (newLevel < 2) {
       throw ArgumentError('NewLevel must be greater than or equal to 2.');
     }
-    const foregroundColor = Colors.white;
+    const foregroundColor = AppColors.white;
     const fontWeight = FontWeight.bold;
     final fontSize = 36.sp;
     return Scaffold(
