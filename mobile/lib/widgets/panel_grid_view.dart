@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/app_colors.dart';
-import 'package:mobile/constants/background_options.dart';
-import 'package:mobile/constants/dress_up_options.dart';
-import 'package:mobile/constants/image_paths.dart';
+import 'package:mobile/constants/display_options.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/constants/text_styles.dart';
 import 'package:mobile/widgets/custom_text_button.dart';
@@ -16,12 +14,14 @@ class PanelGridView<T> extends StatelessWidget {
     required this.subtitle,
     required this.onSelected,
     required this.values,
+    required this.selectedValue,
   });
 
   final String title;
   final String subtitle;
-  final Function? onSelected;
-  final List<T> values;
+  final void Function(DisplayOption) onSelected;
+  final List<DisplayOption> values;
+  final DisplayOption selectedValue;
 
   @override
   Widget build(BuildContext context) {
@@ -53,18 +53,23 @@ class PanelGridView<T> extends StatelessWidget {
                 thickness: 6,
                 radius: const Radius.circular(40),
                 child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 100 / 126,
-                  ),
-                  itemCount: DressUpOptions.values.length,
-                  itemBuilder: (context, index) => SelectPanel(
-                    title: 'title',
-                    imagePath: ImagePaths.backgroundSummer,
-                  ),
-                ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 100 / 126,
+                    ),
+                    itemCount: values.length,
+                    itemBuilder: (context, index) {
+                      final value = values[index];
+                      return SelectPanel(
+                        title: value.name,
+                        imagePath: value.imagePath,
+                        onSelected: () => onSelected(value),
+                        isSelected: value == selectedValue,
+                      );
+                    }),
               ),
             ),
             const SizedBox(height: 16),
