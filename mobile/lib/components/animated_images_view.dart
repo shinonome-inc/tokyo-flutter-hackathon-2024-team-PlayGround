@@ -90,12 +90,13 @@ class _AnimatedImagesViewState extends State<AnimatedImagesView> {
   void didUpdateWidget(AnimatedImagesView oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    // isStartの変更を検出し、アニメーションを開始・停止する
-    if (widget.isStart && !oldWidget.isStart) {
+    final isStarting = widget.isStart && !oldWidget.isStart;
+    final isStopping = !widget.isStart && oldWidget.isStart;
+
+    if (isStarting) {
       _startAnimation();
-    } else if (!widget.isStart && oldWidget.isStart) {
+    } else if (isStopping) {
       _stopAnimation();
-      _setPlaying(true);
     }
   }
 
