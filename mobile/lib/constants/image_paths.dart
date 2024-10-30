@@ -4,12 +4,20 @@ class ImagePaths {
 
   static const defaultUser = 'assets/images/default_user.png';
 
+  static const backgroundSpring = 'assets/images/background_spring.png';
   static const backgroundSummer = 'assets/images/background_summer.png';
+  static const backgroundAutumn = 'assets/images/background_autumn.png';
+  static const backgroundWinter = 'assets/images/background_winter.png';
 
   static const dash = 'assets/images/dash.png';
   static const dashSample1 = 'assets/images/dash_sample1.png';
   static const dashSample2 = 'assets/images/dash_sample2.png';
   static const dashSample3 = 'assets/images/dash_sample3.png';
+  static const dressNormal = 'assets/images/dress_normal.png';
+  static const dressSpring = 'assets/images/dress_spring.png';
+  static const dressSummer = 'assets/images/dress_summer.png';
+  static const dressAutumn = 'assets/images/dress_autumn.png';
+  static const dressWinter = 'assets/images/dress_winter.png';
 
   static const foodWithEffectStep1 =
       'assets/images/food_with_effect/food_with_effect_step1.png';

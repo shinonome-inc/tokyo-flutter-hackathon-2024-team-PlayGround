@@ -134,6 +134,12 @@ class _TopPageState extends State<TopPage> {
               child: const Text('Sign in with GitHub')),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.go(RouterPaths.home);
+        },
+        child: const Icon(Icons.home),
+      ),
     );
   }
 }

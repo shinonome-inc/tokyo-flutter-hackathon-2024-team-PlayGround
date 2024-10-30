@@ -39,7 +39,7 @@ class RankingItem extends StatelessWidget {
           Radius.circular(12.r),
         ),
         gradient: _gradient,
-        color: _gradient == null ? AppColors.dialogItemBackground : null,
+        color: _gradient == null ? AppColors.menuItemBackground : null,
       ),
       child: Row(
         children: [
