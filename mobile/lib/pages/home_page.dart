@@ -43,7 +43,7 @@ class HomePage extends ConsumerWidget {
                 isStart: state.isStartEatingAnimation,
                 imagePathList: ImagePaths.foodWithEffects,
                 intervalMilliseconds: 1200,
-                delayedMilliseconds: 3000,
+                delayedMilliseconds: 3500,
                 isLoop: false,
                 showOnlyPlaying: true,
               ),
