@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/dress_up_options.dart';
 import 'package:mobile/constants/text_styles.dart';
@@ -20,15 +21,13 @@ class SelectPanel<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(type);
-    print(type == DressUpOptions);
     return Column(
       children: [
         Text(
           title,
           style: TextStyles.subtitle,
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         Expanded(
           child: Stack(
             children: [
@@ -36,15 +35,16 @@ class SelectPanel<T> extends StatelessWidget {
                 onTap: onSelected,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                     color: AppColors.dialogItemBackground,
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                     child: Center(
                       child: Padding(
                         padding:
-                            EdgeInsets.all((type == DressUpOptions) ? 8.0 : 0),
+                            EdgeInsets.all((type == DressUpOptions) ? 8.0 : 0)
+                                .w,
                         child: Image.asset(
                           imagePath,
                           fit: (type == DressUpOptions)
@@ -62,7 +62,7 @@ class SelectPanel<T> extends StatelessWidget {
                 Positioned.fill(
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
                         color: AppColors.buttonBackground,
                         width: 4,

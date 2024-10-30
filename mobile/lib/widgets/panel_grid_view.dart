@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/display_option.dart';
-import 'package:mobile/constants/dress_up_options.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/constants/text_styles.dart';
 import 'package:mobile/widgets/custom_text_button.dart';
@@ -31,28 +31,28 @@ class PanelGridView<T> extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.8,
       decoration: BoxDecoration(
         color: AppColors.dialogBackground,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(4.r),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20).w,
         child: Column(
           children: [
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             Text(
               title,
               style: TextStyles.title,
             ),
-            const SizedBox(height: 28),
+            SizedBox(height: 28.h),
             Text(
               subtitle,
               style: TextStyles.subtitle,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Expanded(
               child: Scrollbar(
                 thumbVisibility: true,
                 thickness: 6,
-                radius: const Radius.circular(40),
+                radius: Radius.circular(40.r),
                 child: GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -74,7 +74,7 @@ class PanelGridView<T> extends StatelessWidget {
                     }),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Row(
               children: [
                 CustomTextButton(
@@ -83,8 +83,8 @@ class PanelGridView<T> extends StatelessWidget {
                   backgroundColor: AppColors.white,
                   onPressed: () => context.go(RouterPaths.home),
                 ),
-                SizedBox(width: 10),
-                CustomTextButton(
+                SizedBox(width: 10.w),
+                const CustomTextButton(
                   text: '決定',
                   textColor: AppColors.white,
                   backgroundColor: AppColors.buttonBackground,
