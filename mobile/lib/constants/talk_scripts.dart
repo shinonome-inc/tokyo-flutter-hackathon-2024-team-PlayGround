@@ -17,4 +17,6 @@ class TalkScripts {
     'そらをじゆうにとびたいな',
     'ラーメンくいにいこうぜ',
   ];
+
+  static const String eatingMessage = 'いただきます。あむあむ。あむあむ。あむあむ。おいしい！ごちそうさまでした！';
 }

@@ -36,7 +36,7 @@ class SelectPanel<T> extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.r),
-                    color: AppColors.dialogItemBackground,
+                    color: AppColors.dialogBackground,
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12.r),
