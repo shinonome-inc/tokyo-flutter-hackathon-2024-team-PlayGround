@@ -33,7 +33,7 @@ class _RankingPageState extends State<RankingPage> {
           width: 280.w,
           height: 531.h,
           decoration: BoxDecoration(
-            color: AppColors.dialogBackground,
+            color: AppColors.menuBackground,
             borderRadius: BorderRadius.circular(4.r),
           ),
           child: Column(

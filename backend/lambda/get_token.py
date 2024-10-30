@@ -4,6 +4,7 @@ import urllib.request
 import os
 import boto3
 import datetime
+from zoneinfo import ZoneInfo
 
 # Lambdaの環境変数からGitHub OAuthのクライアントIDとクライアントシークレットを取得
 GITHUB_CLIENT_ID = os.environ['GITHUB_CLIENT_ID']
@@ -65,6 +66,10 @@ def lambda_handler(event, context):
         dynamodb = boto3.resource('dynamodb')
         table = dynamodb.Table('Users') 
 
+        # 日本時間の現在の日時を取得
+        japan_time = datetime.datetime.now(ZoneInfo('Asia/Tokyo')) 
+        last_feed_date = japan_time.strftime('%Y-%m-%d')
+
         # 必要なフィールドを抽出
         item = {
             'userId': str(user_info.get('id')),  
@@ -77,7 +82,8 @@ def lambda_handler(event, context):
             'characterBackground': 'spring',
             'feedCount': int(0),
             'feededCount': int(0),
-            'created_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'lastFeedDate': last_feed_date,
+            'created_at': datetime.datetime.now(ZoneInfo("Asia/Tokyo")).isoformat(),
             'gsiPk': 'RANK',
         }
 
