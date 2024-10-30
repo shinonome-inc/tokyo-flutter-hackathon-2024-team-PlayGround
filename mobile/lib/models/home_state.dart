@@ -7,10 +7,14 @@ class HomeState with _$HomeState {
   const factory HomeState({
     required bool showMenuSubButtons,
     required bool isSpeaking,
+    required bool isRecording,
+    required String userSpeechText,
   }) = _HomeState;
 }
 
 const initialHomeState = HomeState(
   showMenuSubButtons: false,
   isSpeaking: false,
+  isRecording: false,
+  userSpeechText: '',
 );
