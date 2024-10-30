@@ -82,7 +82,7 @@ class HomePage extends ConsumerWidget {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    context.go(RouterPaths.setting);
+                                    context.go(RouterPaths.settings);
                                   },
                                   child: const Text('設定'),
                                 ),
