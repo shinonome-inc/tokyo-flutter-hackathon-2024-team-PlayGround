@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/components/animated_images_view.dart';
 import 'package:mobile/components/circlar_elevated_button.dart';
 import 'package:mobile/components/level_prograss_bar.dart';
 import 'package:mobile/constants/image_paths.dart';
@@ -34,6 +35,19 @@ class HomePage extends ConsumerWidget {
               width: 200.w,
             ),
           ),
+          if (state.isStartEatingAnimation)
+            Container(
+              width: 200.w,
+              margin: EdgeInsets.only(top: 80.h),
+              child: AnimatedImagesView(
+                isStart: state.isStartEatingAnimation,
+                imagePathList: ImagePaths.foodWithEffects,
+                intervalMilliseconds: 1200,
+                delayedMilliseconds: 3000,
+                isLoop: false,
+                showOnlyPlaying: true,
+              ),
+            ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 28.h),
             child: Column(
@@ -50,7 +64,9 @@ class HomePage extends ConsumerWidget {
                   children: [
                     Expanded(
                       child: CircularElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await notifier.giveFood();
+                        },
                         child: const Text('エサをあげる'),
                       ),
                     ),

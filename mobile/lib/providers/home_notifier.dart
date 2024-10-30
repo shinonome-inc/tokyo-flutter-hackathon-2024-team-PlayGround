@@ -18,6 +18,10 @@ class HomeNotifier extends _$HomeNotifier {
     state = state.copyWith(showMenuSubButtons: showMenuSubButtons);
   }
 
+  void setIsStartEatingAnimation(bool isStartEatingAnimation) {
+    state = state.copyWith(isStartEatingAnimation: isStartEatingAnimation);
+  }
+
   void setIsSpeaking(bool isSpeaking) {
     state = state.copyWith(isSpeaking: isSpeaking);
   }
@@ -35,5 +39,16 @@ class HomeNotifier extends _$HomeNotifier {
     final shortMessage = TalkScripts.shortMessages.elementAt(index);
     await TextSpeaker.instance.speakText(shortMessage);
     setIsSpeaking(false);
+  }
+
+  Future<void> giveFood() async {
+    setIsSpeaking(true);
+    setIsStartEatingAnimation(true);
+    await TextSpeaker.instance.speakText(
+      TalkScripts.eatingMessage,
+      isAfterDelay: true,
+    );
+    setIsSpeaking(false);
+    setIsStartEatingAnimation(false);
   }
 }
