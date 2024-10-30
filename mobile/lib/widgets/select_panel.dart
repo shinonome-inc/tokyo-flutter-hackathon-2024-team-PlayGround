@@ -8,11 +8,13 @@ class SelectPanel<T> extends StatelessWidget {
     required this.imagePath,
     required this.onSelected,
     this.isSelected = false,
+    required this.fit,
   });
   final String title;
   final String imagePath;
   final VoidCallback onSelected;
   final bool isSelected;
+  final BoxFit fit;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class SelectPanel<T> extends StatelessWidget {
                     width: 4,
                   ),
                 ),
-                child: Image.asset(imagePath),
+                child: Image.asset(imagePath, fit: fit),
               ),
             ),
           ),

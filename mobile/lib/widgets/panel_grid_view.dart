@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/display_option.dart';
+import 'package:mobile/constants/dress_up_options.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/constants/text_styles.dart';
 import 'package:mobile/widgets/custom_text_button.dart';
@@ -68,6 +69,9 @@ class PanelGridView<T> extends StatelessWidget {
                         imagePath: value.imagePath,
                         onSelected: () => onSelected(value),
                         isSelected: value == selectedValue,
+                        fit: value is DressUpOptions
+                            ? BoxFit.contain
+                            : BoxFit.cover,
                       );
                     }),
               ),
