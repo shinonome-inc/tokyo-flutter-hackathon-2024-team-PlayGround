@@ -1,7 +1,9 @@
 import json
 import boto3
 
+# DynamoDBリソース
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Users')
+
 def lambda_handler(event, context):
-    print(event)
-    # LambdaAuthorizerから渡されたユーザーID
-    user_id = event['requestContext']['authorizer']['userId']
+    

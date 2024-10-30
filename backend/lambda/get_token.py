@@ -10,6 +10,10 @@ from zoneinfo import ZoneInfo
 GITHUB_CLIENT_ID = os.environ['GITHUB_CLIENT_ID']
 GITHUB_CLIENT_SECRET = os.environ['GITHUB_CLIENT_SECRET']
 
+# DynamoDBにユーザー情報を保存
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Users') 
+
 def lambda_handler(event, context):
     # API Gateway経由で受け取るGitHub認証コード
     print(event)
@@ -61,10 +65,6 @@ def lambda_handler(event, context):
         user_request = urllib.request.Request(user_url, headers=user_headers)
         with urllib.request.urlopen(user_request) as user_response:
             user_info = json.loads(user_response.read().decode('utf-8'))
-
-        # DynamoDBにユーザー情報を保存
-        dynamodb = boto3.resource('dynamodb')
-        table = dynamodb.Table('Users') 
 
         # 日本時間の現在の日時を取得
         japan_time = datetime.datetime.now(ZoneInfo('Asia/Tokyo')) 
