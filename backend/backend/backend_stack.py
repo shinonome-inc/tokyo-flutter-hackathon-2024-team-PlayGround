@@ -113,7 +113,8 @@ class BackendStack(Stack):
         authorizer = apigateway.TokenAuthorizer(
             self, "GitHubAuthorizer",
             handler=auth_lambda,
-            identity_source="method.request.header.Authorization"  # ヘッダーからトークンを取得
+            identity_source="method.request.header.Authorization",  # ヘッダーからトークンを取得
+            results_cache_ttl=Duration.seconds(0),  # キャッシュを無効化
         )
 
         # /tokenエンドポイント (アクセストークン取得用)
@@ -128,7 +129,7 @@ class BackendStack(Stack):
             "POST", 
             home_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
-            authorizer=authorizer
+            authorizer=authorizer,
         )
 
         # /get_feedエンドポイント (Lambdaオーソライザを使用)
