@@ -52,7 +52,9 @@ class HomePage extends ConsumerWidget {
                       child: Column(
                         children: [
                           CircularElevatedButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              await notifier.speechToText();
+                            },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
