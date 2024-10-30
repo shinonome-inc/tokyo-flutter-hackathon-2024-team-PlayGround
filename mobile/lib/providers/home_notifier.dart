@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:mobile/constants/talk_scripts.dart';
@@ -10,6 +11,8 @@ part 'home_notifier.g.dart';
 
 @riverpod
 class HomeNotifier extends _$HomeNotifier {
+  Timer? _stopRecordingTimer;
+
   @override
   HomeState build() {
     return initialHomeState;
@@ -37,30 +40,32 @@ class HomeNotifier extends _$HomeNotifier {
 
   Future<void> startRecording() async {
     setIsRecording(true);
+    _startRecordingTimer();
   }
 
   Future<void> speechToText() async {
     final speech = stt.SpeechToText();
     setIsRecording(true);
-    bool available = await speech.initialize(
+    final available = await speech.initialize(
       onStatus: (status) {
-        print("status: $status");
-        setIsRecording(false);
+        if (status == 'notListening') {
+          setIsRecording(false);
+          _stopRecordingTimer?.cancel();
+        }
       },
       onError: (error) {
-        print("error: $error");
+        throw Exception('Failed to initialize speech to text: $error');
       },
     );
     if (available) {
       speech.listen(
         onResult: (result) {
-          print("result: $result");
-          print("last word: ${result.recognizedWords}");
+          final recognizedText = result.recognizedWords;
+          setUserSpeechText(recognizedText);
+          _resetRecordingTimer();
         },
         localeId: 'ja-JP',
       );
-    } else {
-      print("The user has denied the use of speech recognition.");
     }
   }
 
@@ -73,5 +78,16 @@ class HomeNotifier extends _$HomeNotifier {
     final shortMessage = TalkScripts.shortMessages.elementAt(index);
     await TextSpeaker.instance.speakText(shortMessage);
     setIsSpeaking(false);
+  }
+
+  void _startRecordingTimer() {
+    _stopRecordingTimer = Timer(const Duration(seconds: 3), () {
+      setIsRecording(false);
+    });
+  }
+
+  void _resetRecordingTimer() {
+    _stopRecordingTimer?.cancel();
+    _startRecordingTimer();
   }
 }
