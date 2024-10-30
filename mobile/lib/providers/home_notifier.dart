@@ -11,8 +11,6 @@ part 'home_notifier.g.dart';
 
 @riverpod
 class HomeNotifier extends _$HomeNotifier {
-  Timer? _stopRecordingTimer;
-
   @override
   HomeState build() {
     return initialHomeState;
@@ -38,37 +36,6 @@ class HomeNotifier extends _$HomeNotifier {
     setShowMenuSubButtons(!state.showMenuSubButtons);
   }
 
-  Future<void> startRecording() async {
-    setIsRecording(true);
-    _startRecordingTimer();
-  }
-
-  Future<void> speechToText() async {
-    final speech = stt.SpeechToText();
-    setIsRecording(true);
-    final available = await speech.initialize(
-      onStatus: (status) {
-        if (status == 'notListening') {
-          setIsRecording(false);
-          _stopRecordingTimer?.cancel();
-        }
-      },
-      onError: (error) {
-        throw Exception('Failed to initialize speech to text: $error');
-      },
-    );
-    if (available) {
-      speech.listen(
-        onResult: (result) {
-          final recognizedText = result.recognizedWords;
-          setUserSpeechText(recognizedText);
-          _resetRecordingTimer();
-        },
-        localeId: 'ja-JP',
-      );
-    }
-  }
-
   Future<void> speakRandomShortMessageByDash() async {
     if (state.isSpeaking) {
       return;
@@ -80,14 +47,37 @@ class HomeNotifier extends _$HomeNotifier {
     setIsSpeaking(false);
   }
 
-  void _startRecordingTimer() {
-    _stopRecordingTimer = Timer(const Duration(seconds: 3), () {
-      setIsRecording(false);
-    });
+  Future<void> startRecording() async {
+    setIsRecording(true);
   }
 
-  void _resetRecordingTimer() {
-    _stopRecordingTimer?.cancel();
-    _startRecordingTimer();
+  Future<void> speechToText() async {
+    final speech = stt.SpeechToText();
+    setIsRecording(true);
+    final available = await speech.initialize(
+      onStatus: (status) {
+        if (status == 'notListening') {
+          setIsRecording(false);
+        }
+      },
+      onError: (error) {
+        throw Exception('Failed to initialize speech to text: $error');
+      },
+    );
+    if (available) {
+      speech.listen(
+        pauseFor: const Duration(seconds: 3),
+        onResult: (result) {
+          final recognizedText = result.recognizedWords;
+          setUserSpeechText(recognizedText);
+          print('userSpeechText: ${state.userSpeechText}');
+        },
+        localeId: 'ja-JP',
+      );
+    }
+  }
+
+  void onCompletedRecording() {
+    setIsRecording(false);
   }
 }
