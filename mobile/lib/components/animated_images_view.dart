@@ -75,7 +75,7 @@ class _AnimatedImagesViewState extends State<AnimatedImagesView> {
   void _stopAnimation() {
     _timer?.cancel();
     _timer = null;
-    _setPlaying(false);
+    _isPlaying = false;
   }
 
   @override
@@ -95,6 +95,7 @@ class _AnimatedImagesViewState extends State<AnimatedImagesView> {
       _startAnimation();
     } else if (!widget.isStart && oldWidget.isStart) {
       _stopAnimation();
+      _setPlaying(true);
     }
   }
 
