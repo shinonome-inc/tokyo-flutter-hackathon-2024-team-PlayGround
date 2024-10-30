@@ -11,7 +11,6 @@ from aws_cdk import (
 from constructs import Construct
 import os
 from dotenv import load_dotenv
-from constructs import Construct
 
 load_dotenv()
 
@@ -93,6 +92,17 @@ class BackendStack(Stack):
         # get_feed_lambdaにDynamoDBテーブルへのアクセス権限を付与
         users_table.grant_read_write_data(get_feed_lambda)
 
+        # 餌をあげて経験値を上昇させるLambda関数
+        feed_lambda = _lambda.Function(
+            self, "FeedLambda",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="feed.lambda_handler",
+            code=_lambda.Code.from_asset("lambda"),
+            timeout=Duration.seconds(10),
+        )
+        # feed_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_write_data(feed_lambda)
+
         # API Gatewayの定義
         api = apigateway.RestApi(
             self, "ReposiToriApi",
@@ -103,7 +113,8 @@ class BackendStack(Stack):
         authorizer = apigateway.TokenAuthorizer(
             self, "GitHubAuthorizer",
             handler=auth_lambda,
-            identity_source="method.request.header.Authorization"  # ヘッダーからトークンを取得
+            identity_source="method.request.header.Authorization",  # ヘッダーからトークンを取得
+            results_cache_ttl=Duration.seconds(0),  # キャッシュを無効化
         )
 
         # /tokenエンドポイント (アクセストークン取得用)
@@ -118,18 +129,28 @@ class BackendStack(Stack):
             "POST", 
             home_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
-            authorizer=authorizer
+            authorizer=authorizer,
         )
 
         # /get_feedエンドポイント (Lambdaオーソライザを使用)
-        feed_resource = api.root.add_resource("get_feed")
-        feed_integration = apigateway.LambdaIntegration(get_feed_lambda)
+        get_feed_resource = api.root.add_resource("get_feed")
+        get_feed_integration = apigateway.LambdaIntegration(get_feed_lambda)
+        get_feed_resource.add_method(
+            "POST", 
+            get_feed_integration,
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
+            authorizer=authorizer
+        )
+
+        # /feedエンドポイント (Lambdaオーソライザを使用)
+        feed_resource = api.root.add_resource("feed")
+        feed_integration = apigateway.LambdaIntegration(feed_lambda)
         feed_resource.add_method(
             "POST", 
             feed_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
-        )
+        )   
 
         # CORSを有効にする
         token_resource.add_cors_preflight(
@@ -144,13 +165,20 @@ class BackendStack(Stack):
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
+        get_feed_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
+        )
         feed_resource.add_cors_preflight(
             allow_origins=["*"],  
             allow_methods=["GET", "POST", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
-
+        
+        # エンドポイントを出力
         cdk.CfnOutput(
             self, "ApiUrl",
             value=api.url
