@@ -69,9 +69,7 @@ class PanelGridView<T> extends StatelessWidget {
                         imagePath: value.imagePath,
                         onSelected: () => onSelected(value),
                         isSelected: value == selectedValue,
-                        fit: value is DressUpOptions
-                            ? BoxFit.contain
-                            : BoxFit.cover,
+                        type: value.runtimeType,
                       );
                     }),
               ),
