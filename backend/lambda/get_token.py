@@ -83,7 +83,7 @@ def lambda_handler(event, context):
             'feedCount': int(0),
             'feededCount': int(0),
             'lastFeedDate': last_feed_date,
-            'created_at': datetime.now(ZoneInfo("Asia/Tokyo")).isoformat(),
+            'created_at': datetime.datetime.now(ZoneInfo("Asia/Tokyo")).isoformat(),
             'gsiPk': 'RANK',
         }
 
