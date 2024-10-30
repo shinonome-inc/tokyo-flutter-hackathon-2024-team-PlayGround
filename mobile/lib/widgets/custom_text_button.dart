@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/constants/text_styles.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextButton extends StatelessWidget {
   const CustomTextButton({
@@ -16,18 +16,19 @@ class CustomTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Expanded(
       child: ElevatedButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
           backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(4.r),
           ),
         ),
         child: Text(
           text,
-          style: TextStyles.subtitle.copyWith(color: textColor),
+          style: theme.textTheme.titleSmall!.copyWith(color: textColor),
         ),
       ),
     );

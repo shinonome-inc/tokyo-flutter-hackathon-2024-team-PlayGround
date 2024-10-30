@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/display_option.dart';
 import 'package:mobile/constants/router_paths.dart';
-import 'package:mobile/constants/text_styles.dart';
 import 'package:mobile/widgets/custom_text_button.dart';
 import 'package:mobile/widgets/select_panel.dart';
 
@@ -26,9 +25,10 @@ class PanelGridView<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      width: MediaQuery.of(context).size.width * 0.8,
+      height: 661.h,
+      width: 300.w,
       decoration: BoxDecoration(
         color: AppColors.dialogBackground,
         borderRadius: BorderRadius.circular(4.r),
@@ -40,12 +40,12 @@ class PanelGridView<T> extends StatelessWidget {
             SizedBox(height: 12.h),
             Text(
               title,
-              style: TextStyles.title,
+              style: theme.textTheme.headlineSmall,
             ),
             SizedBox(height: 28.h),
             Text(
               subtitle,
-              style: TextStyles.subtitle,
+              style: theme.textTheme.titleSmall,
             ),
             SizedBox(height: 16.h),
             Expanded(
@@ -87,7 +87,7 @@ class PanelGridView<T> extends StatelessWidget {
                 const CustomTextButton(
                   text: '決定',
                   textColor: AppColors.white,
-                  backgroundColor: AppColors.buttonBackground,
+                  backgroundColor: AppColors.primaryGold,
                 ),
               ],
             )

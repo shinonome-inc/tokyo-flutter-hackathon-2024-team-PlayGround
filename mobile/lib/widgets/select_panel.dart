@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/dress_up_options.dart';
-import 'package:mobile/constants/text_styles.dart';
 
 class SelectPanel<T> extends StatelessWidget {
   const SelectPanel({
@@ -21,11 +20,12 @@ class SelectPanel<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         Text(
           title,
-          style: TextStyles.subtitle,
+          style: theme.textTheme.titleSmall,
         ),
         SizedBox(height: 8.h),
         Expanded(
@@ -64,7 +64,7 @@ class SelectPanel<T> extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.r),
                       border: Border.all(
-                        color: AppColors.buttonBackground,
+                        color: AppColors.primaryGold,
                         width: 4,
                       ),
                     ),
