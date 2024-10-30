@@ -51,7 +51,7 @@ class PanelGridView<T> extends StatelessWidget {
             Expanded(
               child: Scrollbar(
                 thumbVisibility: true,
-                thickness: 6,
+                thickness: 6.h,
                 radius: Radius.circular(40.r),
                 child: GridView.builder(
                     gridDelegate:

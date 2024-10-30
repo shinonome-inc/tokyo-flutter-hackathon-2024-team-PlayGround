@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextStyles {
   TextStyles._();
-  static const TextStyle title = TextStyle(
-    fontSize: 24,
+  static TextStyle title = TextStyle(
+    fontSize: 24.sp,
     fontWeight: FontWeight.bold,
   );
-  static const TextStyle subtitle = TextStyle(
-    fontSize: 14,
+  static TextStyle subtitle = TextStyle(
+    fontSize: 14.sp,
     fontWeight: FontWeight.bold,
   );
 }
