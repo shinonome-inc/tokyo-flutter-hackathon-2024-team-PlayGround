@@ -125,6 +125,17 @@ class BackendStack(Stack):
         # change_profile_lambdaにDynamoDBテーブルへのアクセス権限を付与
         users_table.grant_read_write_data(update_profile_lambda)
 
+        # 服装を変更するLambda関数
+        change_clothes_lambda = _lambda.Function(
+            self, "ChangeClothesLambda",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="change_clothes.lambda_handler",
+            code=_lambda.Code.from_asset("lambda"),
+            timeout=Duration.seconds(10),
+        )
+        # change_clothes_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_write_data(change_clothes_lambda)
+
         # API Gatewayの定義
         api = apigateway.RestApi(
             self, "ReposiToriApi",
@@ -192,6 +203,16 @@ class BackendStack(Stack):
             profile_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
+        )
+
+        # /change_clothesエンドポイント (Lambdaオーソライザを使用)
+        change_clothes_resource = api.root.add_resource("change_clothes")
+        change_clothes_integration = apigateway.LambdaIntegration(change_clothes_lambda)
+        change_clothes_resource.add_method(
+            "PUT",
+            change_clothes_integration,
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
+            authorizer=authorizer
         )  
 
         # CORSを有効にする
@@ -226,6 +247,12 @@ class BackendStack(Stack):
             allow_credentials=True 
         )
         profile_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["PUT", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
+        )
+        change_clothes_resource.add_cors_preflight(
             allow_origins=["*"],  
             allow_methods=["PUT", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
