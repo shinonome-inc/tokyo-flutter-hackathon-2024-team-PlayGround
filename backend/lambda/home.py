@@ -2,6 +2,10 @@ import json
 import boto3
 import decimal
 
+# DynamoDBからユーザー情報を取得
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Users')
+
 # Decimal を JSON シリアライズ可能にするためのヘルパークラス
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -10,16 +14,11 @@ class DecimalEncoder(json.JSONEncoder):
         return super(DecimalEncoder, self).default(obj)
 
 def lambda_handler(event, context):
-    print(event)
     # LambdaAuthorizerから渡されたユーザーID
     user_id = event['requestContext']['authorizer']['userId']
 
-    # DynamoDBからユーザー情報を取得
-    dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table('Users')
-
     # 取得したい属性を指定
-    attributes_to_get = 'userId, userName, avatarUrl, characterName, characterLevel, characterExperience, characterBackground, characterClothes, feedCount'
+    attributes_to_get = 'userName, avatarUrl, characterName, characterLevel, characterExperience, characterBackground, characterClothes, feedCount'
 
     try:
         response = table.get_item(

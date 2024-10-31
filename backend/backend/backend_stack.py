@@ -103,6 +103,17 @@ class BackendStack(Stack):
         # feed_lambdaにDynamoDBテーブルへのアクセス権限を付与
         users_table.grant_read_write_data(feed_lambda)
 
+        # ランキングを取得するLambda関数
+        get_ranking_lambda = _lambda.Function(
+            self, "GetRankingLambda",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="ranking.lambda_handler",
+            code=_lambda.Code.from_asset("lambda"),
+            timeout=Duration.seconds(10),
+        )
+        # get_ranking_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_data(get_ranking_lambda)
+
         # API Gatewayの定義
         api = apigateway.RestApi(
             self, "ReposiToriApi",
@@ -126,7 +137,7 @@ class BackendStack(Stack):
         home_resource = api.root.add_resource("home")
         home_integration = apigateway.LambdaIntegration(home_lambda)
         home_resource.add_method(
-            "POST", 
+            "GET", 
             home_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer,
@@ -148,6 +159,16 @@ class BackendStack(Stack):
         feed_resource.add_method(
             "POST", 
             feed_integration,
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
+            authorizer=authorizer
+        )
+
+        # /rankingエンドポイント (Lambdaオーソライザを使用)
+        ranking_resource = api.root.add_resource("ranking")
+        ranking_integration = apigateway.LambdaIntegration(get_ranking_lambda)
+        ranking_resource.add_method(
+            "GET",
+            ranking_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
         )   
@@ -172,6 +193,12 @@ class BackendStack(Stack):
             allow_credentials=True 
         )
         feed_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
+        )
+        ranking_resource.add_cors_preflight(
             allow_origins=["*"],  
             allow_methods=["GET", "POST", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
