@@ -116,9 +116,9 @@ class BackendStack(Stack):
 
         # Profileを変更するLambda関数
         update_profile_lambda = _lambda.Function(
-            self, "ChangeProfileLambda",
+            self, "UpdateProfileLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
-            handler="change_profile.lambda_handler",
+            handler="update_profile.lambda_handler",
             code=_lambda.Code.from_asset("lambda"),
             timeout=Duration.seconds(10),
         )

@@ -85,7 +85,7 @@ def lambda_handler(event, context):
     else:
         return {
             'statusCode': 400,
-            'body': json.dumps('本日の餌やり回数が上限に達しました。')
+            'body': json.dumps('本日の餌やり回数が上限に達しました', ensure_ascii=False)
         }
 
 def update_character_level(user):

@@ -7,6 +7,7 @@ dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('Users')
 
 def lambda_handler(event, context):
+    print(event)
     # LambdaAuthorizerから渡されたユーザーID
     user_id = event['requestContext']['authorizer']['userId']
     
@@ -41,9 +42,9 @@ def lambda_handler(event, context):
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'  
             },
-            'body': json.dumps({
-                'updatedAttributes': response.get('Attributes', {})
-            })
+            'body': json.dumps(
+                response.get('Attributes', {}), ensure_ascii=False
+            )
         }
     
     except Exception as e:
