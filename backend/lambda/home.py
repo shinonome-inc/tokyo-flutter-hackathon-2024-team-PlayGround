@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     user_id = event['requestContext']['authorizer']['userId']
 
     # 取得したい属性を指定
-    attributes_to_get = 'userId, userName, avatarUrl, characterName, characterLevel, characterExperience, characterBackground, characterClothes, feedCount'
+    attributes_to_get = 'userName, avatarUrl, characterName, characterLevel, characterExperience, characterBackground, characterClothes, feedCount'
 
     try:
         response = table.get_item(
