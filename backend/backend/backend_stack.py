@@ -51,7 +51,7 @@ class BackendStack(Stack):
             self, "GetTokenLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="get_token.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/auth"),
             timeout=Duration.seconds(10),
             environment={
                 'GITHUB_CLIENT_ID': github_client_id,
@@ -66,7 +66,7 @@ class BackendStack(Stack):
             self, "AuthLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="authorizer.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/auth"),
             timeout=Duration.seconds(10),
         )
 
@@ -75,7 +75,7 @@ class BackendStack(Stack):
             self, "HomeLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="home.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/utils"),
             timeout=Duration.seconds(10),
         )
         # home_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -86,7 +86,7 @@ class BackendStack(Stack):
             self, "GetFeedLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="get_feed.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/utils"),
             timeout=Duration.seconds(10),
         )
         # get_feed_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -97,7 +97,7 @@ class BackendStack(Stack):
             self, "FeedLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="feed.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/utils"),
             timeout=Duration.seconds(10),
         )
         # feed_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -108,7 +108,7 @@ class BackendStack(Stack):
             self, "GetRankingLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="ranking.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/utils"),
             timeout=Duration.seconds(10),
         )
         # get_ranking_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -119,7 +119,7 @@ class BackendStack(Stack):
             self, "UpdateProfileLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="update_profile.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/utils/bird_config"),
             timeout=Duration.seconds(10),
         )
         # change_profile_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -130,11 +130,22 @@ class BackendStack(Stack):
             self, "ChangeClothesLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="change_clothes.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/utils/bird_config"),
             timeout=Duration.seconds(10),
         )
         # change_clothes_lambdaにDynamoDBテーブルへのアクセス権限を付与
         users_table.grant_read_write_data(change_clothes_lambda)
+
+        # 背景を変更するLambda関数
+        change_background_lambda = _lambda.Function(
+            self, "ChangeBackgroundLambda",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="change_background.lambda_handler",
+            code=_lambda.Code.from_asset("lambda/utils/bird_config"),
+            timeout=Duration.seconds(10),
+        )
+        # change_background_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_write_data(change_background_lambda)
 
         # API Gatewayの定義
         api = apigateway.RestApi(
@@ -213,7 +224,17 @@ class BackendStack(Stack):
             change_clothes_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
-        )  
+        )
+
+        # /change_backgroundエンドポイント (Lambdaオーソライザを使用)
+        change_background_resource = api.root.add_resource("change_background")   
+        change_background_integration = apigateway.LambdaIntegration(change_background_lambda)
+        change_background_resource.add_method(
+            "PUT",
+            change_background_integration,
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
+            authorizer=authorizer
+        )   
 
         # CORSを有効にする
         token_resource.add_cors_preflight(
@@ -253,6 +274,12 @@ class BackendStack(Stack):
             allow_credentials=True 
         )
         change_clothes_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["PUT", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
+        )
+        change_background_resource.add_cors_preflight(
             allow_origins=["*"],  
             allow_methods=["PUT", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
