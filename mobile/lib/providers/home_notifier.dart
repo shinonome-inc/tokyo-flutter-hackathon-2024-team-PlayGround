@@ -38,13 +38,24 @@ class HomeNotifier extends _$HomeNotifier {
   }
 
   Future<void> speakRandomShortMessageByDash() async {
-    if (state.isSpeaking) {
-      return;
-    }
+    if (state.isSpeaking) return;
+
     setIsSpeaking(true);
     final index = Random().nextInt(TalkScripts.shortMessages.length);
     final shortMessage = TalkScripts.shortMessages.elementAt(index);
     await TextSpeaker.instance.speakText(shortMessage);
+    setIsSpeaking(false);
+  }
+
+  Future<void> _speakAIGeneratedMessageByDash() async {
+    if (state.isSpeaking) return;
+    if (state.userSpeechText.isEmpty) return;
+
+    setIsSpeaking(true);
+    final generatedMessage = await GeminiClient.instance.generateDashMessage(
+      inputText: state.userSpeechText,
+    );
+    await TextSpeaker.instance.speakText(generatedMessage);
     setIsSpeaking(false);
   }
 
@@ -59,10 +70,7 @@ class HomeNotifier extends _$HomeNotifier {
       onStatus: (status) async {
         if (status == 'notListening' && state.isRecording) {
           setIsRecording(false);
-          final result = await GeminiClient.instance.generateDashMessage(
-            inputText: state.userSpeechText,
-          );
-          await TextSpeaker.instance.speakText(result);
+          await _speakAIGeneratedMessageByDash();
         }
       },
       onError: (error) {
