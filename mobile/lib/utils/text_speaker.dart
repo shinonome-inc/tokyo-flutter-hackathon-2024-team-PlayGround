@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:mobile/services/voice_box_client.dart';
 import 'package:mobile/utils/file_converter.dart';
+import 'package:universal_html/html.dart' as html;
 
 /// テキストの音声読み上げを行う。
 class TextSpeaker {
@@ -27,6 +31,14 @@ class TextSpeaker {
   Future<void> _speakTextWithVoiceBox(String text) async {
     final query = await VoiceBoxClient.instance.createQuery(text: text);
     final bytes = await VoiceBoxClient.instance.createVoice(query: query);
+    if (kIsWeb) {
+      final base64String = base64Encode(bytes);
+      final audio = html.AudioElement()
+        ..src = 'data:audio/wav;base64,$base64String'
+        ..autoplay = true;
+      await audio.play();
+      return;
+    }
     final file = await FileConverter.convertBytesToWavFile(bytes);
     final player = AudioPlayer();
     await player.play(DeviceFileSource(file.path));
