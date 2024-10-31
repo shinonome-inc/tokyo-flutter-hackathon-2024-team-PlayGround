@@ -1,7 +1,7 @@
 class Prompts {
   Prompts._();
 
-  static const String common = '''
+  static const String dash = '''
     ## 命令
     与えられたプロンプトに回答してください。
     

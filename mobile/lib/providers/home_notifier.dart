@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:mobile/constants/talk_scripts.dart';
 import 'package:mobile/models/home_state.dart';
+import 'package:mobile/services/gemini_client.dart';
 import 'package:mobile/utils/text_speaker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -55,9 +56,13 @@ class HomeNotifier extends _$HomeNotifier {
     final speech = stt.SpeechToText();
     setIsRecording(true);
     final available = await speech.initialize(
-      onStatus: (status) {
-        if (status == 'notListening') {
+      onStatus: (status) async {
+        if (status == 'notListening' && state.isRecording) {
           setIsRecording(false);
+          final result = await GeminiClient.instance.generateDashMessage(
+            inputText: state.userSpeechText,
+          );
+          await TextSpeaker.instance.speakText(result);
         }
       },
       onError: (error) {
@@ -70,7 +75,6 @@ class HomeNotifier extends _$HomeNotifier {
         onResult: (result) {
           final recognizedText = result.recognizedWords;
           setUserSpeechText(recognizedText);
-          print('userSpeechText: ${state.userSpeechText}');
         },
         localeId: 'ja-JP',
       );
