@@ -268,9 +268,6 @@ components:
           items:
             type: object
             properties:
-              userId:
-                type: string
-                description: ユーザーの一意の識別子
               userName:
                 type: string
                 description: ユーザー名

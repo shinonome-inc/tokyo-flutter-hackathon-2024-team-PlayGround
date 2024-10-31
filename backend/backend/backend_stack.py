@@ -111,6 +111,8 @@ class BackendStack(Stack):
             code=_lambda.Code.from_asset("lambda"),
             timeout=Duration.seconds(10),
         )
+        # get_ranking_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_data(get_ranking_lambda)
 
         # API Gatewayの定義
         api = apigateway.RestApi(
@@ -135,7 +137,7 @@ class BackendStack(Stack):
         home_resource = api.root.add_resource("home")
         home_integration = apigateway.LambdaIntegration(home_lambda)
         home_resource.add_method(
-            "POST", 
+            "GET", 
             home_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer,

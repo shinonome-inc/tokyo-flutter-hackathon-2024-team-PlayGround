@@ -19,7 +19,8 @@ def lambda_handler(event, context):
             IndexName='RankIndex',
             KeyConditionExpression=boto3.dynamodb.conditions.Key('gsiPk').eq('RANK'),
             ScanIndexForward=False,  # 降順
-            Limit=100 
+            Limit=100, 
+            ProjectionExpression='userName, avatarUrl, characterName, characterLevel, characterBackground, characterClothes'
         )
         
         items = response.get('Items', [])
