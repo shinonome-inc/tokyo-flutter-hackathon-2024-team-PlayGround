@@ -12,6 +12,8 @@ part 'home_notifier.g.dart';
 
 @riverpod
 class HomeNotifier extends _$HomeNotifier {
+  final _speech = stt.SpeechToText();
+
   @override
   HomeState build() {
     return initialHomeState;
@@ -60,13 +62,9 @@ class HomeNotifier extends _$HomeNotifier {
   }
 
   Future<void> startRecording() async {
+    if (state.isRecording) return;
     setIsRecording(true);
-  }
-
-  Future<void> speechToText() async {
-    final speech = stt.SpeechToText();
-    setIsRecording(true);
-    final available = await speech.initialize(
+    final available = await _speech.initialize(
       onStatus: (status) async {
         if (status == 'notListening' && state.isRecording) {
           setIsRecording(false);
@@ -78,7 +76,7 @@ class HomeNotifier extends _$HomeNotifier {
       },
     );
     if (available) {
-      speech.listen(
+      _speech.listen(
         pauseFor: const Duration(seconds: 3),
         onResult: (result) {
           final recognizedText = result.recognizedWords;
@@ -87,6 +85,13 @@ class HomeNotifier extends _$HomeNotifier {
         localeId: 'ja-JP',
       );
     }
+  }
+
+  Future<void> stopRecording() async {
+    if (!state.isRecording) return;
+    await _speech.stop();
+    setIsRecording(false);
+    await _speakAIGeneratedMessageByDash();
   }
 
   void onCompletedRecording() {
