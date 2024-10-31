@@ -114,6 +114,17 @@ class BackendStack(Stack):
         # get_ranking_lambdaにDynamoDBテーブルへのアクセス権限を付与
         users_table.grant_read_data(get_ranking_lambda)
 
+        # Profileを変更するLambda関数
+        update_profile_lambda = _lambda.Function(
+            self, "ChangeProfileLambda",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="change_profile.lambda_handler",
+            code=_lambda.Code.from_asset("lambda"),
+            timeout=Duration.seconds(10),
+        )
+        # change_profile_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_write_data(update_profile_lambda)
+
         # API Gatewayの定義
         api = apigateway.RestApi(
             self, "ReposiToriApi",
@@ -171,7 +182,17 @@ class BackendStack(Stack):
             ranking_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
-        )   
+        )
+
+        # /update_profileエンドポイント (Lambdaオーソライザを使用)
+        profile_resource = api.root.add_resource("update_profile")
+        profile_integration = apigateway.LambdaIntegration(update_profile_lambda)
+        profile_resource.add_method(
+            "PUT",
+            profile_integration,
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
+            authorizer=authorizer
+        )  
 
         # CORSを有効にする
         token_resource.add_cors_preflight(
@@ -182,25 +203,31 @@ class BackendStack(Stack):
         )
         home_resource.add_cors_preflight(
             allow_origins=["*"],  
-            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_methods=["GET", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
         get_feed_resource.add_cors_preflight(
             allow_origins=["*"],  
-            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_methods=["POST", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
         feed_resource.add_cors_preflight(
             allow_origins=["*"],  
-            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_methods=["POST", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
         ranking_resource.add_cors_preflight(
             allow_origins=["*"],  
-            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_methods=["GET", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
+        )
+        profile_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["PUT", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
