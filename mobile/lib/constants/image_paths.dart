@@ -18,4 +18,9 @@ class ImagePaths {
   static const String dressSummer = 'assets/images/dress_summer.png';
   static const String dressAutumn = 'assets/images/dress_autumn.png';
   static const String dressWinter = 'assets/images/dress_winter.png';
+
+  static const String chatBubbleTipBottom =
+      'assets/images/chat_bubble_tip_bottom.png';
+  static const String chatBubbleTipLeft =
+      'assets/images/chat_bubble_tip_left.png';
 }
