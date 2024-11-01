@@ -3,7 +3,7 @@ class RouterPaths {
   RouterPaths._();
 
   static const String home = '/';
-
+  static const String authCallback = '/auth-callback';
   static const String launch = '/launch';
   static const String top = '/top';
   static const String dressUp = '/dress-up';
