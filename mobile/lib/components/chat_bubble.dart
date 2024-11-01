@@ -25,10 +25,12 @@ class ChatBubble extends StatelessWidget {
     super.key,
     required this.message,
     this.tip = ChatBubbleTip.none,
+    this.maxLines,
   });
 
   final String message;
   final ChatBubbleTip tip;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,7 @@ class ChatBubble extends StatelessWidget {
                 ),
                 child: Text(
                   message,
-                  maxLines: 4,
+                  maxLines: maxLines,
                   style: const TextStyle(
                     overflow: TextOverflow.ellipsis,
                   ),

@@ -14,8 +14,7 @@ part 'home_notifier.g.dart';
 class HomeNotifier extends _$HomeNotifier {
   final _speech = stt.SpeechToText();
 
-  bool get showUserSpeechText =>
-      state.userSpeechText.isNotEmpty && !showDashSpeechText;
+  bool get showUserSpeechText => state.userSpeechText.isNotEmpty;
 
   bool get showDashSpeechText => state.dashSpeechText.isNotEmpty;
 

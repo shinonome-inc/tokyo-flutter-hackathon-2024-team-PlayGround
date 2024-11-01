@@ -50,14 +50,17 @@ class HomePage extends ConsumerWidget {
                               child: ChatBubble(
                                 message: state.userSpeechText,
                                 tip: ChatBubbleTip.left,
+                                maxLines: 2,
                               ),
                             ),
                           ],
-                        )
-                      else if (notifier.showDashSpeechText)
+                        ),
+                      const SizedBox(height: 16.0),
+                      if (notifier.showDashSpeechText)
                         ChatBubble(
                           message: state.dashSpeechText,
                           tip: ChatBubbleTip.bottom,
+                          maxLines: 4,
                         ),
                       const SizedBox(height: 8.0),
                     ],
