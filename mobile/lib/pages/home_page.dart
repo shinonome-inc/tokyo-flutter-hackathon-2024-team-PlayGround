@@ -132,7 +132,7 @@ class HomePage extends ConsumerWidget {
                             ),
                             SizedBox(height: 16.h),
                             CircularElevatedButton(
-                              onPressed: () {},
+                              onPressed: notifier.giveFood,
                               child: const Text('エサをあげる'),
                             ),
                           ],
