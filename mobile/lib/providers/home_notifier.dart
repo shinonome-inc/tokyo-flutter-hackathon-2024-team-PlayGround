@@ -66,8 +66,8 @@ class HomeNotifier extends _$HomeNotifier {
     final generatedMessage = await GeminiClient.instance.generateDashMessage(
       inputText: state.userSpeechText,
     );
-    setDashSpeechText(generatedMessage);
-    await TextSpeaker.instance.speakText(generatedMessage);
+    setDashSpeechText(generatedMessage.replaceAll('\n', ''));
+    await TextSpeaker.instance.speakText(state.dashSpeechText);
     setIsSpeaking(false);
   }
 
