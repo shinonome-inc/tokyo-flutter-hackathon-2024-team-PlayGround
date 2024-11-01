@@ -14,6 +14,11 @@ part 'home_notifier.g.dart';
 class HomeNotifier extends _$HomeNotifier {
   final _speech = stt.SpeechToText();
 
+  bool get showUserSpeechText =>
+      state.userSpeechText.isNotEmpty && !showDashSpeechText;
+
+  bool get showDashSpeechText => state.dashSpeechText.isNotEmpty;
+
   @override
   HomeState build() {
     return initialHomeState;
@@ -33,6 +38,10 @@ class HomeNotifier extends _$HomeNotifier {
 
   void setIsSpeaking(bool isSpeaking) {
     state = state.copyWith(isSpeaking: isSpeaking);
+  }
+
+  void setDashSpeechText(String dashSpeechText) {
+    state = state.copyWith(dashSpeechText: dashSpeechText);
   }
 
   void toggleShowMenuSubButtons() {
@@ -57,6 +66,7 @@ class HomeNotifier extends _$HomeNotifier {
     final generatedMessage = await GeminiClient.instance.generateDashMessage(
       inputText: state.userSpeechText,
     );
+    setDashSpeechText(generatedMessage);
     await TextSpeaker.instance.speakText(generatedMessage);
     setIsSpeaking(false);
   }
@@ -64,6 +74,8 @@ class HomeNotifier extends _$HomeNotifier {
   Future<void> startRecording() async {
     if (state.isRecording) return;
     setIsRecording(true);
+    setUserSpeechText('');
+    setDashSpeechText('');
     final available = await _speech.initialize(
       onStatus: (status) async {
         if (status == 'notListening' && state.isRecording) {
