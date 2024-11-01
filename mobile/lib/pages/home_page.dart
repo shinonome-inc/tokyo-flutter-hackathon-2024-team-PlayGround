@@ -80,25 +80,25 @@ class HomePage extends ConsumerWidget {
                               children: <Widget>[
                                 ElevatedButton(
                                   onPressed: () {
-                                    context.go(RouterPaths.ranking);
+                                    context.push(RouterPaths.ranking);
                                   },
                                   child: const Text('ランキング'),
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    context.go(RouterPaths.makeover);
+                                    context.push(RouterPaths.makeover);
                                   },
                                   child: const Text('模様替え'),
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    context.go(RouterPaths.dressUp);
+                                    context.push(RouterPaths.dressUp);
                                   },
                                   child: const Text('着せ替え'),
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    context.go(RouterPaths.setting);
+                                    context.push(RouterPaths.settings);
                                   },
                                   child: const Text('設定'),
                                 ),

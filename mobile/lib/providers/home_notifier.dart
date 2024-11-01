@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:mobile/constants/talk_scripts.dart';
 import 'package:mobile/models/home_state.dart';
+import 'package:mobile/providers/settings_notifier.dart';
 import 'package:mobile/utils/text_speaker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -31,9 +32,11 @@ class HomeNotifier extends _$HomeNotifier {
   }
 
   Future<void> speakRandomShortMessageByDash() async {
-    if (state.isSpeaking) {
-      return;
-    }
+    if (state.isSpeaking) return;
+
+    final enableVoice = ref.read(settingsNotifierProvider).enableVoice;
+    if (!enableVoice) return;
+
     setIsSpeaking(true);
     final index = Random().nextInt(TalkScripts.shortMessages.length);
     final shortMessage = TalkScripts.shortMessages.elementAt(index);

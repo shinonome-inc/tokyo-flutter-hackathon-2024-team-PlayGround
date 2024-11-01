@@ -3,9 +3,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/config/router.dart';
+import 'package:mobile/repositories/shared_preferences_repository.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: '.env');
+  await SharedPreferencesRepository.instance.initialize();
   runApp(
     const ProviderScope(
       child: MyApp(),

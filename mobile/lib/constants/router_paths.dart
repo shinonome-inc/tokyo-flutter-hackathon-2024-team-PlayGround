@@ -9,5 +9,5 @@ class RouterPaths {
   static const String dressUp = '/dress-up';
   static const String makeover = '/makeover';
   static const String ranking = '/ranking';
-  static const String setting = '/setting';
+  static const String settings = '/settings';
 }
