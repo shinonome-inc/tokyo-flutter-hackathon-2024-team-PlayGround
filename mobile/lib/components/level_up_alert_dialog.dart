@@ -46,7 +46,7 @@ class LevelUpAlertDialog extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-                color: AppColors.dialogBackground,
+                color: AppColors.menuBackground,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

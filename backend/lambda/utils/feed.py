@@ -5,29 +5,11 @@ import boto3
 import decimal
 
 
-def update_character_level(user):
-    # 必要経験値: 2^n * 10（nは現在のレベル）
-    total_xp = user.get('characterExperience', 0)
-    level = 1
-    cumulative_xp = 0
-
-    while True:
-        required_xp = 10 * (2 ** level) 
-        cumulative_xp += required_xp 
-
-        if total_xp >= cumulative_xp: 
-            level += 1
-        else:
-            break
-
-    user['characterLevel'] = level
-    return level
+# DynamoDBリソースの取得
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Users')
 
 def lambda_handler(event, context):
-    # DynamoDBリソースの取得
-    dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table('Users')
-
     # LambdaAuthorizerから渡されたユーザーID
     user_id = event['requestContext']['authorizer']['userId']
 
@@ -103,5 +85,23 @@ def lambda_handler(event, context):
     else:
         return {
             'statusCode': 400,
-            'body': json.dumps('本日の餌やり回数が上限に達しました。')
+            'body': json.dumps('本日の餌やり回数が上限に達しました', ensure_ascii=False)
         }
+
+def update_character_level(user):
+    # 必要経験値: 2^n * 10（nは現在のレベル）
+    total_xp = user.get('characterExperience', 0)
+    level = 1
+    cumulative_xp = 0
+
+    while True:
+        required_xp = 10 * (2 ** level) 
+        cumulative_xp += required_xp 
+
+        if total_xp >= cumulative_xp: 
+            level += 1
+        else:
+            break
+
+    user['characterLevel'] = level
+    return level

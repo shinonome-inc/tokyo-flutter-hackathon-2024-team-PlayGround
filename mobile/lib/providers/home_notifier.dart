@@ -5,6 +5,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:mobile/constants/black_list_words.dart';
 import 'package:mobile/constants/talk_scripts.dart';
 import 'package:mobile/models/home_state.dart';
+import 'package:mobile/providers/settings_notifier.dart';
 import 'package:mobile/services/gemini_client.dart';
 import 'package:mobile/utils/text_speaker.dart';
 import 'package:mobile/utils/word_checker.dart';
@@ -38,6 +39,10 @@ class HomeNotifier extends _$HomeNotifier {
     state = state.copyWith(userSpeechText: userSpeechText);
   }
 
+  void setIsStartEatingAnimation(bool isStartEatingAnimation) {
+    state = state.copyWith(isStartEatingAnimation: isStartEatingAnimation);
+  }
+
   void setIsSpeaking(bool isSpeaking) {
     state = state.copyWith(isSpeaking: isSpeaking);
   }
@@ -53,11 +58,25 @@ class HomeNotifier extends _$HomeNotifier {
   Future<void> speakRandomShortMessageByDash() async {
     if (state.isSpeaking) return;
 
+    final enableVoice = ref.read(settingsNotifierProvider).enableVoice;
+    if (!enableVoice) return;
+
     setIsSpeaking(true);
     final index = Random().nextInt(TalkScripts.shortMessages.length);
     final shortMessage = TalkScripts.shortMessages.elementAt(index);
     await TextSpeaker.instance.speakText(shortMessage);
     setIsSpeaking(false);
+  }
+
+  Future<void> giveFood() async {
+    setIsSpeaking(true);
+    setIsStartEatingAnimation(true);
+    await TextSpeaker.instance.speakText(
+      TalkScripts.eatingMessage,
+      isAfterDelay: true,
+    );
+    setIsSpeaking(false);
+    setIsStartEatingAnimation(false);
   }
 
   Future<void> _speakAIGeneratedMessageByDash() async {

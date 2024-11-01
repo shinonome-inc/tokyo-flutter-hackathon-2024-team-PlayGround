@@ -18,6 +18,8 @@ class TalkScripts {
     'ラーメンくいにいこうぜ',
   ];
 
+  static const String eatingMessage = 'いただきます。あむあむ。あむあむ。あむあむ。おいしい！ごちそうさまでした！';
+
   static const String promptInjectionWordMessage =
       'きんしされていることばがふくまれているよ...。しつもんのないようをかえてみてね。';
 

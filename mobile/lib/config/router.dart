@@ -6,7 +6,7 @@ import 'package:mobile/pages/home_page.dart';
 import 'package:mobile/pages/launch_page.dart';
 import 'package:mobile/pages/makeover_page.dart';
 import 'package:mobile/pages/ranking_page.dart';
-import 'package:mobile/pages/setting_page.dart';
+import 'package:mobile/pages/settings_page.dart';
 import 'package:mobile/pages/top_page.dart';
 
 /// プロジェクトの画面遷移に関するルーティング設定です。
@@ -68,11 +68,11 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: RouterPaths.setting,
+      path: RouterPaths.settings,
       pageBuilder: (context, state) {
         return MaterialPage(
           key: state.pageKey,
-          child: const SettingPage(),
+          child: const SettingsPage(),
         );
       },
     ),

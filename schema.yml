@@ -47,8 +47,8 @@ paths:
           description: 認証エラー
         "500":
           description: サーバーエラー
-  /profile:
-    post:
+  /update_profile:
+    put:
       summary: DASHのプロフィールを変更
       parameters:
         - in: header
@@ -138,8 +138,8 @@ paths:
           description: 認証エラー
         "500":
           description: サーバーエラー
-  /clothes:
-    post:
+  /change_clothes:
+    put:
       summary: 服装を変更
       parameters:
         - in: header
@@ -164,8 +164,8 @@ paths:
           description: 認証エラー
         "500":
           description: サーバーエラー
-  /background:
-    post:
+  /change_background:
+    put:
       summary: 背景を変更
       parameters:
         - in: header
@@ -207,9 +207,6 @@ components:
     HomeResponse:
       type: object
       properties:
-        userId:
-          type: string
-          description: ユーザーの一意の識別子
         userName:
           type: string
           description: GitHubのユーザー名
@@ -268,9 +265,6 @@ components:
           items:
             type: object
             properties:
-              userId:
-                type: string
-                description: ユーザーの一意の識別子
               userName:
                 type: string
                 description: ユーザー名

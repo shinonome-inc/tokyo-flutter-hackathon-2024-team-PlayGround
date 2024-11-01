@@ -51,7 +51,7 @@ class BackendStack(Stack):
             self, "GetTokenLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="get_token.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/auth"),
             timeout=Duration.seconds(10),
             environment={
                 'GITHUB_CLIENT_ID': github_client_id,
@@ -66,7 +66,7 @@ class BackendStack(Stack):
             self, "AuthLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="authorizer.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/auth"),
             timeout=Duration.seconds(10),
         )
 
@@ -75,7 +75,7 @@ class BackendStack(Stack):
             self, "HomeLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="home.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/utils"),
             timeout=Duration.seconds(10),
         )
         # home_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -86,7 +86,7 @@ class BackendStack(Stack):
             self, "GetFeedLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="get_feed.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/utils"),
             timeout=Duration.seconds(10),
         )
         # get_feed_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -97,11 +97,55 @@ class BackendStack(Stack):
             self, "FeedLambda",
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="feed.lambda_handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset("lambda/utils"),
             timeout=Duration.seconds(10),
         )
         # feed_lambdaにDynamoDBテーブルへのアクセス権限を付与
         users_table.grant_read_write_data(feed_lambda)
+
+        # ランキングを取得するLambda関数
+        get_ranking_lambda = _lambda.Function(
+            self, "GetRankingLambda",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="ranking.lambda_handler",
+            code=_lambda.Code.from_asset("lambda/utils"),
+            timeout=Duration.seconds(10),
+        )
+        # get_ranking_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_data(get_ranking_lambda)
+
+        # Profileを変更するLambda関数
+        update_profile_lambda = _lambda.Function(
+            self, "UpdateProfileLambda",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="update_profile.lambda_handler",
+            code=_lambda.Code.from_asset("lambda/utils/bird_config"),
+            timeout=Duration.seconds(10),
+        )
+        # change_profile_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_write_data(update_profile_lambda)
+
+        # 服装を変更するLambda関数
+        change_clothes_lambda = _lambda.Function(
+            self, "ChangeClothesLambda",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="change_clothes.lambda_handler",
+            code=_lambda.Code.from_asset("lambda/utils/bird_config"),
+            timeout=Duration.seconds(10),
+        )
+        # change_clothes_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_write_data(change_clothes_lambda)
+
+        # 背景を変更するLambda関数
+        change_background_lambda = _lambda.Function(
+            self, "ChangeBackgroundLambda",
+            runtime=_lambda.Runtime.PYTHON_3_12,
+            handler="change_background.lambda_handler",
+            code=_lambda.Code.from_asset("lambda/utils/bird_config"),
+            timeout=Duration.seconds(10),
+        )
+        # change_background_lambdaにDynamoDBテーブルへのアクセス権限を付与
+        users_table.grant_read_write_data(change_background_lambda)
 
         # API Gatewayの定義
         api = apigateway.RestApi(
@@ -126,7 +170,7 @@ class BackendStack(Stack):
         home_resource = api.root.add_resource("home")
         home_integration = apigateway.LambdaIntegration(home_lambda)
         home_resource.add_method(
-            "POST", 
+            "GET", 
             home_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer,
@@ -150,6 +194,46 @@ class BackendStack(Stack):
             feed_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
+        )
+
+        # /rankingエンドポイント (Lambdaオーソライザを使用)
+        ranking_resource = api.root.add_resource("ranking")
+        ranking_integration = apigateway.LambdaIntegration(get_ranking_lambda)
+        ranking_resource.add_method(
+            "GET",
+            ranking_integration,
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
+            authorizer=authorizer
+        )
+
+        # /update_profileエンドポイント (Lambdaオーソライザを使用)
+        profile_resource = api.root.add_resource("update_profile")
+        profile_integration = apigateway.LambdaIntegration(update_profile_lambda)
+        profile_resource.add_method(
+            "PUT",
+            profile_integration,
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
+            authorizer=authorizer
+        )
+
+        # /change_clothesエンドポイント (Lambdaオーソライザを使用)
+        change_clothes_resource = api.root.add_resource("change_clothes")
+        change_clothes_integration = apigateway.LambdaIntegration(change_clothes_lambda)
+        change_clothes_resource.add_method(
+            "PUT",
+            change_clothes_integration,
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
+            authorizer=authorizer
+        )
+
+        # /change_backgroundエンドポイント (Lambdaオーソライザを使用)
+        change_background_resource = api.root.add_resource("change_background")   
+        change_background_integration = apigateway.LambdaIntegration(change_background_lambda)
+        change_background_resource.add_method(
+            "PUT",
+            change_background_integration,
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
+            authorizer=authorizer
         )   
 
         # CORSを有効にする
@@ -161,19 +245,43 @@ class BackendStack(Stack):
         )
         home_resource.add_cors_preflight(
             allow_origins=["*"],  
-            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_methods=["GET", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
         get_feed_resource.add_cors_preflight(
             allow_origins=["*"],  
-            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_methods=["POST", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
         feed_resource.add_cors_preflight(
             allow_origins=["*"],  
-            allow_methods=["GET", "POST", "OPTIONS"],  
+            allow_methods=["POST", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
+        )
+        ranking_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["GET", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
+        )
+        profile_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["PUT", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
+        )
+        change_clothes_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["PUT", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
+        )
+        change_background_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["PUT", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )

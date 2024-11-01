@@ -6,6 +6,7 @@ part 'home_state.freezed.dart';
 class HomeState with _$HomeState {
   const factory HomeState({
     required bool showMenuSubButtons,
+    required bool isStartEatingAnimation,
     required bool isSpeaking,
     required bool isRecording,
     required String userSpeechText,
@@ -15,6 +16,7 @@ class HomeState with _$HomeState {
 
 const initialHomeState = HomeState(
   showMenuSubButtons: false,
+  isStartEatingAnimation: false,
   isSpeaking: false,
   isRecording: false,
   userSpeechText: '',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/components/animated_images_view.dart';
 import 'package:mobile/components/chat_bubble.dart';
 import 'package:mobile/components/circlar_elevated_button.dart';
 import 'package:mobile/components/level_prograss_bar.dart';
@@ -70,9 +71,28 @@ class HomePage extends ConsumerWidget {
                   onTap: () async {
                     await notifier.speakRandomShortMessageByDash();
                   },
-                  child: Image.asset(
-                    ImagePaths.dash,
+                  child: SizedBox(
                     width: 200.0,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.asset(
+                          ImagePaths.dash,
+                        ),
+                        Container(
+                          width: 200.w,
+                          margin: EdgeInsets.only(top: 80.h),
+                          child: AnimatedImagesView(
+                            isStart: state.isStartEatingAnimation,
+                            imagePathList: ImagePaths.foodWithEffects,
+                            intervalMilliseconds: 1200,
+                            delayedMilliseconds: 3500,
+                            isLoop: false,
+                            showOnlyPlaying: true,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -146,7 +166,7 @@ class HomePage extends ConsumerWidget {
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
-                                      context.go(RouterPaths.setting);
+                                      context.go(RouterPaths.settings);
                                     },
                                     child: const Text('設定'),
                                   ),

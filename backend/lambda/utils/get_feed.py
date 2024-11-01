@@ -4,28 +4,11 @@ import urllib.request
 import boto3
 import decimal
 
+# DynamoDBからユーザー情報を取得
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Users')
 
-def get_github_username(access_token):
-    # GitHubのユーザー名を取得する関数
-    url = 'https://api.github.com/user'
-    headers = {
-        'Authorization': f'token {access_token}',
-        'Content-Type': 'application/json'
-    }
-    request = urllib.request.Request(url, headers=headers)
-    try:
-        with urllib.request.urlopen(request) as response:
-            user_data = json.loads(response.read().decode('utf-8'))
-        return user_data.get('login')
-    except Exception as e:
-        print(f"Error fetching GitHub username: {e}")
-        return None
-
-def lambda_handler(event, context):
-    # DynamoDBからユーザー情報を取得
-    dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table('Users')
-    
+def lambda_handler(event, context):    
     # LambdaAuthorizerから渡されたユーザーID
     user_id = event['requestContext']['authorizer']['userId']
 
@@ -168,3 +151,18 @@ def lambda_handler(event, context):
             'body': json.dumps({'error': 'Failed to fetch contributions'})
         }
 
+def get_github_username(access_token):
+    # GitHubのユーザー名を取得する関数
+    url = 'https://api.github.com/user'
+    headers = {
+        'Authorization': f'token {access_token}',
+        'Content-Type': 'application/json'
+    }
+    request = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(request) as response:
+            user_data = json.loads(response.read().decode('utf-8'))
+        return user_data.get('login')
+    except Exception as e:
+        print(f"Error fetching GitHub username: {e}")
+        return None
