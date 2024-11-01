@@ -9,6 +9,7 @@ import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/models/dash.dart';
 import 'package:mobile/providers/home_notifier.dart';
+import 'package:mobile/widgets/circle_icon_image.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -35,9 +36,23 @@ class HomePage extends ConsumerWidget {
                   child: Column(
                     children: [
                       if (notifier.showUserSpeechText)
-                        ChatBubble(
-                          message: state.userSpeechText,
-                          tip: ChatBubbleTip.left,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // TODO: ログイン中のユーザーのアイコン画像を設定する。
+                            const CircleIconImage(
+                              imageUrl: '',
+                              diameter: 40.0,
+                              errorImagePath: ImagePaths.defaultUser,
+                            ),
+                            const SizedBox(width: 8.0),
+                            Flexible(
+                              child: ChatBubble(
+                                message: state.userSpeechText,
+                                tip: ChatBubbleTip.left,
+                              ),
+                            ),
+                          ],
                         )
                       else if (notifier.showDashSpeechText)
                         ChatBubble(
