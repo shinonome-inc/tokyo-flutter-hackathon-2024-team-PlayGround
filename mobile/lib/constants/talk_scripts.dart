@@ -17,4 +17,10 @@ class TalkScripts {
     'そらをじゆうにとびたいな',
     'ラーメンくいにいこうぜ',
   ];
+
+  static const String generativeAIExceptionMessage =
+      'そのしつもんにはこたえることができないよ...。しつもんのないようをかえてみてね。';
+
+  static const String exceptionMessage =
+      'ちょっといんたーねっとのせつぞくがわるいみたい...。もうしわけないけどもういちどしつもんしなおしてもらえるとうれしいな！';
 }

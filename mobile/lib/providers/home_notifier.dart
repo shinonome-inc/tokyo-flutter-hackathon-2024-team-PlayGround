@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:mobile/constants/talk_scripts.dart';
 import 'package:mobile/models/home_state.dart';
 import 'package:mobile/services/gemini_client.dart';
@@ -62,12 +63,23 @@ class HomeNotifier extends _$HomeNotifier {
     if (state.userSpeechText.isEmpty) return;
 
     setIsSpeaking(true);
-    final generatedMessage = await GeminiClient.instance.generateDashMessage(
-      inputText: state.userSpeechText,
-    );
-    setDashSpeechText(generatedMessage.replaceAll('\n', ''));
-    await TextSpeaker.instance.speakText(state.dashSpeechText);
-    setIsSpeaking(false);
+    try {
+      final generatedMessage = await GeminiClient.instance.generateDashMessage(
+        inputText: state.userSpeechText,
+      );
+      setDashSpeechText(generatedMessage.replaceAll('\n', ''));
+      await TextSpeaker.instance.speakText(state.dashSpeechText);
+    } on GenerativeAIException {
+      const message = TalkScripts.generativeAIExceptionMessage;
+      setDashSpeechText(message);
+      await TextSpeaker.instance.speakText(message);
+    } catch (e) {
+      const message = TalkScripts.exceptionMessage;
+      setDashSpeechText(message);
+      await TextSpeaker.instance.speakText(message);
+    } finally {
+      setIsSpeaking(false);
+    }
   }
 
   Future<void> startRecording() async {
