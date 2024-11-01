@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:mobile/constants/black_list_words.dart';
 import 'package:mobile/constants/talk_scripts.dart';
 import 'package:mobile/models/home_state.dart';
 import 'package:mobile/services/gemini_client.dart';
 import 'package:mobile/utils/text_speaker.dart';
+import 'package:mobile/utils/word_checker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -63,6 +65,18 @@ class HomeNotifier extends _$HomeNotifier {
     if (state.userSpeechText.isEmpty) return;
 
     setIsSpeaking(true);
+    final containsPromptInjectionBlackListWords =
+        WordChecker.instance.containsBlacklistWords(
+      state.userSpeechText,
+      BlackListWords.promptInjections,
+    );
+    if (containsPromptInjectionBlackListWords) {
+      const message = TalkScripts.promptInjectionWordMessage;
+      setDashSpeechText(message);
+      await TextSpeaker.instance.speakText(message);
+      setIsSpeaking(false);
+      return;
+    }
     try {
       final generatedMessage = await GeminiClient.instance.generateDashMessage(
         inputText: state.userSpeechText,

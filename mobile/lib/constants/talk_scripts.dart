@@ -18,6 +18,9 @@ class TalkScripts {
     'ラーメンくいにいこうぜ',
   ];
 
+  static const String promptInjectionWordMessage =
+      'きんしされていることばがふくまれているよ...。しつもんのないようをかえてみてね。';
+
   static const String generativeAIExceptionMessage =
       'そのしつもんにはこたえることができないよ...。しつもんのないようをかえてみてね。';
 
