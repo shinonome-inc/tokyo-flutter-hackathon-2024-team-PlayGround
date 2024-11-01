@@ -1,12 +1,17 @@
 import aws_cdk as cdk
 from aws_cdk import (
     Duration,
+    RemovalPolicy,
     Stack,
     aws_lambda as _lambda,
     aws_apigateway as apigateway,
     aws_iam as iam,
     aws_dynamodb as dynamodb,
-    RemovalPolicy
+    aws_s3 as s3,
+    aws_s3_deployment as s3deploy,
+    aws_cloudfront as cloudfront,
+    aws_cloudfront_origins as origins,
+    aws_iam
 )
 from constructs import Construct
 import os
@@ -290,4 +295,71 @@ class BackendStack(Stack):
         cdk.CfnOutput(
             self, "ApiUrl",
             value=api.url
+        )
+
+        # Webプロジェクトデプロイ用のS3バケットの作成
+        bucket = s3.Bucket(
+            self,
+            "FlutterWebBucket",
+            public_read_access=False, 
+            block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
+            removal_policy=RemovalPolicy.DESTROY, 
+            auto_delete_objects=True,  
+        )
+
+        # CloudFront用のオリジンアクセスアイデンティティの作成
+        origin_access_identity = cloudfront.OriginAccessIdentity(self, "OAI")
+
+        # バケットへの読み取り権限を付与（バケットポリシーを使用）
+        bucket.add_to_resource_policy(
+            aws_iam.PolicyStatement(
+                actions=["s3:GetObject"],
+                resources=[bucket.arn_for_objects("*")],
+                principals=[aws_iam.CanonicalUserPrincipal(
+                    origin_access_identity.cloud_front_origin_access_identity_s3_canonical_user_id)],
+            )
+        )
+
+        # CloudFrontディストリビューションの作成
+        distribution = cloudfront.Distribution(
+            self,
+            "FlutterWebDistribution",
+            default_root_object="index.html",
+            default_behavior=cloudfront.BehaviorOptions(
+                origin=origins.S3Origin(
+                    bucket, origin_access_identity=origin_access_identity
+                ),
+                viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+            ),
+            error_responses=[
+                cloudfront.ErrorResponse(
+                    http_status=403,
+                    response_http_status=200,
+                    response_page_path="/index.html",
+                    ttl=Duration.minutes(0),
+                ),
+                cloudfront.ErrorResponse(
+                    http_status=404,
+                    response_http_status=200,
+                    response_page_path="/index.html",
+                    ttl=Duration.minutes(0),
+                ),
+            ],
+        )
+
+        # Flutter WebビルドファイルをS3バケットにデプロイ
+        s3deploy.BucketDeployment(
+            self,
+            "DeployFlutterWeb",
+            sources=[s3deploy.Source.asset("../mobile/build/web")],  
+            destination_bucket=bucket,
+            distribution=distribution,
+            distribution_paths=["/*"],  # キャッシュを全て無効化
+        )
+
+        # CloudFrontディストリビューションのドメイン名を出力
+        cdk.CfnOutput(
+            self,
+            "DistributionDomainName",
+            value='https://' + distribution.distribution_domain_name,
         )

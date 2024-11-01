@@ -16,7 +16,8 @@ class TopPage extends StatefulWidget {
 class _TopPageState extends State<TopPage> {
   final clientId = dotenv.env['GITHUB_CLIENT_ID']!;
   final baseUrl = dotenv.env['ENDPOINT']!;
-  final String redirectUri = 'https://shinonome.com/auth-callback';
+  final String redirectUri =
+      'https://d11feo1e8byiei.cloudfront.net/auth-callback';
 
   @override
   void initState() {
