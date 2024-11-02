@@ -9,7 +9,7 @@ class VoiceBoxClient {
   VoiceBoxClient._() {
     final baseUrl = dotenv.env['VOICE_BOX_API_BASE_URL'];
     if (baseUrl == null || baseUrl.isEmpty) {
-      throw Exception('ENDPOINT is not defined.');
+      throw Exception('VOICE_BOX_API_BASE_URL is not defined.');
     }
     _dio.options.baseUrl = baseUrl;
     _dio.options.headers = {'Content-Type': 'application/json'};
