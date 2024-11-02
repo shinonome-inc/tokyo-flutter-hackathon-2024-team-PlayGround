@@ -60,12 +60,20 @@ class _TopPageState extends ConsumerState<TopPage> {
   }
 
   Future<void> handleAuthCallback(String code) async {
+    final state = ref.read(topNotifierProvider);
+    final notifier = ref.read(topNotifierProvider.notifier);
+
+    if (!state.isLoading) return;
+    notifier.setLoading(true);
     String token = '';
     try {
       token = await RepositoriClient.instance.fetchAccessToken(code);
     } catch (e) {
       // TODO: エラー処理を追加する。
       throw Exception('Failed to fetch access token: $e');
+    } finally {
+      notifier.setShowWebView(false);
+      notifier.setLoading(false);
     }
     await SecureStorageRepository().writeToken(token);
     if (!mounted) return;
