@@ -1,55 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/constants/app_colors.dart';
-import 'package:mobile/constants/dress_up_options.dart';
+import 'package:mobile/constants/display_option.dart';
+import 'package:mobile/constants/makeover_options.dart';
+import 'package:mobile/constants/text_styles.dart';
 
-class SelectPanel<T> extends StatelessWidget {
+class SelectPanel extends StatelessWidget {
   const SelectPanel({
     super.key,
-    required this.title,
-    required this.imagePath,
     required this.onSelected,
-    required this.type,
     this.isSelected = false,
+    required this.values,
+    required this.index,
+    required this.selectedValue,
   });
-  final String title;
-  final String imagePath;
-  final VoidCallback onSelected;
+  final Function(DisplayOption) onSelected;
   final bool isSelected;
-  final T type;
+  final List<DisplayOption> values;
+  final int index;
+  final DisplayOption selectedValue;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final title = values[index].name;
+    final imagePath = values[index].imagePath;
+    final isSelected = selectedValue == values[index];
+    final type = selectedValue.runtimeType;
     return Column(
       children: [
         Text(
           title,
-          style: theme.textTheme.titleSmall,
+          style: TextStyles.gridViewheadingSmall,
         ),
         SizedBox(height: 8.h),
-        Expanded(
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: 120.w,
+            maxHeight: 120.h,
+          ),
           child: Stack(
             children: [
               GestureDetector(
-                onTap: onSelected,
+                onTap: () => onSelected(values[index]),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.r),
-                    color: AppColors.dialogBackground,
+                    color: AppColors.menuItemBackground,
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12.r),
                     child: Center(
                       child: Padding(
                         padding:
-                            EdgeInsets.all((type == DressUpOptions) ? 8.0 : 0)
+                            EdgeInsets.all((type == MakeoverOptions) ? 0 : 8.0)
                                 .w,
                         child: Image.asset(
                           imagePath,
-                          fit: (type == DressUpOptions)
-                              ? BoxFit.contain
-                              : BoxFit.cover,
+                          fit: (type == MakeoverOptions)
+                              ? BoxFit.cover
+                              : BoxFit.contain,
                           width: double.infinity,
                           height: double.infinity,
                         ),

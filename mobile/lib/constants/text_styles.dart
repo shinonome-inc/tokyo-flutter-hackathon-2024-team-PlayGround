@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mobile/constants/app_colors.dart';
 
 class TextStyles {
   TextStyles._();
-  static TextStyle headingLarge = TextStyle(
+  static TextStyle gridViewheadingLarge = TextStyle(
     fontSize: 24.sp,
     fontWeight: FontWeight.bold,
+    color: AppColors.black,
   );
-  static TextStyle headingSmall = TextStyle(
+  static TextStyle gridViewheadingSmall = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.bold,
+    color: AppColors.black,
   );
 }

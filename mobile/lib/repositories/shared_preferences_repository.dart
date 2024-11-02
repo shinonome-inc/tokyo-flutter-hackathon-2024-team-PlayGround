@@ -1,5 +1,8 @@
 import 'package:mobile/constants/default_settings.dart';
+import 'package:mobile/constants/dress_up_options.dart';
+import 'package:mobile/constants/makeover_options.dart';
 import 'package:mobile/constants/prefs_keys.dart';
+import 'package:mobile/models/food_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesRepository {
@@ -29,6 +32,18 @@ class SharedPreferencesRepository {
     await _prefs.setBool(PrefsKeys.enableVoice, enable);
   }
 
+  Future<void> setDressUp(DressUpOptions dressUp) async {
+    await _prefs.setInt(PrefsKeys.dressUp, dressUp.index);
+  }
+
+  Future<void> setMakeover(MakeoverOptions makeover) async {
+    await _prefs.setInt(PrefsKeys.makeover, makeover.index);
+  }
+
+  Future<void> setFood(FoodOptions food) async {
+    await _prefs.setInt(PrefsKeys.food, food.index);
+  }
+
   bool getEnablePushNotification() {
     return _prefs.getBool(PrefsKeys.enablePushNotification) ??
         DefaultSettings.enablePushNotification;
@@ -44,5 +59,20 @@ class SharedPreferencesRepository {
 
   bool getEnableVoice() {
     return _prefs.getBool(PrefsKeys.enableVoice) ?? DefaultSettings.enableVoice;
+  }
+
+  DressUpOptions getDressUp() {
+    final index = _prefs.getInt(PrefsKeys.dressUp);
+    return DressUpOptions.values[index ?? 4];
+  }
+
+  MakeoverOptions getMakeover() {
+    final index = _prefs.getInt(PrefsKeys.makeover);
+    return MakeoverOptions.values[index ?? 0];
+  }
+
+  FoodOptions getFood() {
+    final index = _prefs.getInt(PrefsKeys.food);
+    return FoodOptions.values[index ?? 0];
   }
 }
