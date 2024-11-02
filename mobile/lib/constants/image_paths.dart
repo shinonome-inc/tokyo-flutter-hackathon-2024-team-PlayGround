@@ -4,6 +4,8 @@ class ImagePaths {
 
   static const defaultUser = 'assets/images/default_user.png';
 
+  static const launchCover = 'assets/images/launch_cover.png';
+
   static const backgroundSpring = 'assets/images/background_spring.png';
   static const backgroundSummer = 'assets/images/background_summer.png';
   static const backgroundAutumn = 'assets/images/background_autumn.png';

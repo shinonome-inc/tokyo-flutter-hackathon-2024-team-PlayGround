@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/providers/launch_notifier.dart';
 
@@ -29,9 +30,15 @@ class _LaunchPageState extends ConsumerState<LaunchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('LaunchPage'),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Image.asset(
+            ImagePaths.launchCover,
+            fit: BoxFit.cover,
+            width: double.infinity,
+          ),
+        ],
       ),
     );
   }
