@@ -83,7 +83,7 @@ class HomePage extends ConsumerWidget {
                           children: [
                             CircularElevatedButton(
                               onPressed: () async {
-                                await notifier.giveFood();
+                                // await notifier.giveFood();
                               },
                               backgroundColor:
                                   AppColors.fetchFeedButtonBackground,

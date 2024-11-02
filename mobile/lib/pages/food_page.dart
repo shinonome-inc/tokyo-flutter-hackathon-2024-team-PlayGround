@@ -51,6 +51,7 @@ class FoodPage extends ConsumerWidget {
                 values: notifier.values,
                 selectedValue: state,
                 foodCount: 5,
+                confirtText: 'あげる',
               ),
             ),
           ],
