@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:mobile/constants/talk_scripts.dart';
+import 'package:mobile/models/home.dart';
 import 'package:mobile/models/home_state.dart';
 import 'package:mobile/providers/settings_notifier.dart';
+import 'package:mobile/services/repositori_client.dart';
 import 'package:mobile/utils/text_speaker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,6 +15,14 @@ class HomeNotifier extends _$HomeNotifier {
   @override
   HomeState build() {
     return initialHomeState;
+  }
+
+  void setLoading(bool isLoading) {
+    state = state.copyWith(isLoading: isLoading);
+  }
+
+  void setHome(Home? home) {
+    state = state.copyWith(home: home);
   }
 
   void setShowMenuSubButtons(bool showMenuSubButtons) {
@@ -29,6 +39,23 @@ class HomeNotifier extends _$HomeNotifier {
 
   void toggleShowMenuSubButtons() {
     setShowMenuSubButtons(!state.showMenuSubButtons);
+  }
+
+  Future<void> fetchHome() async {
+    if (state.isLoading) return;
+
+    setLoading(true);
+    Home? home;
+    try {
+      home = await RepositoriClient.instance.fetchHome();
+    } catch (e) {
+      print(e);
+    } finally {
+      setLoading(false);
+    }
+
+    setHome(home);
+    print('fetched home: $home');
   }
 
   Future<void> speakRandomShortMessageByDash() async {
