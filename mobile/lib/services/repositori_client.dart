@@ -1,7 +1,14 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/models/feed.dart';
+import 'package:mobile/constants/dress_up_options.dart';
+import 'package:mobile/constants/makeover_options.dart';
+import 'package:mobile/models/home.dart';
+import 'package:mobile/models/ranking.dart';
+import 'package:mobile/models/ranking_user.dart';
 
 class RepositoriClient {
   RepositoriClient._() {
@@ -41,6 +48,78 @@ class RepositoriClient {
       throw Exception(
         'Failed to fetch access token with status code ${response.statusCode}',
       );
+    }
+  }
+
+  Future<Home> fetchHome() async {
+    print('home token');
+    print(_dio.options.headers['Authorization']);
+    final response = await _dio.get(
+      '/home',
+      options: Options(
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      ),
+    );
+    if (response.statusCode == 200) {
+      return Home.fromJson(response.data);
+    } else {
+      throw Exception(
+        'Failed to fetch home with status code ${response.statusCode}',
+      );
+    }
+  }
+
+  Future<Ranking> fetchRanking() async {
+    final response = await _dio.get(
+      '/ranking',
+      options: Options(
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      ),
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = response.data;
+      final rankings = jsonData
+          .map((item) => RankingUser.fromJson(item as Map<String, dynamic>))
+          .toList();
+      return Ranking(rankings: rankings);
+    } else {
+      throw Exception(
+        'Failed to fetch ranking with status code ${response.statusCode}',
+      );
+    }
+  }
+
+  Future<void> putDressUp(DressUpOptions dressUp) async {
+    try {
+      Response response = await _dio.put(
+        '/change_clothes',
+        data: {'item': dressUp.name},
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('きせかえ成功${response.data}');
+      } else {
+        debugPrint('きせかえ失敗: ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('きせかえ失敗:$e');
+    }
+  }
+
+  Future<void> putMakeover(MakeoverOptions makeover) async {
+    try {
+      Response response = await _dio.put(
+        '/change_background',
+        data: {'item': makeover.name},
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint('模様替え成功${response.data}');
+      } else {
+        debugPrint('模様替え失敗: ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('模様替え失敗:$e');
     }
   }
 
