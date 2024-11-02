@@ -36,7 +36,7 @@ class _LaunchPageState extends ConsumerState<LaunchPage> {
       backgroundColor: AppColors.white,
       body: AnimatedOpacity(
         opacity: state.opacity,
-        duration: const Duration(seconds: 1),
+        duration: Durations.extralong4,
         child: Image.asset(
           ImagePaths.launchCover,
           fit: BoxFit.cover,

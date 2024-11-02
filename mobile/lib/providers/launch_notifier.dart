@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobile/models/launch_state.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -26,9 +27,9 @@ class LaunchNotifier extends _$LaunchNotifier {
 
     // NOTE: 現在はアクセストークンがローカルに保存されているかどうかで判定している。
     // NOTE: API通信の待機時間を再現するために擬似的に待機している。
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(Durations.extralong4);
     setOpacity(1.0);
-    await Future.delayed(const Duration(milliseconds: 2000));
+    await Future.delayed(const Duration(seconds: 3));
 
     return token != null;
   }
