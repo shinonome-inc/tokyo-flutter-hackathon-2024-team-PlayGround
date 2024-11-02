@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/components/stroked_text.dart';
 import 'package:mobile/constants/app_colors.dart';
+import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/models/dash.dart';
 
 /// ダッシュちゃんの現在のレベルと経験値を表示します。
@@ -14,10 +15,9 @@ class LevelProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          Icons.favorite,
-          color: Colors.red,
-          size: 48.w,
+        SizedBox(
+          width: 48.0,
+          child: Image.asset(ImagePaths.levelProgressBarHeart),
         ),
         SizedBox(width: 8.w),
         Expanded(
