@@ -39,7 +39,7 @@ class MakeoverPage extends ConsumerWidget {
                 onConfirm: () {
                   notifier.storeMakeover();
                   if (context.mounted) {
-                    context.go(RouterPaths.home);
+                    context.push(RouterPaths.home);
                   }
                 },
                 values: notifier.values,

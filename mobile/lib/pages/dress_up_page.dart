@@ -40,7 +40,7 @@ class DressUpPage extends ConsumerWidget {
                 onConfirm: () async {
                   await notifier.storeDressUp();
                   if (context.mounted) {
-                    context.go(RouterPaths.home);
+                    context.push(RouterPaths.home);
                   }
                 },
                 values: notifier.values,

@@ -10,7 +10,9 @@ import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/models/dash.dart';
+import 'package:mobile/providers/dress_up_notifier.dart';
 import 'package:mobile/providers/home_notifier.dart';
+import 'package:mobile/providers/makeover_notifier.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -19,6 +21,8 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeNotifierProvider);
     final notifier = ref.read(homeNotifierProvider.notifier);
+    final dressUpState = ref.read(dressUpNotifierProvider);
+    final makeoverState = ref.read(makeoverNotifierProvider);
     return GestureDetector(
       onTap: () {
         if (state.showMenuSubButtons) {
@@ -30,7 +34,7 @@ class HomePage extends ConsumerWidget {
           alignment: Alignment.center,
           children: [
             Image.asset(
-              ImagePaths.backgroundSummer,
+              makeoverState.imagePath,
               fit: BoxFit.cover,
               width: double.infinity,
             ),
@@ -39,7 +43,7 @@ class HomePage extends ConsumerWidget {
                 await notifier.speakRandomShortMessageByDash();
               },
               child: Image.asset(
-                ImagePaths.dash,
+                dressUpState.imagePath,
                 width: 200.w,
               ),
             ),
@@ -146,7 +150,7 @@ class HomePage extends ConsumerWidget {
                                     ),
                                     MenuSubItemButton(
                                       onPressed: () {
-                                        context.push(RouterPaths.makeover);
+                                        context.push(RouterPaths.dressUp);
                                       },
                                       icon: Image.asset(
                                         ImagePaths.menuSubItemDressUp,
