@@ -26,14 +26,17 @@ class LevelProgressBar extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              StrokedText(
-                'Lv.${dash.level}',
-                textColor: AppColors.white,
-                strokeColor: AppColors.levelProgressBarOutline,
-                strokeWidth: _strokeWidth,
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: _fontWeight,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: StrokedText(
+                  'Lv.${dash.level}',
+                  textColor: AppColors.white,
+                  strokeColor: AppColors.levelProgressBarOutline,
+                  strokeWidth: _strokeWidth,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: _fontWeight,
+                  ),
                 ),
               ),
               Container(
@@ -48,14 +51,17 @@ class LevelProgressBar extends StatelessWidget {
                   minHeight: 20.h,
                 ),
               ),
-              StrokedText(
-                '${dash.currentExp} / ${dash.maxExp}',
-                textColor: AppColors.white,
-                strokeColor: AppColors.levelProgressBarOutline,
-                strokeWidth: _strokeWidth,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: _fontWeight,
+              Align(
+                alignment: Alignment.centerRight,
+                child: StrokedText(
+                  '${dash.currentExp} / ${dash.maxExp}',
+                  textColor: AppColors.white,
+                  strokeColor: AppColors.levelProgressBarOutline,
+                  strokeWidth: _strokeWidth,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: _fontWeight,
+                  ),
                 ),
               ),
             ],
