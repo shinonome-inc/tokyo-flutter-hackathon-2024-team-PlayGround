@@ -35,3 +35,18 @@ enum FoodOptions implements DisplayOption {
     }
   }
 }
+
+extension FoodOptionsExtension on FoodOptions {
+  List<String> get imagePaths {
+    switch (this) {
+      case FoodOptions.ramen:
+        return ImagePaths.ramenWithEffects;
+      case FoodOptions.curry:
+        return ImagePaths.curryWithEffects;
+      case FoodOptions.mapoTofu:
+        return ImagePaths.mapoTofuWithEffects;
+      case FoodOptions.tteokbokki:
+        return ImagePaths.tteokbokkiWithEffects;
+    }
+  }
+}

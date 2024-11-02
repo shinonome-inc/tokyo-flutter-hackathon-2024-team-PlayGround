@@ -10,7 +10,9 @@ import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/models/dash.dart';
+import 'package:mobile/models/food_options.dart';
 import 'package:mobile/providers/dress_up_notifier.dart';
+import 'package:mobile/providers/food_notifier.dart';
 import 'package:mobile/providers/home_notifier.dart';
 import 'package:mobile/providers/makeover_notifier.dart';
 
@@ -23,6 +25,7 @@ class HomePage extends ConsumerWidget {
     final notifier = ref.read(homeNotifierProvider.notifier);
     final dressUpState = ref.read(dressUpNotifierProvider);
     final makeoverState = ref.read(makeoverNotifierProvider);
+    final foodState = ref.read(foodNotifierProvider);
     return GestureDetector(
       onTap: () {
         if (state.showMenuSubButtons) {
@@ -53,7 +56,7 @@ class HomePage extends ConsumerWidget {
                 margin: EdgeInsets.only(top: 80.h),
                 child: AnimatedImagesView(
                   isStart: state.isStartEatingAnimation,
-                  imagePathList: ImagePaths.foodWithEffects,
+                  imagePathList: foodState.imagePaths,
                   intervalMilliseconds: 1200,
                   delayedMilliseconds: 3500,
                   isLoop: false,
