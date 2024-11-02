@@ -10,7 +10,7 @@ class RankingUser with _$RankingUser {
     required String avatarUrl,
     required String characterName,
     required int characterLevel,
-    required String characterClothing,
+    required String characterClothes,
     required String characterBackground,
   }) = _RankingUser;
 

@@ -24,7 +24,7 @@ class RankingNotifier extends _$RankingNotifier {
     if (state.isLoading) return;
 
     setLoading(true);
-    Ranking? ranking = await RepositoriClient.instance.fetchRanking();
+    Ranking? ranking;
     try {
       ranking = await RepositoriClient.instance.fetchRanking();
     } catch (e) {

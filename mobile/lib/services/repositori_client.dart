@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/constants/dress_up_options.dart';
 import 'package:mobile/constants/makeover_options.dart';
 import 'package:mobile/models/ranking.dart';
+import 'package:mobile/models/ranking_user.dart';
 
 class RepositoriClient {
   RepositoriClient._() {
@@ -56,7 +57,11 @@ class RepositoriClient {
       ),
     );
     if (response.statusCode == 200) {
-      return Ranking.fromJson(response.data);
+      final List<dynamic> jsonData = response.data;
+      final rankings = jsonData
+          .map((item) => RankingUser.fromJson(item as Map<String, dynamic>))
+          .toList();
+      return Ranking(rankings: rankings);
     } else {
       throw Exception(
         'Failed to fetch ranking with status code ${response.statusCode}',
