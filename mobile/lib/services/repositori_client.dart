@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/constants/dress_up_options.dart';
 import 'package:mobile/constants/makeover_options.dart';
+import 'package:mobile/models/home.dart';
 
 class RepositoriClient {
   RepositoriClient._() {
@@ -19,6 +22,10 @@ class RepositoriClient {
 
   static final RepositoriClient instance = RepositoriClient._();
 
+  void setToken(String token) {
+    _dio.options.headers['Authorization'] = token;
+  }
+
   /// 認証コードを使ってアクセストークンを取得する。
   ///
   /// [code] リダイレクトURLから取得した認証コード。
@@ -28,13 +35,31 @@ class RepositoriClient {
       '/token',
       queryParameters: {'code': code},
     );
+    print('fetch access token with status code ${response.statusCode}');
     if (response.statusCode == 200) {
       final token = response.data['access_token'];
-      _dio.options.headers['Authorization'] = 'token $token';
+      setToken(token);
       return token;
     } else {
       throw Exception(
         'Failed to fetch access token with status code ${response.statusCode}',
+      );
+    }
+  }
+
+  Future<Home> fetchHome() async {
+    final response = await _dio.get(
+      '/home',
+      options: Options(
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return Home.fromJson(response.data);
+    } else {
+      throw Exception(
+        'Failed to fetch home with status code ${response.statusCode}',
       );
     }
   }
