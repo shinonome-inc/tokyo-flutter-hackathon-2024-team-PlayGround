@@ -33,7 +33,7 @@ class FoodPage extends ConsumerWidget {
             Center(
               child: PanelGridView(
                 title: 'えさを選ぶ',
-                subtitle: 'えさの数 5',
+                subtitle: 'えさの数',
                 onSelected: (DisplayOption value) {
                   notifier.setFood(value);
                 },
@@ -45,6 +45,7 @@ class FoodPage extends ConsumerWidget {
                 },
                 values: notifier.values,
                 selectedValue: state,
+                foodCount: 5,
               ),
             ),
           ],
