@@ -1,6 +1,7 @@
 import 'package:mobile/constants/display_option.dart';
 import 'package:mobile/constants/dress_up_options.dart';
 import 'package:mobile/repositories/shared_preferences_repository.dart';
+import 'package:mobile/services/repositori_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'dress_up_notifier.g.dart';
@@ -21,6 +22,7 @@ class DressUpNotifier extends _$DressUpNotifier {
   }
 
   Future<void> storeDressUp() async {
+    await RepositoriClient.instance.changeDressUp(state);
     await SharedPreferencesRepository.instance.setDressUp(state);
   }
 

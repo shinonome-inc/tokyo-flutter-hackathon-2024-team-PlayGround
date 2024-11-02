@@ -22,7 +22,7 @@ class SelectPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = values[index].name;
+    final title = values[index].jpName;
     final imagePath = values[index].imagePath;
     final isSelected = selectedValue == values[index];
     final type = selectedValue.runtimeType;
