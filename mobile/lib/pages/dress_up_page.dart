@@ -33,9 +33,15 @@ class DressUpPage extends ConsumerWidget {
             Center(
               child: PanelGridView(
                 title: 'きせかえ',
-                subtitle: 'コーディネート一覧',
+                subtitle: 'きせかえ一覧',
                 onSelected: (DisplayOption value) {
                   notifier.setDressUp(value);
+                },
+                onConfirm: () async {
+                  await notifier.storeDressUp();
+                  if (context.mounted) {
+                    context.go(RouterPaths.home);
+                  }
                 },
                 values: notifier.values,
                 selectedValue: state,
