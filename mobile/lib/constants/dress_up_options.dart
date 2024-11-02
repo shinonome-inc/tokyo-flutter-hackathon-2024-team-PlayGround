@@ -2,11 +2,11 @@ import 'package:mobile/constants/display_option.dart';
 import 'package:mobile/constants/image_paths.dart';
 
 enum DressUpOptions implements DisplayOption {
-  normal,
   spring,
   summer,
   autumn,
-  winter;
+  winter,
+  normal;
 
   @override
   String get imagePath {

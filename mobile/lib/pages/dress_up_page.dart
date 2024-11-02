@@ -33,7 +33,7 @@ class DressUpPage extends ConsumerWidget {
             Center(
               child: PanelGridView(
                 title: 'きせかえ',
-                subtitle: 'コーディネート一覧',
+                subtitle: 'きせかえ一覧',
                 onSelected: (DisplayOption value) {
                   notifier.setDressUp(value);
                 },
