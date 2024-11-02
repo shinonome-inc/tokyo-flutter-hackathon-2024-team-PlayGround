@@ -34,7 +34,13 @@ class MakeoverPage extends ConsumerWidget {
                 title: '模様替え',
                 subtitle: '背景一覧',
                 onSelected: (DisplayOption value) {
-                  notifier.setDressUp(value);
+                  notifier.setMakeover(value);
+                },
+                onConfirm: () {
+                  notifier.storeMakeover();
+                  if (context.mounted) {
+                    context.go(RouterPaths.home);
+                  }
                 },
                 values: notifier.values,
                 selectedValue: state,

@@ -5,4 +5,6 @@ class PrefsKeys {
   static const enableBGM = 'enableBGM';
   static const enableSE = 'enableSE';
   static const enableVoice = 'enableVoice';
+  static const dressUp = 'dressUp';
+  static const makeover = 'makeover';
 }
