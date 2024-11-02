@@ -53,6 +53,7 @@ dependencies:
   path_provider: ^2.1.4
   flutter_tts: ^4.0.2
   shared_preferences: ^2.3.2
+  flutter_native_splash: ^2.4.2
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +84,18 @@ flutter:
     - .env
     - assets/images/
     - assets/images/food_with_effect/
+
+flutter_native_splash:
+  color: '#ffffff'
+  image: 'assets/images/splash_android12.png'
+  color_dark: '#333333'
+  image_dark: 'assets/images/splash_android12.png'
+  fullscreen: true
+  android_12:
+    icon_background_color: '#ffffff'
+    image: 'assets/images/splash_android12.png'
+    icon_background_color_dark: '#333333'
+    image_dark: 'assets/images/splash_android12.png'
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
