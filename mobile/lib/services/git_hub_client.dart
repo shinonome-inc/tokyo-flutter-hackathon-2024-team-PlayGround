@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 class GitHubClient {
   GitHubClient._() {
-    const baseUrl = 'https://api.github.com/user';
+    const baseUrl = 'https://api.github.com';
     _dio.options.baseUrl = baseUrl;
   }
 
