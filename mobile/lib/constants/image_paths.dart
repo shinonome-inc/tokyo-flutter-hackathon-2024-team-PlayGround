@@ -48,6 +48,7 @@ class ImagePaths {
       'assets/images/food_with_effect/food_with_effect_step6.png';
   static const foodWithEffectStep7 =
       'assets/images/food_with_effect/food_with_effect_step7.png';
+  static const heartEffect = 'assets/images/food_with_effect/heart_effect.png';
   static const ramenWithEffectStep1 =
       'assets/images/food_with_effect/ramen_with_effect_step1.png';
   static const ramenWithEffectStep2 =
@@ -107,8 +108,8 @@ class ImagePaths {
     ramenWithEffectStep3,
     ramenWithEffectStep4,
     ramenWithEffectStep5,
-    foodWithEffectStep6,
-    foodWithEffectStep7,
+    heartEffect,
+    heartEffect,
   ];
 
   static const tteokbokkiWithEffects = [
@@ -117,8 +118,8 @@ class ImagePaths {
     tteokbokkiWithEffectStep3,
     tteokbokkiWithEffectStep4,
     tteokbokkiWithEffectStep5,
-    foodWithEffectStep6,
-    foodWithEffectStep7,
+    heartEffect,
+    heartEffect,
   ];
 
   static const mapoTofuWithEffects = [
@@ -127,8 +128,8 @@ class ImagePaths {
     mapoTofuWithEffectStep3,
     mapoTofuWithEffectStep4,
     mapoTofuWithEffectStep5,
-    foodWithEffectStep6,
-    foodWithEffectStep7,
+    heartEffect,
+    heartEffect,
   ];
 
   static const curryWithEffects = [
@@ -137,7 +138,7 @@ class ImagePaths {
     curryWithEffectStep3,
     curryWithEffectStep4,
     curryWithEffectStep5,
-    foodWithEffectStep6,
-    foodWithEffectStep7,
+    heartEffect,
+    heartEffect,
   ];
 }
