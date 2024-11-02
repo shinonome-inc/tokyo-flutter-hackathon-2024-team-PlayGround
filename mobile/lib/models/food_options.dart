@@ -22,7 +22,7 @@ enum FoodOptions implements DisplayOption {
   }
 
   @override
-  String get name {
+  String get jpName {
     switch (this) {
       case FoodOptions.ramen:
         return 'ラーメン';
