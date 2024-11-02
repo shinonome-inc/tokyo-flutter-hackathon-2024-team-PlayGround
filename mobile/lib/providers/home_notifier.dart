@@ -1,8 +1,8 @@
 import 'dart:math';
-
 import 'package:mobile/constants/talk_scripts.dart';
 import 'package:mobile/models/home_state.dart';
 import 'package:mobile/providers/settings_notifier.dart';
+import 'package:mobile/services/repositori_client.dart';
 import 'package:mobile/utils/text_speaker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -53,5 +53,14 @@ class HomeNotifier extends _$HomeNotifier {
     );
     setIsSpeaking(false);
     setIsStartEatingAnimation(false);
+  }
+
+  Future<bool> getHomeState() async {
+    try {
+      state = await RepositoriClient.instance.getHomeState();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
