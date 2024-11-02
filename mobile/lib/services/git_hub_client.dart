@@ -22,7 +22,6 @@ class GitHubClient {
     } finally {
       _dio.options.headers.remove('Authorization');
     }
-    print(response.statusCode);
     if (response.statusCode == 200) {
       return true;
     }
