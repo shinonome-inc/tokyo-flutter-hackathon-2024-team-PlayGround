@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:mobile/constants/dress_up_options.dart';
-import 'package:mobile/constants/makeover_options.dart';
 
 class RepositoriClient {
   RepositoriClient._() {
@@ -19,6 +17,11 @@ class RepositoriClient {
 
   static final RepositoriClient instance = RepositoriClient._();
 
+  void setToken(String token) {
+    print('set token: $token');
+    _dio.options.headers['Authorization'] = token;
+  }
+
   /// 認証コードを使ってアクセストークンを取得する。
   ///
   /// [code] リダイレクトURLから取得した認証コード。
@@ -28,9 +31,10 @@ class RepositoriClient {
       '/token',
       queryParameters: {'code': code},
     );
+    print('fetch access token with status code ${response.statusCode}');
     if (response.statusCode == 200) {
       final token = response.data['access_token'];
-      _dio.options.headers['Authorization'] = 'token $token';
+      setToken(token);
       return token;
     } else {
       throw Exception(
@@ -39,37 +43,12 @@ class RepositoriClient {
     }
   }
 
-  Future<void> putDressUp(DressUpOptions dressUp) async {
-    try {
-      Response response = await _dio.put(
-        '/change_clothes',
-        data: {'item': dressUp.name},
-      );
-
-      if (response.statusCode == 200) {
-        debugPrint('きせかえ成功${response.data}');
-      } else {
-        debugPrint('きせかえ失敗: ${response.statusCode}');
-      }
-    } catch (e) {
-      debugPrint('きせかえ失敗:$e');
+  Future<int> getFeedCount() async {
+    final response = await _dio.get('/get_feed');
+    if (response.statusCode == 200) {
+      debugPrint('えさ取得成功${response.data}');
+      return response.data['feed_count'] ?? 0;
     }
-  }
-
-  Future<void> putMakeover(MakeoverOptions makeover) async {
-    try {
-      Response response = await _dio.put(
-        '/change_background',
-        data: {'item': makeover.name},
-      );
-
-      if (response.statusCode == 200) {
-        debugPrint('模様替え成功${response.data}');
-      } else {
-        debugPrint('模様替え失敗: ${response.statusCode}');
-      }
-    } catch (e) {
-      debugPrint('模様替え失敗:$e');
-    }
+    throw Exception('えさ取得失敗: ${response.statusCode}');
   }
 }

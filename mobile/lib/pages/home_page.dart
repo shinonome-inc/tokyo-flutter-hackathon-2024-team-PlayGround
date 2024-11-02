@@ -12,11 +12,10 @@ import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/models/dash.dart';
 import 'package:mobile/models/food_options.dart';
 import 'package:mobile/providers/dress_up_notifier.dart';
+import 'package:mobile/providers/feed_count_notifier.dart';
 import 'package:mobile/providers/food_notifier.dart';
 import 'package:mobile/providers/home_notifier.dart';
 import 'package:mobile/providers/makeover_notifier.dart';
-import 'package:mobile/services/voice_box_client.dart';
-import 'package:mobile/utils/text_speaker.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -28,6 +27,7 @@ class HomePage extends ConsumerWidget {
     final dressUpState = ref.read(dressUpNotifierProvider);
     final makeoverState = ref.read(makeoverNotifierProvider);
     final foodState = ref.read(foodNotifierProvider);
+    final feedCountNotifier = ref.read(feedCountNotifierProvider.notifier);
     return GestureDetector(
       onTap: () {
         if (state.showMenuSubButtons) {
@@ -85,7 +85,9 @@ class HomePage extends ConsumerWidget {
                           children: [
                             CircularElevatedButton(
                               onPressed: () async {
-                                // await notifier.giveFood();
+                                final feedCount =
+                                    await feedCountNotifier.fetchFeedCount();
+                                print(feedCount);
                               },
                               backgroundColor:
                                   AppColors.fetchFeedButtonBackground,
