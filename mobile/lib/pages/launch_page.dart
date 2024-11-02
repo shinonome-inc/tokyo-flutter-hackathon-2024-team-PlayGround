@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/components/top_cover_view.dart';
 import 'package:mobile/constants/app_colors.dart';
-import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/providers/launch_notifier.dart';
 
@@ -37,11 +37,7 @@ class _LaunchPageState extends ConsumerState<LaunchPage> {
       body: AnimatedOpacity(
         opacity: state.opacity,
         duration: Durations.extralong4,
-        child: Image.asset(
-          ImagePaths.launchCover,
-          fit: BoxFit.cover,
-          width: double.infinity,
-        ),
+        child: const TopCoverView(),
       ),
     );
   }

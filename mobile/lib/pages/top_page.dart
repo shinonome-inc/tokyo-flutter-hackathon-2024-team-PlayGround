@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/components/top_cover_view.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
@@ -87,10 +88,7 @@ class _TopPageState extends ConsumerState<TopPage> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Image.asset(
-            ImagePaths.launchCover,
-            fit: BoxFit.cover,
-          ),
+          const TopCoverView(),
           Container(
             color: AppColors.black.withOpacity(0.6),
           ),
