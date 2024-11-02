@@ -11,6 +11,9 @@ class HomeState with _$HomeState {
     required bool showMenuSubButtons,
     required bool isStartEatingAnimation,
     required bool isSpeaking,
+    required bool isRecording,
+    required String userSpeechText,
+    required String dashSpeechText,
   }) = _HomeState;
 }
 
@@ -20,4 +23,7 @@ const initialHomeState = HomeState(
   showMenuSubButtons: false,
   isStartEatingAnimation: false,
   isSpeaking: false,
+  isRecording: false,
+  userSpeechText: '',
+  dashSpeechText: '',
 );
