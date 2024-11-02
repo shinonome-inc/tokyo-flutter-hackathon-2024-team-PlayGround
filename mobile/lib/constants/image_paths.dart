@@ -6,6 +6,17 @@ class ImagePaths {
 
   static const launchCover = 'assets/images/launch_cover.png';
 
+  static const levelProgressBarHeart =
+      'assets/images/level_progress_bar_heart.png';
+  static const menuButtonIconAndText =
+      'assets/images/menu_button_icon_and_text.png';
+  static const githubMark = 'assets/images/github_mark.png';
+
+  static const menuSubItemDressUp = 'assets/images/menu_sub_item_dress_up.png';
+  static const menuSubItemMakeover = 'assets/images/menu_sub_item_makeover.png';
+  static const menuSubItemRanking = 'assets/images/menu_sub_item_ranking.png';
+  static const menuSubItemSettings = 'assets/images/menu_sub_item_settings.png';
+
   static const backgroundSpring = 'assets/images/background_spring.png';
   static const backgroundSummer = 'assets/images/background_summer.png';
   static const backgroundAutumn = 'assets/images/background_autumn.png';
@@ -20,6 +31,10 @@ class ImagePaths {
   static const dressSummer = 'assets/images/dress_summer.png';
   static const dressAutumn = 'assets/images/dress_autumn.png';
   static const dressWinter = 'assets/images/dress_winter.png';
+  static const foodRamen = 'assets/images/food_ramen.png';
+  static const foodCurry = 'assets/images/food_curry.png';
+  static const foodMapoTofu = 'assets/images/food_mapo_tofu.png';
+  static const foodTteokbokki = 'assets/images/food_tteokbokki.png';
 
   static const foodWithEffectStep1 =
       'assets/images/food_with_effect/food_with_effect_step1.png';

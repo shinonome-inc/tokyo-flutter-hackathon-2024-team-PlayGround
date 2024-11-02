@@ -8,6 +8,7 @@ class AppColors {
   static const primaryGold = Color(0xFFCBAE29);
   static const scrollBar = Color(0xFFAA9328);
   static const white = Color(0xFFFFFFFF);
+  static const foodCountRed = Color(0xFFB1972C);
 
   static const settingsBackground = Color(0xFFB1D9FA);
   static const settingsCloseButtonBackground = Color(0xFF517FA4);
@@ -19,4 +20,16 @@ class AppColors {
 
   static const dialogBackground = Color(0xCC000000);
   static const dialogHighLight = Color(0xFF00FF4D);
+
+  static const levelProgressBarOutline = Color(0xFF9D3C3C);
+  static const levelProgressBarMain = Color(0xFFF47272);
+  static const levelProgressBarHeartMain = Color(0xFFDA3E3E);
+
+  static const menuButtonBackground = Color(0xFFB1D9FA);
+  static const fetchFeedButtonBackground = Color(0xFF3B9E64);
+  static const giveFoodButtonBackground = Color(0xFFFF9600);
+
+  static const menuSubItemDefaultBackground = Color(0xFFCBAE29);
+  static const menuSubItemRankingBackground = Color(0xFF3FBAED);
+  static const menuSubItemSettingsBackground = Color(0xFFAFAFAF);
 }
