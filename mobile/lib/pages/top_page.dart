@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
+import 'package:mobile/providers/top_notifier.dart';
 import 'package:mobile/repositories/api_client.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -41,9 +42,9 @@ class _TopPageState extends ConsumerState<TopPage> {
             if (url.startsWith(redirectUri)) {
               final uri = Uri.parse(url);
               final code = uri.queryParameters['code'];
-              if (code != null) {
-                handleAuthCallback(code); // 認証コードを処理
-              }
+              if (code == null) return;
+
+              handleAuthCallback(code); // 認証コードを処理
             }
           },
           onWebResourceError: (error) {
@@ -55,6 +56,8 @@ class _TopPageState extends ConsumerState<TopPage> {
 
   // GitHubの認証ページをWebViewで表示
   void _launchGitHubAuth() {
+    final notifier = ref.read(topNotifierProvider.notifier);
+    notifier.setShowWebView(true);
     final authorizationUrl =
         'https://github.com/login/oauth/authorize?client_id=$clientId&redirect_uri=$redirectUri&scope=repo,read:org,read:user,user:email';
     _controller.loadRequest(Uri.parse(authorizationUrl));
@@ -85,6 +88,7 @@ class _TopPageState extends ConsumerState<TopPage> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(topNotifierProvider);
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
@@ -122,6 +126,13 @@ class _TopPageState extends ConsumerState<TopPage> {
               ],
             ),
           ),
+          if (state.showWebView)
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: AppColors.white,
+              child: WebViewWidget(controller: _controller),
+            ),
         ],
       ),
     );
