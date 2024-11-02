@@ -12,13 +12,12 @@ class GeminiClient {
     apiKey: dotenv.env['GEMINI_API_KEY']!,
   );
 
-  Future<String> postPrompt({required String inputText}) async {
+  Future<String> generateDashMessage({required String inputText}) async {
     final content = [
-      Content.text(Prompts.common),
+      Content.text(Prompts.dash),
       Content.text(inputText),
     ];
     final response = await _model.generateContent(content);
-    print(response.text);
     return response.text ?? '';
   }
 }
