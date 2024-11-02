@@ -164,13 +164,14 @@ class BackendStack(Stack):
 
         # VoiceVox用のLambda関数の定義
         voice_lambda = _lambda.DockerImageFunction(
-            self, "ApiFunc",
+            self, "VoiceLambda",
             code=_lambda.DockerImageCode.from_ecr(
                 repository,
                 tag="latest"
             ),
             memory_size=3008,
             timeout=Duration.seconds(30),
+            architecture=_lambda.Architecture.X86_64
         )
 
         # API Gatewayの定義
@@ -265,7 +266,7 @@ class BackendStack(Stack):
         # /voiceエンドポイント (Lambdaオーソライザを使用)
         voice_resource = api.root.add_resource("voice")
         voice_integration = apigateway.LambdaIntegration(voice_lambda)
-        change_clothes_resource.add_method(
+        voice_resource.add_method(
             "POST",
             voice_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,

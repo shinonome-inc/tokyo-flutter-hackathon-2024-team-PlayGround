@@ -6,7 +6,7 @@ from pydub import AudioSegment
 from tempfile import NamedTemporaryFile
 from voicevox_core import VoicevoxCore, AccelerationMode
 
-SPEAKER_ID = 0
+SPEAKER_ID = 1
 
 core = VoicevoxCore(
     acceleration_mode=AccelerationMode.AUTO,
@@ -16,6 +16,7 @@ core.load_model(SPEAKER_ID)
 
 
 def lambda_handler(event, context):
+    print(event)
     body = base64.b64decode(event["body"]).decode("utf-8")
     query = parse.parse_qs(body)
     texts = query.get("text")
