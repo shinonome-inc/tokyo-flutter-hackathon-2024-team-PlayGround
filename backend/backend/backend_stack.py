@@ -3,6 +3,7 @@ from aws_cdk import (
     Duration,
     Stack,
     aws_lambda as _lambda,
+    aws_ecr as ecr,
     aws_apigateway as apigateway,
     aws_iam as iam,
     aws_dynamodb as dynamodb,
@@ -53,6 +54,7 @@ class BackendStack(Stack):
             handler="get_token.lambda_handler",
             code=_lambda.Code.from_asset("lambda/auth"),
             timeout=Duration.seconds(10),
+            memory_size=1024,
             environment={
                 'GITHUB_CLIENT_ID': github_client_id,
                 'GITHUB_CLIENT_SECRET': github_client_secret
@@ -67,6 +69,7 @@ class BackendStack(Stack):
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="authorizer.lambda_handler",
             code=_lambda.Code.from_asset("lambda/auth"),
+            memory_size=1024,
             timeout=Duration.seconds(10),
         )
 
@@ -76,6 +79,7 @@ class BackendStack(Stack):
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="home.lambda_handler",
             code=_lambda.Code.from_asset("lambda/utils"),
+            memory_size=1024,
             timeout=Duration.seconds(10),
         )
         # home_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -87,6 +91,7 @@ class BackendStack(Stack):
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="get_feed.lambda_handler",
             code=_lambda.Code.from_asset("lambda/utils"),
+            memory_size=1024,
             timeout=Duration.seconds(10),
         )
         # get_feed_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -98,6 +103,7 @@ class BackendStack(Stack):
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="feed.lambda_handler",
             code=_lambda.Code.from_asset("lambda/utils"),
+            memory_size=1024,
             timeout=Duration.seconds(10),
         )
         # feed_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -109,6 +115,7 @@ class BackendStack(Stack):
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="ranking.lambda_handler",
             code=_lambda.Code.from_asset("lambda/utils"),
+            memory_size=1024,
             timeout=Duration.seconds(10),
         )
         # get_ranking_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -120,6 +127,7 @@ class BackendStack(Stack):
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="update_profile.lambda_handler",
             code=_lambda.Code.from_asset("lambda/utils/bird_config"),
+            memory_size=1024,
             timeout=Duration.seconds(10),
         )
         # change_profile_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -131,6 +139,7 @@ class BackendStack(Stack):
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="change_clothes.lambda_handler",
             code=_lambda.Code.from_asset("lambda/utils/bird_config"),
+            memory_size=1024,
             timeout=Duration.seconds(10),
         )
         # change_clothes_lambdaにDynamoDBテーブルへのアクセス権限を付与
@@ -142,10 +151,28 @@ class BackendStack(Stack):
             runtime=_lambda.Runtime.PYTHON_3_12,
             handler="change_background.lambda_handler",
             code=_lambda.Code.from_asset("lambda/utils/bird_config"),
+            memory_size=1024,
             timeout=Duration.seconds(10),
         )
         # change_background_lambdaにDynamoDBテーブルへのアクセス権限を付与
         users_table.grant_read_write_data(change_background_lambda)
+
+        # VoiceVoimeイメージ用のECRリポジトリを参照
+        repository = ecr.Repository.from_repository_name(
+            self, 'VoiceVoxRepository', repository_name='voicevox-lambda'
+        )
+
+        # VoiceVox用のLambda関数の定義
+        voice_lambda = _lambda.DockerImageFunction(
+            self, "VoiceLambda",
+            code=_lambda.DockerImageCode.from_ecr(
+                repository,
+                tag="latest"
+            ),
+            memory_size=3008,
+            timeout=Duration.seconds(30),
+            architecture=_lambda.Architecture.X86_64
+        )
 
         # API Gatewayの定義
         api = apigateway.RestApi(
@@ -234,7 +261,17 @@ class BackendStack(Stack):
             change_background_integration,
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
-        )   
+        ) 
+
+        # /voiceエンドポイント (Lambdaオーソライザを使用)
+        voice_resource = api.root.add_resource("voice")
+        voice_integration = apigateway.LambdaIntegration(voice_lambda)
+        voice_resource.add_method(
+            "POST",
+            voice_integration,
+            authorization_type=apigateway.AuthorizationType.CUSTOM,
+            authorizer=authorizer
+        )
 
         # CORSを有効にする
         token_resource.add_cors_preflight(
@@ -282,6 +319,12 @@ class BackendStack(Stack):
         change_background_resource.add_cors_preflight(
             allow_origins=["*"],  
             allow_methods=["PUT", "OPTIONS"],  
+            allow_headers=["Authorization", "Content-Type"], 
+            allow_credentials=True 
+        )
+        voice_resource.add_cors_preflight(
+            allow_origins=["*"],  
+            allow_methods=["POST", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )

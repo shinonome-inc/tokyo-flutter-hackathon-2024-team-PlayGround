@@ -21,7 +21,10 @@ class TopPage extends ConsumerStatefulWidget {
 
 class _TopPageState extends ConsumerState<TopPage> {
   final clientId = dotenv.env['GITHUB_CLIENT_ID']!;
+  final baseUrl = dotenv.env['ENDPOINT']!;
   final String redirectUri = 'https://shinonome.com';
+  late ApiClient _apiClient;
+
   late WebViewController _controller;
 
   @override
