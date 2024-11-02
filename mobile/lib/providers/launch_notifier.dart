@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/launch_state.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
+import 'package:mobile/services/git_hub_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'launch_notifier.g.dart';
@@ -21,16 +22,18 @@ class LaunchNotifier extends _$LaunchNotifier {
   }
 
   Future<bool> isSignedIn() async {
+    bool isSignedIn = false;
     final token = await SecureStorageRepository().readToken();
-    // TODO: アクセストークンが有効かどうかGitHubのAPIを叩いて確認する。
-    // TODO: ユーザーを取得する。
 
-    // NOTE: 現在はアクセストークンがローカルに保存されているかどうかで判定している。
-    // NOTE: API通信の待機時間を再現するために擬似的に待機している。
+    if (token != null) {
+      final isTokenValid = await GitHubClient.instance.isTokenValid(token);
+      isSignedIn = isTokenValid;
+    }
+
     await Future.delayed(Durations.extralong4);
     setOpacity(1.0);
     await Future.delayed(const Duration(seconds: 3));
 
-    return token != null;
+    return isSignedIn;
   }
 }
