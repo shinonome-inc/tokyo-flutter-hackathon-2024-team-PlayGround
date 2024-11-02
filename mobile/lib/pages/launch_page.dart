@@ -22,10 +22,10 @@ class _LaunchPageState extends ConsumerState<LaunchPage> {
       final isSignedIn = await notifier.isSignedIn();
       if (!mounted) return;
       if (isSignedIn) {
-        context.go(RouterPaths.top);
+        context.go(RouterPaths.home);
         return;
       }
-      context.go(RouterPaths.home);
+      context.go(RouterPaths.top);
     });
   }
 
