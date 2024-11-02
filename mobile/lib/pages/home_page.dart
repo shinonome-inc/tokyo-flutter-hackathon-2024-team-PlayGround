@@ -19,181 +19,190 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeNotifierProvider);
     final notifier = ref.read(homeNotifierProvider.notifier);
-    return Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          Image.asset(
-            ImagePaths.backgroundSummer,
-            fit: BoxFit.cover,
-            width: double.infinity,
-          ),
-          GestureDetector(
-            onTap: () async {
-              await notifier.speakRandomShortMessageByDash();
-            },
-            child: Image.asset(
-              ImagePaths.dash,
-              width: 200.w,
+    return GestureDetector(
+      onTap: () {
+        if (state.showMenuSubButtons) {
+          notifier.setShowMenuSubButtons(false);
+        }
+      },
+      child: Scaffold(
+        body: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset(
+              ImagePaths.backgroundSummer,
+              fit: BoxFit.cover,
+              width: double.infinity,
             ),
-          ),
-          if (state.isStartEatingAnimation)
-            Container(
-              width: 200.w,
-              margin: EdgeInsets.only(top: 80.h),
-              child: AnimatedImagesView(
-                isStart: state.isStartEatingAnimation,
-                imagePathList: ImagePaths.foodWithEffects,
-                intervalMilliseconds: 1200,
-                delayedMilliseconds: 3500,
-                isLoop: false,
-                showOnlyPlaying: true,
+            GestureDetector(
+              onTap: () async {
+                await notifier.speakRandomShortMessageByDash();
+              },
+              child: Image.asset(
+                ImagePaths.dash,
+                width: 200.w,
               ),
             ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 28.h),
-            child: Column(
-              children: [
-                SizedBox(height: 28.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 64.w),
-                  // TODO: 仮のデータなので取得したデータに置き換える。
-                  child: const LevelProgressBar(dash: sampleDash),
+            if (state.isStartEatingAnimation)
+              Container(
+                width: 200.w,
+                margin: EdgeInsets.only(top: 80.h),
+                child: AnimatedImagesView(
+                  isStart: state.isStartEatingAnimation,
+                  imagePathList: ImagePaths.foodWithEffects,
+                  intervalMilliseconds: 1200,
+                  delayedMilliseconds: 3500,
+                  isLoop: false,
+                  showOnlyPlaying: true,
                 ),
-                const Spacer(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      width: 100.0,
-                      child: Column(
-                        children: [
-                          CircularElevatedButton(
-                            onPressed: () async {
-                              await notifier.giveFood();
-                            },
-                            backgroundColor:
-                                AppColors.fetchFeedButtonBackground,
-                            foregroundColor: AppColors.white,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 32.0,
-                                  child: Image.asset(
-                                    ImagePaths.githubMark,
-                                    color: AppColors.white,
-                                  ),
-                                ),
-                                SizedBox(height: 8.h),
-                                const Text(
-                                  'えさを\n補充',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          CircularElevatedButton(
-                            onPressed: () async {
-                              await notifier.giveFood();
-                            },
-                            backgroundColor: AppColors.giveFoodButtonBackground,
-                            foregroundColor: AppColors.white,
-                            child: const Text(
-                              'えさを\nあげる',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          if (state.showMenuSubButtons)
-                            SizedBox(
-                              width: 130.0,
+              ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 28.h),
+              child: Column(
+                children: [
+                  SizedBox(height: 28.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 64.w),
+                    // TODO: 仮のデータなので取得したデータに置き換える。
+                    child: const LevelProgressBar(dash: sampleDash),
+                  ),
+                  const Spacer(),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        width: 100.0,
+                        child: Column(
+                          children: [
+                            CircularElevatedButton(
+                              onPressed: () async {
+                                await notifier.giveFood();
+                              },
+                              backgroundColor:
+                                  AppColors.fetchFeedButtonBackground,
+                              foregroundColor: AppColors.white,
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: <Widget>[
-                                  MenuSubItemButton(
-                                    onPressed: () {
-                                      context.push(RouterPaths.ranking);
-                                    },
-                                    icon: Image.asset(
-                                      ImagePaths.menuSubItemRanking,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 32.0,
+                                    child: Image.asset(
+                                      ImagePaths.githubMark,
+                                      color: AppColors.white,
                                     ),
-                                    text: 'ランキング',
-                                    backgroundColor:
-                                        AppColors.menuSubItemRankingBackground,
                                   ),
-                                  MenuSubItemButton(
-                                    onPressed: () {
-                                      context.push(RouterPaths.makeover);
-                                    },
-                                    icon: Image.asset(
-                                      ImagePaths.menuSubItemDressUp,
+                                  SizedBox(height: 8.h),
+                                  const Text(
+                                    'えさを\n補充',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    text: 'きせかえ',
-                                    backgroundColor:
-                                        AppColors.menuSubItemDefaultBackground,
                                   ),
-                                  MenuSubItemButton(
-                                    onPressed: () {
-                                      context.push(RouterPaths.makeover);
-                                    },
-                                    icon: Image.asset(
-                                      ImagePaths.menuSubItemMakeover,
-                                    ),
-                                    text: '模様替え',
-                                    backgroundColor:
-                                        AppColors.menuSubItemDefaultBackground,
-                                  ),
-                                  MenuSubItemButton(
-                                    onPressed: () {
-                                      context.push(RouterPaths.settings);
-                                    },
-                                    icon: Image.asset(
-                                      ImagePaths.menuSubItemSettings,
-                                    ),
-                                    text: '設定',
-                                    backgroundColor:
-                                        AppColors.menuSubItemSettingsBackground,
-                                  ),
-                                  SizedBox(height: 16.h),
                                 ],
                               ),
                             ),
-                          SizedBox(
-                            width: 100.0,
-                            child: CircularElevatedButton(
-                              onPressed: () {
-                                notifier.toggleShowMenuSubButtons();
+                            const SizedBox(height: 16.0),
+                            CircularElevatedButton(
+                              onPressed: () async {
+                                await notifier.giveFood();
                               },
-                              backgroundColor: AppColors.menuButtonBackground,
-                              child: Image.asset(
-                                ImagePaths.menuButtonIconAndText,
+                              backgroundColor:
+                                  AppColors.giveFoodButtonBackground,
+                              foregroundColor: AppColors.white,
+                              child: const Text(
+                                'えさを\nあげる',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      const Spacer(),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            if (state.showMenuSubButtons)
+                              SizedBox(
+                                width: 130.0,
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: <Widget>[
+                                    MenuSubItemButton(
+                                      onPressed: () {
+                                        context.push(RouterPaths.ranking);
+                                      },
+                                      icon: Image.asset(
+                                        ImagePaths.menuSubItemRanking,
+                                      ),
+                                      text: 'ランキング',
+                                      backgroundColor: AppColors
+                                          .menuSubItemRankingBackground,
+                                    ),
+                                    MenuSubItemButton(
+                                      onPressed: () {
+                                        context.push(RouterPaths.makeover);
+                                      },
+                                      icon: Image.asset(
+                                        ImagePaths.menuSubItemDressUp,
+                                      ),
+                                      text: 'きせかえ',
+                                      backgroundColor: AppColors
+                                          .menuSubItemDefaultBackground,
+                                    ),
+                                    MenuSubItemButton(
+                                      onPressed: () {
+                                        context.push(RouterPaths.makeover);
+                                      },
+                                      icon: Image.asset(
+                                        ImagePaths.menuSubItemMakeover,
+                                      ),
+                                      text: '模様替え',
+                                      backgroundColor: AppColors
+                                          .menuSubItemDefaultBackground,
+                                    ),
+                                    MenuSubItemButton(
+                                      onPressed: () {
+                                        context.push(RouterPaths.settings);
+                                      },
+                                      icon: Image.asset(
+                                        ImagePaths.menuSubItemSettings,
+                                      ),
+                                      text: '設定',
+                                      backgroundColor: AppColors
+                                          .menuSubItemSettingsBackground,
+                                    ),
+                                    SizedBox(height: 16.h),
+                                  ],
+                                ),
+                              ),
+                            SizedBox(
+                              width: 100.0,
+                              child: CircularElevatedButton(
+                                onPressed: () {
+                                  notifier.toggleShowMenuSubButtons();
+                                },
+                                backgroundColor: AppColors.menuButtonBackground,
+                                child: Image.asset(
+                                  ImagePaths.menuButtonIconAndText,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
