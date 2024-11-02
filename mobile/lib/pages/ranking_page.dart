@@ -58,33 +58,38 @@ class _RankingPageState extends ConsumerState<RankingPage> {
               ),
               SizedBox(height: 28.h),
               Expanded(
-                child: Scrollbar(
-                  controller: _controller,
-                  thumbVisibility: true,
-                  trackVisibility: true,
-                  thickness: 6.w,
-                  radius: Radius.circular(40.r),
-                  child: ListView.builder(
-                    controller: _controller,
-                    padding: EdgeInsets.only(right: 16.w),
-                    itemCount: state.ranking?.rankings.length ?? 0,
-                    itemBuilder: (context, index) {
-                      final rank = index + 1;
-                      final user = state.ranking?.rankings.elementAt(index);
-                      if (user == null) {
-                        return const SizedBox.shrink();
-                      }
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 12.h),
-                        child: RankingItem(
-                          rank: rank,
-                          user: user,
-                          dashImagePath: ImagePaths.dash,
+                child: state.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Scrollbar(
+                        controller: _controller,
+                        thumbVisibility: true,
+                        trackVisibility: true,
+                        thickness: 6.w,
+                        radius: Radius.circular(40.r),
+                        child: ListView.builder(
+                          controller: _controller,
+                          padding: EdgeInsets.only(right: 16.w),
+                          itemCount: state.ranking?.rankings.length ?? 0,
+                          itemBuilder: (context, index) {
+                            final rank = index + 1;
+                            final user =
+                                state.ranking?.rankings.elementAt(index);
+                            if (user == null) {
+                              return const SizedBox.shrink();
+                            }
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 12.h),
+                              child: RankingItem(
+                                rank: rank,
+                                user: user,
+                                dashImagePath: ImagePaths.dash,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                ),
+                      ),
               ),
               SizedBox(height: 16.h),
               SizedBox(
