@@ -96,7 +96,16 @@ class HomePage extends ConsumerWidget {
                           onPressed: () async {
                             await notifier.giveFood();
                           },
-                          child: const Text('えさをあげる'),
+                          backgroundColor: AppColors.giveFoodButtonBackground,
+                          foregroundColor: AppColors.white,
+                          child: const FittedBox(
+                            child: Text(
+                              'えさをあげる',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),

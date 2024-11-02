@@ -26,4 +26,5 @@ class AppColors {
 
   static const menuButtonBackground = Color(0xFFB1D9FA);
   static const fetchFeedButtonBackground = Color(0xFF3B9E64);
+  static const giveFoodButtonBackground = Color(0xFFFF9600);
 }
