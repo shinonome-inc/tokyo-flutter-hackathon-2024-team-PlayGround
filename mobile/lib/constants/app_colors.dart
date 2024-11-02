@@ -25,4 +25,5 @@ class AppColors {
   static const levelProgressBarHeartMain = Color(0xFFDA3E3E);
 
   static const menuButtonBackground = Color(0xFFB1D9FA);
+  static const fetchFeedButtonBackground = Color(0xFF3B9E64);
 }

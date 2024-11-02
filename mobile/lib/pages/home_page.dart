@@ -63,13 +63,42 @@ class HomePage extends ConsumerWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Expanded(
-                      child: CircularElevatedButton(
-                        onPressed: () async {
-                          await notifier.giveFood();
-                        },
-                        child: const Text('エサをあげる'),
-                      ),
+                    Column(
+                      children: [
+                        CircularElevatedButton(
+                          onPressed: () async {
+                            await notifier.giveFood();
+                          },
+                          backgroundColor: AppColors.fetchFeedButtonBackground,
+                          foregroundColor: AppColors.white,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 40.0,
+                                child: Image.asset(
+                                  ImagePaths.githubMark,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                              SizedBox(height: 8.h),
+                              const Text(
+                                'エサを補充',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16.0),
+                        CircularElevatedButton(
+                          onPressed: () async {
+                            await notifier.giveFood();
+                          },
+                          child: const Text('えさをあげる'),
+                        ),
+                      ],
                     ),
                     const Spacer(),
                     Expanded(
