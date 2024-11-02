@@ -19,4 +19,13 @@ class TalkScripts {
   ];
 
   static const String eatingMessage = 'いただきます。あむあむ。あむあむ。あむあむ。おいしい！ごちそうさまでした！';
+
+  static const String promptInjectionWordMessage =
+      'きんしされていることばがふくまれているよ...。しつもんのないようをかえてみてね。';
+
+  static const String generativeAIExceptionMessage =
+      'そのしつもんにはこたえることができないよ...。しつもんのないようをかえてみてね。';
+
+  static const String exceptionMessage =
+      'ちょっといんたーねっとのせつぞくがわるいみたい...。もうしわけないけどもういちどしつもんしなおしてもらえるとうれしいな！';
 }

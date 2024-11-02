@@ -11,7 +11,7 @@ import 'package:mobile/pages/top_page.dart';
 
 /// プロジェクトの画面遷移に関するルーティング設定です。
 final router = GoRouter(
-  initialLocation: RouterPaths.launch,
+  initialLocation: RouterPaths.home,
   routes: [
     GoRoute(
       path: RouterPaths.launch,
