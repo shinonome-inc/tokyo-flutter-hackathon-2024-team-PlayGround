@@ -204,6 +204,12 @@ class HomePage extends ConsumerWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.push(RouterPaths.food);
+        },
+        child: const Icon(Icons.food_bank),
+      ),
     );
   }
 }

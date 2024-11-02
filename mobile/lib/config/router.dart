@@ -8,6 +8,7 @@ import 'package:mobile/pages/makeover_page.dart';
 import 'package:mobile/pages/ranking_page.dart';
 import 'package:mobile/pages/settings_page.dart';
 import 'package:mobile/pages/top_page.dart';
+import 'package:mobile/providers/food_page.dart';
 
 /// プロジェクトの画面遷移に関するルーティング設定です。
 final router = GoRouter(
@@ -73,6 +74,15 @@ final router = GoRouter(
         return MaterialPage(
           key: state.pageKey,
           child: const SettingsPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RouterPaths.food,
+      pageBuilder: (context, state) {
+        return MaterialPage(
+          key: state.pageKey,
+          child: const FoodPage(),
         );
       },
     ),

@@ -7,4 +7,5 @@ class PrefsKeys {
   static const enableVoice = 'enableVoice';
   static const dressUp = 'dressUp';
   static const makeover = 'makeover';
+  static const food = 'food';
 }
