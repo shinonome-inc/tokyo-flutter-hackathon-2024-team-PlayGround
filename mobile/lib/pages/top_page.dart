@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,8 +7,8 @@ import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/providers/top_notifier.dart';
-import 'package:mobile/repositories/api_client.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
+import 'package:mobile/services/repositori_client.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TopPage extends ConsumerStatefulWidget {
@@ -21,15 +20,12 @@ class TopPage extends ConsumerStatefulWidget {
 
 class _TopPageState extends ConsumerState<TopPage> {
   final clientId = dotenv.env['GITHUB_CLIENT_ID']!;
-  final baseUrl = dotenv.env['ENDPOINT']!;
   final String redirectUri = 'https://shinonome.com';
-  late ApiClient _apiClient;
   late WebViewController _controller;
 
   @override
   void initState() {
     super.initState();
-    _apiClient = ApiClient(Dio(), baseUrl: baseUrl);
     _controller = WebViewController();
 
     // WebViewControllerのカスタマイズ
@@ -63,27 +59,17 @@ class _TopPageState extends ConsumerState<TopPage> {
     _controller.loadRequest(Uri.parse(authorizationUrl));
   }
 
-  // 認証後にリダイレクトされたURLから認証コードを取得
   Future<void> handleAuthCallback(String code) async {
+    String token = '';
     try {
-      final response = await _apiClient.getAccessToken(code);
-
-      if (response.response.statusCode == 200) {
-        final accessToken = response.data.access_token;
-
-        // アクセストークンをセキュアストレージに保存
-        await SecureStorageRepository().writeToken(accessToken);
-        print('アクセストークンを保存しました: $accessToken');
-
-        if (mounted) {
-          context.go(RouterPaths.home); // 認証成功時にホーム画面に遷移
-        }
-      } else {
-        print('アクセストークンの取得に失敗しました: ${response.response.statusMessage}');
-      }
+      token = await RepositoriClient.instance.fetchAccessToken(code);
     } catch (e) {
-      print('エラーが発生しました: $e');
+      // TODO: エラー処理を追加する。
+      throw Exception('Failed to fetch access token: $e');
     }
+    await SecureStorageRepository().writeToken(token);
+    if (!mounted) return;
+    context.go(RouterPaths.home);
   }
 
   @override
