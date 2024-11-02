@@ -11,6 +11,9 @@ class LevelProgressBar extends StatelessWidget {
 
   final Dash dash;
 
+  final _strokeWidth = 1.8;
+  final _fontWeight = FontWeight.w500;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -27,9 +30,10 @@ class LevelProgressBar extends StatelessWidget {
                 'Lv.${dash.level}',
                 textColor: AppColors.white,
                 strokeColor: AppColors.levelProgressBarOutline,
-                style: const TextStyle(
+                strokeWidth: _strokeWidth,
+                style: TextStyle(
                   fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: _fontWeight,
                 ),
               ),
               Container(
@@ -48,9 +52,10 @@ class LevelProgressBar extends StatelessWidget {
                 '${dash.currentExp} / ${dash.maxExp}',
                 textColor: AppColors.white,
                 strokeColor: AppColors.levelProgressBarOutline,
-                style: const TextStyle(
+                strokeWidth: _strokeWidth,
+                style: TextStyle(
                   fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: _fontWeight,
                 ),
               ),
             ],
