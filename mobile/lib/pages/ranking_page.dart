@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/image_paths.dart';
-import 'package:mobile/models/ranking.dart';
+import 'package:mobile/providers/ranking_notifier.dart';
 import 'package:mobile/widgets/ranking_item.dart';
 
-class RankingPage extends StatefulWidget {
+class RankingPage extends ConsumerStatefulWidget {
   const RankingPage({super.key});
 
   @override
-  State<RankingPage> createState() => _RankingPageState();
+  ConsumerState createState() => _RankingPageState();
 }
 
-class _RankingPageState extends State<RankingPage> {
+class _RankingPageState extends ConsumerState<RankingPage> {
   final _controller = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+    Future(() async {
+      final notifier = ref.read(rankingNotifierProvider.notifier);
+      await notifier.fetchRanking();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final state = ref.watch(rankingNotifierProvider);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -47,29 +58,38 @@ class _RankingPageState extends State<RankingPage> {
               ),
               SizedBox(height: 28.h),
               Expanded(
-                child: Scrollbar(
-                  controller: _controller,
-                  thumbVisibility: true,
-                  trackVisibility: true,
-                  thickness: 6.w,
-                  radius: Radius.circular(40.r),
-                  child: ListView.builder(
-                    controller: _controller,
-                    padding: EdgeInsets.only(right: 16.w),
-                    itemCount: exampleRankings.length,
-                    itemBuilder: (context, index) {
-                      final rank = index + 1;
-                      final ranking = exampleRankings.elementAt(index);
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 12.h),
-                        child: RankingItem(
-                          rank: rank,
-                          ranking: ranking,
+                child: state.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Scrollbar(
+                        controller: _controller,
+                        thumbVisibility: true,
+                        trackVisibility: true,
+                        thickness: 6.w,
+                        radius: Radius.circular(40.r),
+                        child: ListView.builder(
+                          controller: _controller,
+                          padding: EdgeInsets.only(right: 16.w),
+                          itemCount: state.ranking?.rankings.length ?? 0,
+                          itemBuilder: (context, index) {
+                            final rank = index + 1;
+                            final user =
+                                state.ranking?.rankings.elementAt(index);
+                            if (user == null) {
+                              return const SizedBox.shrink();
+                            }
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 12.h),
+                              child: RankingItem(
+                                rank: rank,
+                                user: user,
+                                dashImagePath: ImagePaths.dash,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                ),
+                      ),
               ),
               SizedBox(height: 16.h),
               SizedBox(
