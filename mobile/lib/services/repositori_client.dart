@@ -98,6 +98,9 @@ class RepositoriClient {
       }
     } catch (e) {
       debugPrint('模様替え失敗:$e');
+    }
+  }
+
   Future<int> getFeedCount() async {
     final response = await _dio.post('/get_feed');
     if (response.statusCode == 200) {
