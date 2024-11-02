@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/constants/dress_up_options.dart';
 import 'package:mobile/constants/makeover_options.dart';
+import 'package:mobile/models/ranking.dart';
 
 class RepositoriClient {
   RepositoriClient._() {
@@ -35,6 +38,22 @@ class RepositoriClient {
     } else {
       throw Exception(
         'Failed to fetch access token with status code ${response.statusCode}',
+      );
+    }
+  }
+
+  Future<Ranking> fetchRanking() async {
+    final response = await _dio.get(
+      '/ranking',
+      options: Options(
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      ),
+    );
+    if (response.statusCode == 200) {
+      return Ranking.fromJson(response.data);
+    } else {
+      throw Exception(
+        'Failed to fetch ranking with status code ${response.statusCode}',
       );
     }
   }
