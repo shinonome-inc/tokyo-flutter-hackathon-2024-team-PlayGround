@@ -6,11 +6,11 @@ import 'package:mobile/constants/makeover_options.dart';
 
 class RepositoriClient {
   RepositoriClient._() {
-    final baseUrl = dotenv.env['ENDPOINT'] ?? '';
-    final accessToken = dotenv.env['ACCESS_TOKEN'] ?? '';
-    debugPrint(accessToken);
+    final baseUrl = dotenv.env['ENDPOINT'];
+    if (baseUrl == null || baseUrl.isEmpty) {
+      throw Exception('ENDPOINT is not defined.');
+    }
     _dio.options.baseUrl = baseUrl;
-    _dio.options.headers['Authorization'] = accessToken;
     //ログを沢山吐かせるやつ
     _dio.interceptors.add(LogInterceptor());
   }
@@ -29,7 +29,9 @@ class RepositoriClient {
       queryParameters: {'code': code},
     );
     if (response.statusCode == 200) {
-      return response.data['access_token'];
+      final token = response.data['access_token'];
+      _dio.options.headers['Authorization'] = 'token $token';
+      return token;
     } else {
       throw Exception(
         'Failed to fetch access token with status code ${response.statusCode}',
