@@ -104,8 +104,8 @@ class HomePage extends ConsumerWidget {
                             ),
                             const SizedBox(height: 16.0),
                             CircularElevatedButton(
-                              onPressed: () async {
-                                await notifier.giveFood();
+                              onPressed: () {
+                                context.push(RouterPaths.food);
                               },
                               backgroundColor:
                                   AppColors.giveFoodButtonBackground,
@@ -202,12 +202,6 @@ class HomePage extends ConsumerWidget {
               ),
             ),
           ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            context.push(RouterPaths.food);
-          },
-          child: const Icon(Icons.food_bank),
         ),
       ),
     );
