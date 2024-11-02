@@ -25,8 +25,11 @@ class LaunchNotifier extends _$LaunchNotifier {
     // TODO: ユーザーを取得する。
 
     // NOTE: 現在はアクセストークンがローカルに保存されているかどうかで判定している。
-    // NOTE: API通信の待機時間を再現するために擬似的に1.5秒待機している。
-    await Future.delayed(const Duration(milliseconds: 1500));
+    // NOTE: API通信の待機時間を再現するために擬似的に待機している。
+    await Future.delayed(const Duration(milliseconds: 1000));
+    setOpacity(1.0);
+    await Future.delayed(const Duration(milliseconds: 2000));
+
     return token != null;
   }
 }
