@@ -18,6 +18,7 @@ class PanelGridView<T> extends StatelessWidget {
     required this.selectedValue,
     required this.onConfirm,
     this.foodCount,
+    this.confirtText = '決定',
   });
 
   final String title;
@@ -27,10 +28,10 @@ class PanelGridView<T> extends StatelessWidget {
   final DisplayOption selectedValue;
   final Function onConfirm;
   final int? foodCount;
+  final String confirtText;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Container(
       width: 300.w,
       decoration: BoxDecoration(
@@ -147,7 +148,7 @@ class PanelGridView<T> extends StatelessWidget {
                 ),
                 SizedBox(width: 10.w),
                 CustomTextButton(
-                  text: '決定',
+                  text: confirtText,
                   textColor: AppColors.white,
                   backgroundColor: AppColors.primaryGold,
                   onPressed: () => onConfirm(),

@@ -5,6 +5,7 @@ import 'package:mobile/constants/display_option.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/providers/food_notifier.dart';
+import 'package:mobile/providers/home_notifier.dart';
 import 'package:mobile/widgets/panel_grid_view.dart';
 
 class FoodPage extends ConsumerWidget {
@@ -14,6 +15,7 @@ class FoodPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(foodNotifierProvider.notifier);
     final state = ref.watch(foodNotifierProvider);
+    final homeNotifier = ref.read(homeNotifierProvider.notifier);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -42,10 +44,14 @@ class FoodPage extends ConsumerWidget {
                   if (context.mounted) {
                     context.go(RouterPaths.home);
                   }
+                  WidgetsBinding.instance.addPostFrameCallback((_) async {
+                    await homeNotifier.giveFood();
+                  });
                 },
                 values: notifier.values,
                 selectedValue: state,
                 foodCount: 5,
+                confirtText: 'あげる',
               ),
             ),
           ],
