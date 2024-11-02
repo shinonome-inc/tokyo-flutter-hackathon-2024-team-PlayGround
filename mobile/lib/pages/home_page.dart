@@ -79,7 +79,7 @@ class HomePage extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  height: 40.0,
+                                  height: 32.0,
                                   child: Image.asset(
                                     ImagePaths.githubMark,
                                     color: AppColors.white,
@@ -87,7 +87,8 @@ class HomePage extends ConsumerWidget {
                                 ),
                                 SizedBox(height: 8.h),
                                 const Text(
-                                  'エサを補充',
+                                  'えさを\n補充',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -102,12 +103,11 @@ class HomePage extends ConsumerWidget {
                             },
                             backgroundColor: AppColors.giveFoodButtonBackground,
                             foregroundColor: AppColors.white,
-                            child: const FittedBox(
-                              child: Text(
-                                'えさをあげる',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            child: const Text(
+                              'えさを\nあげる',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
