@@ -78,7 +78,7 @@ def lambda_handler(event, context):
             'characterName': 'DASH',
             'characterLevel': int(1),
             'characterExperience': int(0),
-            'characterClothes': 'default',
+            'characterClothes': 'normal',
             'characterBackground': 'spring',
             'feedCount': int(0),
             'feededCount': int(0),

@@ -22,6 +22,11 @@ class RepositoriClient {
 
   static final RepositoriClient instance = RepositoriClient._();
 
+  void setToken(String token) {
+    print('set token: $token');
+    _dio.options.headers['Authorization'] = token;
+  }
+
   /// 認証コードを使ってアクセストークンを取得する。
   ///
   /// [code] リダイレクトURLから取得した認証コード。
@@ -31,9 +36,10 @@ class RepositoriClient {
       '/token',
       queryParameters: {'code': code},
     );
+    print('fetch access token with status code ${response.statusCode}');
     if (response.statusCode == 200) {
       final token = response.data['access_token'];
-      _dio.options.headers['Authorization'] = 'token $token';
+      setToken(token);
       return token;
     } else {
       throw Exception(
@@ -90,5 +96,14 @@ class RepositoriClient {
     } catch (e) {
       debugPrint('模様替え失敗:$e');
     }
+  }
+
+  Future<int> getFeedCount() async {
+    final response = await _dio.post('/get_feed');
+    if (response.statusCode == 200) {
+      debugPrint('えさ取得成功${response.data}');
+      return response.data['feedCount'] ?? 0;
+    }
+    throw Exception('えさ取得失敗: ${response.statusCode}');
   }
 }
