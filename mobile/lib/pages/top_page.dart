@@ -1,20 +1,21 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/repositories/api_client.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class TopPage extends StatefulWidget {
+class TopPage extends ConsumerStatefulWidget {
   const TopPage({super.key});
 
   @override
-  State<TopPage> createState() => _TopPageState();
+  ConsumerState createState() => _TopPageState();
 }
 
-class _TopPageState extends State<TopPage> {
+class _TopPageState extends ConsumerState<TopPage> {
   final clientId = dotenv.env['GITHUB_CLIENT_ID']!;
   final baseUrl = dotenv.env['ENDPOINT']!;
   final String redirectUri = 'https://shinonome.com';
