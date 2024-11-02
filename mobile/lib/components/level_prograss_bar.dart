@@ -32,10 +32,17 @@ class LevelProgressBar extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              LinearProgressIndicator(
-                value: dash.currentExp / dash.maxExp,
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
-                minHeight: 20.h,
+              Container(
+                padding: const EdgeInsets.all(2.0),
+                color: AppColors.white,
+                child: LinearProgressIndicator(
+                  value: dash.currentExp / dash.maxExp,
+                  backgroundColor: AppColors.levelProgressBarOutline,
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    AppColors.levelProgressBarMain,
+                  ),
+                  minHeight: 20.h,
+                ),
               ),
               StrokedText(
                 '${dash.currentExp} / ${dash.maxExp}',
