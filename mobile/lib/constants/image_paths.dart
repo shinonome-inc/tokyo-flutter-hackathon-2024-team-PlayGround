@@ -6,6 +6,9 @@ class ImagePaths {
 
   static const launchCover = 'assets/images/launch_cover.png';
 
+  static const logo = 'assets/images/logo.png';
+  static const dashDynamic = 'assets/images/dash_dynamic.png';
+
   static const levelProgressBarHeart =
       'assets/images/level_progress_bar_heart.png';
   static const menuButtonIconAndText =
