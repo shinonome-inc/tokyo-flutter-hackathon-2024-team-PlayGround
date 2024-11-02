@@ -37,6 +37,12 @@ class DressUpPage extends ConsumerWidget {
                 onSelected: (DisplayOption value) {
                   notifier.setDressUp(value);
                 },
+                onConfirm: () async {
+                  await notifier.storeDressUp();
+                  if (context.mounted) {
+                    context.go(RouterPaths.home);
+                  }
+                },
                 values: notifier.values,
                 selectedValue: state,
               ),

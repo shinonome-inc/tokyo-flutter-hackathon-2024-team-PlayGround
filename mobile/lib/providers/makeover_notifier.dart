@@ -1,5 +1,6 @@
 import 'package:mobile/constants/display_option.dart';
 import 'package:mobile/constants/makeover_options.dart';
+import 'package:mobile/repositories/shared_preferences_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'makeover_notifier.g.dart';
@@ -8,11 +9,19 @@ part 'makeover_notifier.g.dart';
 class MakeoverNotifier extends _$MakeoverNotifier {
   @override
   MakeoverOptions build() {
-    return MakeoverOptions.spring;
+    return _loadInitialMakeoverFromLocalStorage();
   }
 
-  void setDressUp(DisplayOption dressUp) {
-    state = dressUp as MakeoverOptions;
+  MakeoverOptions _loadInitialMakeoverFromLocalStorage() {
+    return SharedPreferencesRepository.instance.getMakeover();
+  }
+
+  void setMakeover(DisplayOption makeover) {
+    state = makeover as MakeoverOptions;
+  }
+
+  Future<void> storeMakeover() async {
+    await SharedPreferencesRepository.instance.setMakeover(state);
   }
 
   get values => MakeoverOptions.values;

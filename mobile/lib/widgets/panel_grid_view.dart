@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/app_colors.dart';
@@ -17,6 +15,7 @@ class PanelGridView<T> extends StatelessWidget {
     required this.onSelected,
     required this.values,
     required this.selectedValue,
+    required this.onConfirm,
   });
 
   final String title;
@@ -24,6 +23,7 @@ class PanelGridView<T> extends StatelessWidget {
   final void Function(DisplayOption) onSelected;
   final List<DisplayOption> values;
   final DisplayOption selectedValue;
+  final Function onConfirm;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,6 @@ class PanelGridView<T> extends StatelessWidget {
                   SizedBox(height: 8.h),
                 ],
               ),
-
             Row(
               children: [
                 SelectPanel(
@@ -129,11 +128,12 @@ class PanelGridView<T> extends StatelessWidget {
                   onPressed: () => context.go(RouterPaths.home),
                 ),
                 SizedBox(width: 10.w),
-                const CustomTextButton(
+                CustomTextButton(
                   text: '決定',
                   textColor: AppColors.white,
                   backgroundColor: AppColors.primaryGold,
-                ),
+                  onPressed: () => onConfirm(),
+                )
               ],
             )
           ],
