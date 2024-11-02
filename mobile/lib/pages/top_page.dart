@@ -2,7 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/constants/app_colors.dart';
+import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/repositories/api_client.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
@@ -83,22 +86,43 @@ class _TopPageState extends ConsumerState<TopPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('TopPage'),
-      ),
-      body: Column(
+      body: Stack(
+        alignment: Alignment.center,
         children: [
-          Expanded(child: WebViewWidget(controller: _controller)),
+          Image.asset(
+            ImagePaths.launchCover,
+            fit: BoxFit.cover,
+          ),
+          Container(
+            color: AppColors.black.withOpacity(0.6),
+          ),
           ElevatedButton(
-              onPressed: _launchGitHubAuth,
-              child: const Text('Sign in with GitHub')),
+            onPressed: _launchGitHubAuth,
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 12.w, horizontal: 16.w),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.r),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 28.w,
+                  child: Image.asset(ImagePaths.githubMark),
+                ),
+                SizedBox(width: 12.w),
+                Text(
+                  'GitHubでログイン',
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    color: AppColors.githubSignInButtonBackground,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.go(RouterPaths.home);
-        },
-        child: const Icon(Icons.home),
       ),
     );
   }

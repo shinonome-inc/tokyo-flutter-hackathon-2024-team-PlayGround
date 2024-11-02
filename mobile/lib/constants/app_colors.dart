@@ -10,6 +10,8 @@ class AppColors {
   static const white = Color(0xFFFFFFFF);
   static const foodCountRed = Color(0xFFB1972C);
 
+  static const githubSignInButtonBackground = Color(0xFF3B949E);
+
   static const settingsBackground = Color(0xFFB1D9FA);
   static const settingsCloseButtonBackground = Color(0xFF517FA4);
   static const settingsSectionBackground = Color(0xFFF6F6F6);
