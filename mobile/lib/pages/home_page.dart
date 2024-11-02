@@ -15,6 +15,8 @@ import 'package:mobile/providers/dress_up_notifier.dart';
 import 'package:mobile/providers/food_notifier.dart';
 import 'package:mobile/providers/home_notifier.dart';
 import 'package:mobile/providers/makeover_notifier.dart';
+import 'package:mobile/services/voice_box_client.dart';
+import 'package:mobile/utils/text_speaker.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -209,9 +211,6 @@ class HomePage extends ConsumerWidget {
               ),
             ),
           ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
         ),
       ),
     );
