@@ -20,8 +20,8 @@ class _LaunchPageState extends ConsumerState<LaunchPage> {
     super.initState();
     Future(() async {
       final notifier = ref.read(launchNotifierProvider.notifier);
-      await ref.read(homeNotifierProvider.notifier).fetchHome();
       final isSignedIn = await notifier.isSignedIn();
+      await ref.read(homeNotifierProvider.notifier).fetchHome();
       if (!mounted) return;
       if (isSignedIn) {
         context.go(RouterPaths.home);

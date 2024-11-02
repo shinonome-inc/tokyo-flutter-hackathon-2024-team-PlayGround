@@ -210,9 +210,6 @@ class HomePage extends ConsumerWidget {
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-        ),
       ),
     );
   }

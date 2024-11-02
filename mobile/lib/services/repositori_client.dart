@@ -48,6 +48,8 @@ class RepositoriClient {
   }
 
   Future<Home> fetchHome() async {
+    print('home token');
+    print(_dio.options.headers['Authorization']);
     final response = await _dio.get(
       '/home',
       options: Options(
