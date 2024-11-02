@@ -23,6 +23,7 @@ class RepositoriClient {
   ///
   /// [code] リダイレクトURLから取得した認証コード。
   Future<String> fetchAccessToken(String code) async {
+    print('code: $code');
     final response = await _dio.get(
       '/token',
       queryParameters: {'code': code},

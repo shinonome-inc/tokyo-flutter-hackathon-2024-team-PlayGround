@@ -23,7 +23,6 @@ class _TopPageState extends ConsumerState<TopPage> {
   final clientId = dotenv.env['GITHUB_CLIENT_ID']!;
   final baseUrl = dotenv.env['ENDPOINT']!;
   final String redirectUri = 'https://shinonome.com';
-  late ApiClient _apiClient;
 
   late WebViewController _controller;
 
@@ -42,6 +41,7 @@ class _TopPageState extends ConsumerState<TopPage> {
             if (url.startsWith(redirectUri)) {
               final uri = Uri.parse(url);
               final code = uri.queryParameters['code'];
+              print('code: $code');
               if (code == null) return;
 
               handleAuthCallback(code); // 認証コードを処理
@@ -67,11 +67,12 @@ class _TopPageState extends ConsumerState<TopPage> {
     final state = ref.read(topNotifierProvider);
     final notifier = ref.read(topNotifierProvider.notifier);
 
-    if (!state.isLoading) return;
+    if (state.isLoading) return;
     notifier.setLoading(true);
     String token = '';
     try {
       token = await RepositoriClient.instance.fetchAccessToken(code);
+      print('token: $token');
     } catch (e) {
       // TODO: エラー処理を追加する。
       throw Exception('Failed to fetch access token: $e');
