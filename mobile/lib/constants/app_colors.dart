@@ -23,4 +23,6 @@ class AppColors {
   static const levelProgressBarOutline = Color(0xFF9D3C3C);
   static const levelProgressBarMain = Color(0xFFF47272);
   static const levelProgressBarHeartMain = Color(0xFFDA3E3E);
+
+  static const menuButtonBackground = Color(0xFFB1D9FA);
 }

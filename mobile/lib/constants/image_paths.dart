@@ -6,6 +6,8 @@ class ImagePaths {
 
   static const levelProgressBarHeart =
       'assets/images/level_progress_bar_heart.png';
+  static const menuButtonIconAndText =
+      'assets/images/menu_button_icon_and_text.png';
 
   static const backgroundSpring = 'assets/images/background_spring.png';
   static const backgroundSummer = 'assets/images/background_summer.png';
