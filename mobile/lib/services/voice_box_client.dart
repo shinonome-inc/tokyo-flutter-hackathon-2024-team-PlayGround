@@ -1,19 +1,16 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/models/voice_box/audio_query.dart';
-import 'package:mobile/utils/file_converter.dart';
-import 'package:mobile/utils/text_speaker.dart';
-import 'package:path_provider/path_provider.dart';
 
 class VoiceBoxClient {
   VoiceBoxClient._() {
-    const baseUrl = '';
+    final baseUrl = dotenv.env['VOICE_BOX_API_BASE_URL'];
+    if (baseUrl == null || baseUrl.isEmpty) {
+      throw Exception('ENDPOINT is not defined.');
+    }
     _dio.options.baseUrl = baseUrl;
     _dio.options.headers = {'Content-Type': 'application/json'};
   }
@@ -22,11 +19,11 @@ class VoiceBoxClient {
 
   static final VoiceBoxClient instance = VoiceBoxClient._();
 
-  Future<Uint8List> fetchVoiceData() async {
+  Future<Uint8List> fetchVoiceData(String text) async {
     final response = await _dio.post(
       '',
       data: {
-        'text': 'おはよう',
+        'text': text,
       },
       options: Options(
         responseType: ResponseType.bytes, // バイナリデータとして受け取る

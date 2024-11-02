@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/pages/dress_up_page.dart';
 import 'package:mobile/pages/home_page.dart';
-import 'package:mobile/pages/launch_page.dart';
 import 'package:mobile/pages/makeover_page.dart';
 import 'package:mobile/pages/ranking_page.dart';
 import 'package:mobile/pages/settings_page.dart';

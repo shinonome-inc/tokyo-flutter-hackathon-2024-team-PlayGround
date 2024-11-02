@@ -1,5 +1,4 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:mobile/services/voice_box_client.dart';
 import 'package:mobile/utils/file_converter.dart';
@@ -26,7 +25,7 @@ class TextSpeaker {
   }
 
   Future<void> _speakTextWithVoiceBox(String text, bool isAfterDelay) async {
-    final bytes = await VoiceBoxClient.instance.fetchVoiceData();
+    final bytes = await VoiceBoxClient.instance.fetchVoiceData(text);
     final file = await FileConverter.convertBytesToWavFile(bytes);
     await _audioPlayer.play(DeviceFileSource(file.path));
     if (!isAfterDelay) {

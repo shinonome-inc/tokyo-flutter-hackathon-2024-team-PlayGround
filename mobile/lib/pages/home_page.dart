@@ -212,11 +212,6 @@ class HomePage extends ConsumerWidget {
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await TextSpeaker.instance.speakText('aaa');
-          },
-        ),
       ),
     );
   }
