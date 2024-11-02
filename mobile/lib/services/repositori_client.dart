@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mobile/models/feed.dart';
 import 'package:mobile/constants/dress_up_options.dart';
 import 'package:mobile/constants/makeover_options.dart';
 import 'package:mobile/models/home.dart';
@@ -129,5 +130,14 @@ class RepositoriClient {
       return response.data['feedCount'] ?? 0;
     }
     throw Exception('えさ取得失敗: ${response.statusCode}');
+  }
+
+  Future<Feed> postFeed() async {
+    final response = await _dio.post('/feed');
+    if (response.statusCode == 200) {
+      debugPrint('えさやり成功${response.data}');
+      return Feed.fromJson(response.data);
+    }
+    throw Exception('えさやり失敗: ${response.statusCode}');
   }
 }

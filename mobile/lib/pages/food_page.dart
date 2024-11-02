@@ -41,6 +41,7 @@ class FoodPage extends ConsumerWidget {
                 },
                 onConfirm: () async {
                   await notifier.storeFood();
+                  await notifier.postFood();
                   if (context.mounted) {
                     context.go(RouterPaths.home);
                   }
@@ -50,6 +51,8 @@ class FoodPage extends ConsumerWidget {
                 },
                 values: notifier.values,
                 selectedValue: state,
+
+                ///foodCountをhomeNotifierから受け取る
                 foodCount: 5,
                 confirtText: 'あげる',
               ),
