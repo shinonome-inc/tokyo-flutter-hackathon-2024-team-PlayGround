@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/components/animated_images_view.dart';
 import 'package:mobile/components/circlar_elevated_button.dart';
-import 'package:mobile/components/level_prograss_bar.dart';
+import 'package:mobile/components/level_progress_bar.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/models/dash.dart';
