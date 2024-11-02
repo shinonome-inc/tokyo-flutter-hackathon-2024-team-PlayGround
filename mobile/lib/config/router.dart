@@ -17,10 +17,7 @@ final router = GoRouter(
     GoRoute(
       path: RouterPaths.launch,
       pageBuilder: (context, state) {
-        return MaterialPage(
-          key: state.pageKey,
-          child: const LaunchPage(),
-        );
+        return MaterialPage(key: state.pageKey, child: const TopPage());
       },
     ),
     GoRoute(

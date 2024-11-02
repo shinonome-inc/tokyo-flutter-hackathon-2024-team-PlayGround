@@ -26,8 +26,7 @@ class TextSpeaker {
   }
 
   Future<void> _speakTextWithVoiceBox(String text, bool isAfterDelay) async {
-    final query = await VoiceBoxClient.instance.createQuery(text: text);
-    final bytes = await VoiceBoxClient.instance.createVoice(query: query);
+    final bytes = await VoiceBoxClient.instance.fetchVoiceData();
     final file = await FileConverter.convertBytesToWavFile(bytes);
     await _audioPlayer.play(DeviceFileSource(file.path));
     if (!isAfterDelay) {
@@ -49,11 +48,6 @@ class TextSpeaker {
     String text, {
     bool isAfterDelay = false,
   }) async {
-    final bool useVoiceBox = bool.parse(dotenv.env['USE_VOICE_BOX'] ?? 'false');
-    if (useVoiceBox) {
-      await _speakTextWithVoiceBox(text, isAfterDelay);
-    } else {
-      await _speakTextWithFlutterTts(text);
-    }
+    await _speakTextWithVoiceBox(text, isAfterDelay);
   }
 }
