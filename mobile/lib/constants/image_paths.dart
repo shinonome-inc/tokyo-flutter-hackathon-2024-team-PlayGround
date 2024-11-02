@@ -48,12 +48,95 @@ class ImagePaths {
       'assets/images/food_with_effect/food_with_effect_step6.png';
   static const foodWithEffectStep7 =
       'assets/images/food_with_effect/food_with_effect_step7.png';
+  static const ramenWithEffectStep1 =
+      'assets/images/food_with_effect/ramen_with_effect_step1.png';
+  static const ramenWithEffectStep2 =
+      'assets/images/food_with_effect/ramen_with_effect_step2.png';
+  static const ramenWithEffectStep3 =
+      'assets/images/food_with_effect/ramen_with_effect_step3.png';
+  static const ramenWithEffectStep4 =
+      'assets/images/food_with_effect/ramen_with_effect_step4.png';
+  static const ramenWithEffectStep5 =
+      'assets/images/food_with_effect/ramen_with_effect_step5.png';
+
+  static const tteokbokkiWithEffectStep1 =
+      'assets/images/food_with_effect/tteokbokki_with_effect_step1.png';
+  static const tteokbokkiWithEffectStep2 =
+      'assets/images/food_with_effect/tteokbokki_with_effect_step2.png';
+  static const tteokbokkiWithEffectStep3 =
+      'assets/images/food_with_effect/tteokbokki_with_effect_step3.png';
+  static const tteokbokkiWithEffectStep4 =
+      'assets/images/food_with_effect/tteokbokki_with_effect_step4.png';
+  static const tteokbokkiWithEffectStep5 =
+      'assets/images/food_with_effect/tteokbokki_with_effect_step5.png';
+
+  static const mapoTofuWithEffectStep1 =
+      'assets/images/food_with_effect/mapo_tofu_with_effect_step1.png';
+  static const mapoTofuWithEffectStep2 =
+      'assets/images/food_with_effect/mapo_tofu_with_effect_step2.png';
+  static const mapoTofuWithEffectStep3 =
+      'assets/images/food_with_effect/mapo_tofu_with_effect_step3.png';
+  static const mapoTofuWithEffectStep4 =
+      'assets/images/food_with_effect/mapo_tofu_with_effect_step4.png';
+  static const mapoTofuWithEffectStep5 =
+      'assets/images/food_with_effect/mapo_tofu_with_effect_step5.png';
+
+  static const curryWithEffectStep1 =
+      'assets/images/food_with_effect/curry_with_effect_step1.png';
+  static const curryWithEffectStep2 =
+      'assets/images/food_with_effect/curry_with_effect_step2.png';
+  static const curryWithEffectStep3 =
+      'assets/images/food_with_effect/curry_with_effect_step3.png';
+  static const curryWithEffectStep4 =
+      'assets/images/food_with_effect/curry_with_effect_step4.png';
+  static const curryWithEffectStep5 =
+      'assets/images/food_with_effect/curry_with_effect_step5.png';
+
   static const foodWithEffects = [
     foodWithEffectStep1,
     foodWithEffectStep2,
     foodWithEffectStep3,
     foodWithEffectStep4,
     foodWithEffectStep5,
+    foodWithEffectStep6,
+    foodWithEffectStep7,
+  ];
+  static const ramenWithEffects = [
+    ramenWithEffectStep1,
+    ramenWithEffectStep2,
+    ramenWithEffectStep3,
+    ramenWithEffectStep4,
+    ramenWithEffectStep5,
+    foodWithEffectStep6,
+    foodWithEffectStep7,
+  ];
+
+  static const tteokbokkiWithEffects = [
+    tteokbokkiWithEffectStep1,
+    tteokbokkiWithEffectStep2,
+    tteokbokkiWithEffectStep3,
+    tteokbokkiWithEffectStep4,
+    tteokbokkiWithEffectStep5,
+    foodWithEffectStep6,
+    foodWithEffectStep7,
+  ];
+
+  static const mapoTofuWithEffects = [
+    mapoTofuWithEffectStep1,
+    mapoTofuWithEffectStep2,
+    mapoTofuWithEffectStep3,
+    mapoTofuWithEffectStep4,
+    mapoTofuWithEffectStep5,
+    foodWithEffectStep6,
+    foodWithEffectStep7,
+  ];
+
+  static const curryWithEffects = [
+    curryWithEffectStep1,
+    curryWithEffectStep2,
+    curryWithEffectStep3,
+    curryWithEffectStep4,
+    curryWithEffectStep5,
     foodWithEffectStep6,
     foodWithEffectStep7,
   ];

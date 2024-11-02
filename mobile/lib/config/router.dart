@@ -8,7 +8,7 @@ import 'package:mobile/pages/makeover_page.dart';
 import 'package:mobile/pages/ranking_page.dart';
 import 'package:mobile/pages/settings_page.dart';
 import 'package:mobile/pages/top_page.dart';
-import 'package:mobile/providers/food_page.dart';
+import 'package:mobile/pages/food_page.dart';
 
 /// プロジェクトの画面遷移に関するルーティング設定です。
 final router = GoRouter(
