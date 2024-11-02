@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/components/top_cover_view.dart';
+import 'package:mobile/constants/app_colors.dart';
+import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
 import 'package:mobile/services/repositori_client.dart';
@@ -47,10 +50,16 @@ class _AuthCallbackPageState extends State<AuthCallbackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('認証中...'),
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          const TopCoverView(),
+          Container(
+            color: AppColors.black.withOpacity(0.6),
+          ),
+          Image.asset(ImagePaths.authLoading),
+        ],
       ),
-      body: const Center(child: CircularProgressIndicator()),
     );
   }
 }
