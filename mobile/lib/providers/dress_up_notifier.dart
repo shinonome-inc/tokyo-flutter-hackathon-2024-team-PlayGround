@@ -22,7 +22,7 @@ class DressUpNotifier extends _$DressUpNotifier {
   }
 
   Future<void> storeDressUp() async {
-    await RepositoriClient.instance.changeDressUp(state);
+    await RepositoriClient.instance.putDressUp(state);
     await SharedPreferencesRepository.instance.setDressUp(state);
   }
 
