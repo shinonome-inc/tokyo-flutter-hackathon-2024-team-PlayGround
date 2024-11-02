@@ -19,6 +19,23 @@ class RepositoriClient {
 
   static final RepositoriClient instance = RepositoriClient._();
 
+  /// 認証コードを使ってアクセストークンを取得する。
+  ///
+  /// [code] リダイレクトURLから取得した認証コード。
+  Future<String> fetchAccessToken(String code) async {
+    final response = await _dio.get(
+      '/token',
+      queryParameters: {'code': code},
+    );
+    if (response.statusCode == 200) {
+      return response.data['access_token'];
+    } else {
+      throw Exception(
+        'Failed to fetch access token with status code ${response.statusCode}',
+      );
+    }
+  }
+
   Future<void> putDressUp(DressUpOptions dressUp) async {
     try {
       Response response = await _dio.put(
