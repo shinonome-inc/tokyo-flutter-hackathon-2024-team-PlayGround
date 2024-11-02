@@ -27,4 +27,8 @@ class AppColors {
   static const menuButtonBackground = Color(0xFFB1D9FA);
   static const fetchFeedButtonBackground = Color(0xFF3B9E64);
   static const giveFoodButtonBackground = Color(0xFFFF9600);
+
+  static const menuSubItemDefaultBackground = Color(0xFFCBAE29);
+  static const menuSubItemRankingBackground = Color(0xFF3FBAED);
+  static const menuSubItemSettingsBackground = Color(0xFFAFAFAF);
 }

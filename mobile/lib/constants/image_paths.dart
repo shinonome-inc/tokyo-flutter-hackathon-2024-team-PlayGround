@@ -10,6 +10,11 @@ class ImagePaths {
       'assets/images/menu_button_icon_and_text.png';
   static const githubMark = 'assets/images/github_mark.png';
 
+  static const menuSubItemDressUp = 'assets/images/menu_sub_item_dress_up.png';
+  static const menuSubItemMakeover = 'assets/images/menu_sub_item_makeover.png';
+  static const menuSubItemRanking = 'assets/images/menu_sub_item_ranking.png';
+  static const menuSubItemSettings = 'assets/images/menu_sub_item_settings.png';
+
   static const backgroundSpring = 'assets/images/background_spring.png';
   static const backgroundSummer = 'assets/images/background_summer.png';
   static const backgroundAutumn = 'assets/images/background_autumn.png';

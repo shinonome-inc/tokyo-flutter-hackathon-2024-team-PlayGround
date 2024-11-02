@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/components/animated_images_view.dart';
 import 'package:mobile/components/circlar_elevated_button.dart';
 import 'package:mobile/components/level_progress_bar.dart';
+import 'package:mobile/components/menu_sub_item_button.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
@@ -63,94 +64,125 @@ class HomePage extends ConsumerWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Column(
-                      children: [
-                        CircularElevatedButton(
-                          onPressed: () async {
-                            await notifier.giveFood();
-                          },
-                          backgroundColor: AppColors.fetchFeedButtonBackground,
-                          foregroundColor: AppColors.white,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 40.0,
-                                child: Image.asset(
-                                  ImagePaths.githubMark,
-                                  color: AppColors.white,
+                    SizedBox(
+                      width: 100.0,
+                      child: Column(
+                        children: [
+                          CircularElevatedButton(
+                            onPressed: () async {
+                              await notifier.giveFood();
+                            },
+                            backgroundColor:
+                                AppColors.fetchFeedButtonBackground,
+                            foregroundColor: AppColors.white,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 40.0,
+                                  child: Image.asset(
+                                    ImagePaths.githubMark,
+                                    color: AppColors.white,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 8.h),
-                              const Text(
-                                'エサを補充',
+                                SizedBox(height: 8.h),
+                                const Text(
+                                  'エサを補充',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16.0),
+                          CircularElevatedButton(
+                            onPressed: () async {
+                              await notifier.giveFood();
+                            },
+                            backgroundColor: AppColors.giveFoodButtonBackground,
+                            foregroundColor: AppColors.white,
+                            child: const FittedBox(
+                              child: Text(
+                                'えさをあげる',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16.0),
-                        CircularElevatedButton(
-                          onPressed: () async {
-                            await notifier.giveFood();
-                          },
-                          backgroundColor: AppColors.giveFoodButtonBackground,
-                          foregroundColor: AppColors.white,
-                          child: const FittedBox(
-                            child: Text(
-                              'えさをあげる',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const Spacer(),
                     Expanded(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           if (state.showMenuSubButtons)
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                ElevatedButton(
-                                  onPressed: () {
-                                    context.push(RouterPaths.ranking);
-                                  },
-                                  child: const Text('ランキング'),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    context.push(RouterPaths.makeover);
-                                  },
-                                  child: const Text('模様替え'),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    context.push(RouterPaths.dressUp);
-                                  },
-                                  child: const Text('着せ替え'),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    context.push(RouterPaths.settings);
-                                  },
-                                  child: const Text('設定'),
-                                ),
-                                SizedBox(height: 16.h),
-                              ],
+                            SizedBox(
+                              width: 130.0,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: <Widget>[
+                                  MenuSubItemButton(
+                                    onPressed: () {
+                                      context.push(RouterPaths.ranking);
+                                    },
+                                    icon: Image.asset(
+                                      ImagePaths.menuSubItemRanking,
+                                    ),
+                                    text: 'ランキング',
+                                    backgroundColor:
+                                        AppColors.menuSubItemRankingBackground,
+                                  ),
+                                  MenuSubItemButton(
+                                    onPressed: () {
+                                      context.push(RouterPaths.makeover);
+                                    },
+                                    icon: Image.asset(
+                                      ImagePaths.menuSubItemDressUp,
+                                    ),
+                                    text: 'きせかえ',
+                                    backgroundColor:
+                                        AppColors.menuSubItemDefaultBackground,
+                                  ),
+                                  MenuSubItemButton(
+                                    onPressed: () {
+                                      context.push(RouterPaths.makeover);
+                                    },
+                                    icon: Image.asset(
+                                      ImagePaths.menuSubItemMakeover,
+                                    ),
+                                    text: '模様替え',
+                                    backgroundColor:
+                                        AppColors.menuSubItemDefaultBackground,
+                                  ),
+                                  MenuSubItemButton(
+                                    onPressed: () {
+                                      context.push(RouterPaths.settings);
+                                    },
+                                    icon: Image.asset(
+                                      ImagePaths.menuSubItemSettings,
+                                    ),
+                                    text: '設定',
+                                    backgroundColor:
+                                        AppColors.menuSubItemSettingsBackground,
+                                  ),
+                                  SizedBox(height: 16.h),
+                                ],
+                              ),
                             ),
-                          CircularElevatedButton(
-                            onPressed: () {
-                              notifier.toggleShowMenuSubButtons();
-                            },
-                            backgroundColor: AppColors.menuButtonBackground,
-                            child: Image.asset(
-                              ImagePaths.menuButtonIconAndText,
+                          SizedBox(
+                            width: 100.0,
+                            child: CircularElevatedButton(
+                              onPressed: () {
+                                notifier.toggleShowMenuSubButtons();
+                              },
+                              backgroundColor: AppColors.menuButtonBackground,
+                              child: Image.asset(
+                                ImagePaths.menuButtonIconAndText,
+                              ),
                             ),
                           ),
                         ],
