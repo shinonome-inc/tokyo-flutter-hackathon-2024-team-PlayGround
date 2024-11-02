@@ -174,6 +174,15 @@ class BackendStack(Stack):
             architecture=_lambda.Architecture.X86_64
         )
 
+        """
+        alias = _lambda.Alias(
+            self, "VoiceLambdaAlias",
+            alias_name="prod",
+            version=voice_lambda.current_version,
+            provisioned_concurrent_executions=100  # プロビジョニング並行実行数
+        )
+        """
+
         # API Gatewayの定義
         api = apigateway.RestApi(
             self, "ReposiToriApi",

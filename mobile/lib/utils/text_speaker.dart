@@ -1,5 +1,4 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:mobile/services/voice_box_client.dart';
 import 'package:mobile/utils/file_converter.dart';
@@ -26,8 +25,7 @@ class TextSpeaker {
   }
 
   Future<void> _speakTextWithVoiceBox(String text, bool isAfterDelay) async {
-    final query = await VoiceBoxClient.instance.createQuery(text: text);
-    final bytes = await VoiceBoxClient.instance.createVoice(query: query);
+    final bytes = await VoiceBoxClient.instance.fetchVoiceData(text);
     final file = await FileConverter.convertBytesToWavFile(bytes);
     await _audioPlayer.play(DeviceFileSource(file.path));
     if (!isAfterDelay) {
@@ -49,11 +47,6 @@ class TextSpeaker {
     String text, {
     bool isAfterDelay = false,
   }) async {
-    final bool useVoiceBox = bool.parse(dotenv.env['USE_VOICE_BOX'] ?? 'false');
-    if (useVoiceBox) {
-      await _speakTextWithVoiceBox(text, isAfterDelay);
-    } else {
-      await _speakTextWithFlutterTts(text);
-    }
+    await _speakTextWithVoiceBox(text, isAfterDelay);
   }
 }
