@@ -18,6 +18,10 @@ class ImagePaths {
   static const dressSummer = 'assets/images/dress_summer.png';
   static const dressAutumn = 'assets/images/dress_autumn.png';
   static const dressWinter = 'assets/images/dress_winter.png';
+  static const foodRamen = 'assets/images/food_ramen.png';
+  static const foodCurry = 'assets/images/food_curry.png';
+  static const foodMapoTofu = 'assets/images/food_mapo_tofu.png';
+  static const foodTteokbokki = 'assets/images/food_tteokbokki.png';
 
   static const foodWithEffectStep1 =
       'assets/images/food_with_effect/food_with_effect_step1.png';
