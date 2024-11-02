@@ -4,6 +4,8 @@ class ImagePaths {
 
   static const defaultUser = 'assets/images/default_user.png';
 
+  static const launchCover = 'assets/images/launch_cover.png';
+
   static const levelProgressBarHeart =
       'assets/images/level_progress_bar_heart.png';
   static const menuButtonIconAndText =

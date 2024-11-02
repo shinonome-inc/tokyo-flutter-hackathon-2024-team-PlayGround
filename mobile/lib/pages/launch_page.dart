@@ -1,35 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/constants/app_colors.dart';
+import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
-import 'package:mobile/repositories/secure_storage_repository.dart';
+import 'package:mobile/providers/launch_notifier.dart';
 
-class LaunchPage extends StatefulWidget {
+class LaunchPage extends ConsumerStatefulWidget {
   const LaunchPage({super.key});
 
   @override
-  State<LaunchPage> createState() => _LaunchPageState();
+  ConsumerState createState() => _LaunchPageState();
 }
 
-class _LaunchPageState extends State<LaunchPage> {
+class _LaunchPageState extends ConsumerState<LaunchPage> {
   @override
   void initState() {
     super.initState();
     Future(() async {
-      final token = await SecureStorageRepository().readToken();
+      final notifier = ref.read(launchNotifierProvider.notifier);
+      final isSignedIn = await notifier.isSignedIn();
       if (!mounted) return;
-      if (token == null) {
-        context.go(RouterPaths.top);
+      if (isSignedIn) {
+        context.go(RouterPaths.home);
         return;
       }
-      context.go(RouterPaths.home);
+      context.go(RouterPaths.top);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('LaunchPage'),
+    final state = ref.watch(launchNotifierProvider);
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: AnimatedOpacity(
+        opacity: state.opacity,
+        duration: Durations.extralong4,
+        child: Image.asset(
+          ImagePaths.launchCover,
+          fit: BoxFit.cover,
+          width: double.infinity,
+        ),
       ),
     );
   }
