@@ -22,7 +22,7 @@ enum MakeoverOptions implements DisplayOption {
   }
 
   @override
-  String get name {
+  String get jpName {
     switch (this) {
       case MakeoverOptions.spring:
         return '春';

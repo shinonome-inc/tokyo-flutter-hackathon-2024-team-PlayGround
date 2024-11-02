@@ -25,7 +25,7 @@ enum DressUpOptions implements DisplayOption {
   }
 
   @override
-  String get name {
+  String get jpName {
     switch (this) {
       case DressUpOptions.normal:
         return 'デフォルト';
