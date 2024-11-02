@@ -67,33 +67,35 @@ class HomePage extends ConsumerWidget {
                     ],
                   ),
                 ),
-                GestureDetector(
-                  onTap: () async {
-                    await notifier.speakRandomShortMessageByDash();
-                  },
-                  child: SizedBox(
-                    width: 200.0,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.asset(
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        await notifier.speakRandomShortMessageByDash();
+                      },
+                      child: SizedBox(
+                        width: 200.0,
+                        child: Image.asset(
                           ImagePaths.dash,
                         ),
-                        Container(
-                          width: 200.w,
-                          margin: EdgeInsets.only(top: 80.h),
-                          child: AnimatedImagesView(
-                            isStart: state.isStartEatingAnimation,
-                            imagePathList: ImagePaths.foodWithEffects,
-                            intervalMilliseconds: 1200,
-                            delayedMilliseconds: 3500,
-                            isLoop: false,
-                            showOnlyPlaying: true,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    // FIXME: エサやりアニメーションの表示を修正する。
+                    if (state.isStartEatingAnimation)
+                      Container(
+                        width: 200.0,
+                        margin: EdgeInsets.only(top: 80.h),
+                        child: AnimatedImagesView(
+                          isStart: state.isStartEatingAnimation,
+                          imagePathList: ImagePaths.foodWithEffects,
+                          intervalMilliseconds: 1200,
+                          delayedMilliseconds: 3500,
+                          isLoop: false,
+                          showOnlyPlaying: false,
+                        ),
+                      ),
+                  ],
                 ),
               ],
             ),
