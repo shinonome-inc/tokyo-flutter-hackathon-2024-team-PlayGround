@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/display_option.dart';
 import 'package:mobile/constants/router_paths.dart';
+import 'package:mobile/constants/text_styles.dart';
 import 'package:mobile/widgets/custom_text_button.dart';
 import 'package:mobile/widgets/select_panel.dart';
 
@@ -16,6 +17,7 @@ class PanelGridView<T> extends StatelessWidget {
     required this.values,
     required this.selectedValue,
     required this.onConfirm,
+    this.foodCount,
   });
 
   final String title;
@@ -24,6 +26,7 @@ class PanelGridView<T> extends StatelessWidget {
   final List<DisplayOption> values;
   final DisplayOption selectedValue;
   final Function onConfirm;
+  final int? foodCount;
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +45,27 @@ class PanelGridView<T> extends StatelessWidget {
             SizedBox(height: 12.h),
             Text(
               title,
-              style: theme.textTheme.headlineSmall,
+              style: TextStyles.gridViewheadingLarge,
             ),
-            SizedBox(height: 28.h),
-            Text(
-              subtitle,
-              style: theme.textTheme.titleSmall,
+            SizedBox(height: 16.h),
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: subtitle,
+                    style: TextStyles.gridViewheadingSmall.copyWith(
+                      color: AppColors.black,
+                    ),
+                  ),
+                  if (foodCount != null)
+                    TextSpan(
+                      text: ' $foodCount',
+                      style: TextStyles.gridViewheadingSmall.copyWith(
+                        color: AppColors.foodCountRed,
+                      ),
+                    ),
+                ],
+              ),
             ),
             SizedBox(height: 16.h),
             // SizedBox(height: 16.h),

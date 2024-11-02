@@ -8,6 +8,7 @@ class AppColors {
   static const primaryGold = Color(0xFFCBAE29);
   static const scrollBar = Color(0xFFAA9328);
   static const white = Color(0xFFFFFFFF);
+  static const foodCountRed = Color(0xFFB1972C);
 
   static const settingsBackground = Color(0xFFB1D9FA);
   static const settingsCloseButtonBackground = Color(0xFF517FA4);

@@ -10,4 +10,5 @@ class RouterPaths {
   static const String makeover = '/makeover';
   static const String ranking = '/ranking';
   static const String settings = '/settings';
+  static const String food = '/food';
 }

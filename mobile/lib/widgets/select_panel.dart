@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/display_option.dart';
-import 'package:mobile/constants/dress_up_options.dart';
+import 'package:mobile/constants/makeover_options.dart';
+import 'package:mobile/constants/text_styles.dart';
 
 class SelectPanel extends StatelessWidget {
   const SelectPanel({
@@ -25,12 +26,11 @@ class SelectPanel extends StatelessWidget {
     final imagePath = values[index].imagePath;
     final isSelected = selectedValue == values[index];
     final type = selectedValue.runtimeType;
-    final theme = Theme.of(context);
     return Column(
       children: [
         Text(
           title,
-          style: theme.textTheme.titleSmall,
+          style: TextStyles.gridViewheadingSmall,
         ),
         SizedBox(height: 8.h),
         Container(
@@ -52,13 +52,13 @@ class SelectPanel extends StatelessWidget {
                     child: Center(
                       child: Padding(
                         padding:
-                            EdgeInsets.all((type == DressUpOptions) ? 8.0 : 0)
+                            EdgeInsets.all((type == MakeoverOptions) ? 0 : 8.0)
                                 .w,
                         child: Image.asset(
                           imagePath,
-                          fit: (type == DressUpOptions)
-                              ? BoxFit.contain
-                              : BoxFit.cover,
+                          fit: (type == MakeoverOptions)
+                              ? BoxFit.cover
+                              : BoxFit.contain,
                           width: double.infinity,
                           height: double.infinity,
                         ),
