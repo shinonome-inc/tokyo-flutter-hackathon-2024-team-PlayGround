@@ -19,4 +19,8 @@ class AppColors {
 
   static const dialogBackground = Color(0xCC000000);
   static const dialogHighLight = Color(0xFF00FF4D);
+
+  static const levelProgressBarOutline = Color(0xFF9D3C3C);
+  static const levelProgressBarMain = Color(0xFFF47272);
+  static const levelProgressBarHeartMain = Color(0xFFDA3E3E);
 }
