@@ -1,63 +1,15 @@
-import 'package:mobile/constants/image_paths.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mobile/models/ranking_user.dart';
 
-/// ランキングの仮モデル
-///
-/// TODO: API繋ぎ込み時にfreezedを用いてバックエンドの仕様に合わせたモデルに変更する。
-class Ranking {
-  final String dashImagePath;
-  final String userImageUrl;
-  final String userName;
-  final int level;
+part 'ranking.freezed.dart';
+part 'ranking.g.dart';
 
-  const Ranking({
-    required this.dashImagePath,
-    required this.userImageUrl,
-    required this.userName,
-    required this.level,
-  });
+@freezed
+class Ranking with _$Ranking {
+  const factory Ranking({
+    required List<RankingUser> rankings,
+  }) = _Ranking;
+
+  factory Ranking.fromJson(Map<String, Object?> json) =>
+      _$RankingFromJson(json);
 }
-
-const List<Ranking> exampleRankings = [
-  Ranking(
-    dashImagePath: ImagePaths.dashSample1,
-    userImageUrl: 'https://picsum.photos/200?image=1',
-    userName: 'ユーザー1',
-    level: 77,
-  ),
-  Ranking(
-    dashImagePath: ImagePaths.dashSample2,
-    userImageUrl: 'https://picsum.photos/200?image=2',
-    userName: 'ユーザー2',
-    level: 76,
-  ),
-  Ranking(
-    dashImagePath: ImagePaths.dashSample3,
-    userImageUrl: 'https://picsum.photos/200?image=3',
-    userName: 'ユーザー3',
-    level: 74,
-  ),
-  Ranking(
-    dashImagePath: ImagePaths.dashSample2,
-    userImageUrl: 'https://picsum.photos/200?image=4',
-    userName: 'ユーザー4',
-    level: 70,
-  ),
-  Ranking(
-    dashImagePath: ImagePaths.dashSample1,
-    userImageUrl: 'https://picsum.photos/200?image=5',
-    userName: 'ユーザー5',
-    level: 69,
-  ),
-  Ranking(
-    dashImagePath: ImagePaths.dashSample1,
-    userImageUrl: 'https://picsum.photos/200?image=6',
-    userName: 'ユーザー6',
-    level: 66,
-  ),
-  Ranking(
-    dashImagePath: ImagePaths.dashSample1,
-    userImageUrl: 'https://picsum.photos/200?image=7',
-    userName: 'ユーザー7',
-    level: 64,
-  ),
-];
