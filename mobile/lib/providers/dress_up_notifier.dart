@@ -1,6 +1,5 @@
 import 'package:mobile/constants/display_option.dart';
 import 'package:mobile/constants/dress_up_options.dart';
-import 'package:mobile/repositories/shared_preferences_repository.dart';
 import 'package:mobile/services/repositori_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,11 +9,7 @@ part 'dress_up_notifier.g.dart';
 class DressUpNotifier extends _$DressUpNotifier {
   @override
   DressUpOptions build() {
-    return _loadInitialDressUpFromLocalStorage();
-  }
-
-  DressUpOptions _loadInitialDressUpFromLocalStorage() {
-    return SharedPreferencesRepository.instance.getDressUp();
+    return DressUpOptions.normal;
   }
 
   void setDressUp(DisplayOption dressUp) {
@@ -23,7 +18,10 @@ class DressUpNotifier extends _$DressUpNotifier {
 
   Future<void> storeDressUp() async {
     await RepositoriClient.instance.putDressUp(state);
-    await SharedPreferencesRepository.instance.setDressUp(state);
+  }
+
+  void setDressUpByString(String dressUp) {
+    state = DressUpOptions.values.byName(dressUp);
   }
 
   get values => DressUpOptions.values;

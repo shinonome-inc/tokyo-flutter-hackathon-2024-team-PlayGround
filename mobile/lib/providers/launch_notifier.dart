@@ -38,7 +38,11 @@ class LaunchNotifier extends _$LaunchNotifier {
     return isSignedIn;
   }
 
+  Future<void> initializeHomeState() async {
+    await RepositoriClient.instance.fetchHome();
+  }
+
   Future<bool> hasHomeState(WidgetRef ref) async {
-    return await ref.read(homeNotifierProvider.notifier).getHomeState();
+    return await ref.read(homeNotifierProvider.notifier).getHomeState(ref);
   }
 }

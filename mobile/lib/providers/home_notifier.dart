@@ -1,6 +1,9 @@
 import 'dart:math';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/constants/talk_scripts.dart';
 import 'package:mobile/models/home_state.dart';
+import 'package:mobile/providers/dress_up_notifier.dart';
+import 'package:mobile/providers/makeover_notifier.dart';
 import 'package:mobile/providers/settings_notifier.dart';
 import 'package:mobile/services/repositori_client.dart';
 import 'package:mobile/utils/text_speaker.dart';
@@ -55,9 +58,15 @@ class HomeNotifier extends _$HomeNotifier {
     setIsStartEatingAnimation(false);
   }
 
-  Future<bool> getHomeState() async {
+  Future<bool> getHomeState(WidgetRef ref) async {
     try {
-      state = await RepositoriClient.instance.getHomeState();
+      state = await RepositoriClient.instance.fetchHome();
+      ref
+          .read(makeoverNotifierProvider.notifier)
+          .setMakeoverByString(state.characterBackground);
+      ref
+          .read(dressUpNotifierProvider.notifier)
+          .setDressUpByString(state.characterClothes);
       return true;
     } catch (e) {
       return false;

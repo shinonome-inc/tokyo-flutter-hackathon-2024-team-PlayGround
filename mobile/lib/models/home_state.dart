@@ -6,12 +6,9 @@ part 'home_state.g.dart';
 @freezed
 class HomeState with _$HomeState {
   const factory HomeState({
-    required bool showMenuSubButtons,
-    required bool isStartEatingAnimation,
-    required bool isSpeaking,
-    required int level,
-    required int currentExp,
-    required int maxExp,
+    @Default(false) bool showMenuSubButtons,
+    @Default(false) bool isStartEatingAnimation,
+    @Default(false) bool isSpeaking,
     required int feedCount,
     required String characterClothes,
     required String userName,
@@ -29,9 +26,6 @@ const initialHomeState = HomeState(
   showMenuSubButtons: false,
   isStartEatingAnimation: false,
   isSpeaking: false,
-  level: 1,
-  currentExp: 0,
-  maxExp: 100,
   feedCount: 7,
   characterClothes: "normal",
   userName: "DASH",
