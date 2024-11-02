@@ -44,10 +44,10 @@ class RepositoriClient {
   }
 
   Future<int> getFeedCount() async {
-    final response = await _dio.get('/get_feed');
+    final response = await _dio.post('/get_feed');
     if (response.statusCode == 200) {
       debugPrint('えさ取得成功${response.data}');
-      return response.data['feed_count'] ?? 0;
+      return response.data['feedCount'] ?? 0;
     }
     throw Exception('えさ取得失敗: ${response.statusCode}');
   }

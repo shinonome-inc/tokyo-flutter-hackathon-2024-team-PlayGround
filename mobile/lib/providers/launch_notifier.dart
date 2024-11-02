@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/launchstate.dart';
+import 'package:mobile/models/launch_state.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
 import 'package:mobile/services/git_hub_client.dart';
 import 'package:mobile/services/repositori_client.dart';
@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'launch_notifier.g.dart';
 
 @riverpod
-class LaunchNotifier extends $LaunchNotifier {
+class LaunchNotifier extends _$LaunchNotifier {
   @override
   LaunchState build() {
     return initialLaunchState;
@@ -31,10 +31,8 @@ class LaunchNotifier extends $LaunchNotifier {
       isSignedIn = isTokenValid;
     }
 
-    print('is signed in: $isSignedIn');
     if (isSignedIn && token != null) {
       RepositoriClient.instance.setToken(token);
-      print('set token: $token');
     }
 
     await Future.delayed(Durations.extralong4);

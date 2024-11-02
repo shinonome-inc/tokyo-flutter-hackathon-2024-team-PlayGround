@@ -12,6 +12,8 @@ class FeedCountNotifier extends _$FeedCountNotifier {
   set feedCount(int feedCount) => state = feedCount;
 
   Future<int> fetchFeedCount() async {
-    return await RepositoriClient.instance.getFeedCount();
+    final feedCount = await RepositoriClient.instance.getFeedCount();
+    state = feedCount;
+    return feedCount;
   }
 }
