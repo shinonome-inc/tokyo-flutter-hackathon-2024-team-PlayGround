@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/launch_state.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
 import 'package:mobile/services/git_hub_client.dart';
+import 'package:mobile/services/repositori_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'launch_notifier.g.dart';
@@ -28,6 +29,10 @@ class LaunchNotifier extends _$LaunchNotifier {
     if (token != null) {
       final isTokenValid = await GitHubClient.instance.isTokenValid(token);
       isSignedIn = isTokenValid;
+    }
+
+    if (isSignedIn && token != null) {
+      RepositoriClient.instance.setToken(token);
     }
 
     await Future.delayed(Durations.extralong4);
