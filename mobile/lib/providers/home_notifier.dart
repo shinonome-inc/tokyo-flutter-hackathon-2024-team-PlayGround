@@ -144,8 +144,8 @@ class HomeNotifier extends _$HomeNotifier {
       // await TextSpeaker.instance.speakText(message);
     } catch (e) {
       const message = TalkScripts.exceptionMessage;
-      // setDashSpeechText(message);
-      await TextSpeaker.instance.speakText(message);
+      setDashSpeechText(message);
+      // await TextSpeaker.instance.speakText(message);
     } finally {
       setIsSpeaking(false);
     }
