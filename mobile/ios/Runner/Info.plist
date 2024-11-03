@@ -49,5 +49,9 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>NSSpeechRecognitionUsageDescription</key>
+        <string>このアプリが音声認識機能を許可します。</string>
+        <key>NSMicrophoneUsageDescription</key>
+        <string>このアプリがマイクの使用を許可します。</string>
 	</dict>
 </plist>

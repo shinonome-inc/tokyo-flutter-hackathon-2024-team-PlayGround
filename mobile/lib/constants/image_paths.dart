@@ -147,4 +147,7 @@ class ImagePaths {
     heartEffect,
     heartEffect,
   ];
+
+  static const chatBubbleTipBottom = 'assets/images/chat_bubble_tip_bottom.png';
+  static const chatBubbleTipLeft = 'assets/images/chat_bubble_tip_left.png';
 }

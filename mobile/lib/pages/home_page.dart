@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/components/animated_images_view.dart';
+import 'package:mobile/components/chat_bubble.dart';
 import 'package:mobile/components/circlar_elevated_button.dart';
 import 'package:mobile/components/level_progress_bar.dart';
 import 'package:mobile/components/menu_sub_item_button.dart';
@@ -17,6 +18,7 @@ import 'package:mobile/providers/feed_count_notifier.dart';
 import 'package:mobile/providers/food_notifier.dart';
 import 'package:mobile/providers/home_notifier.dart';
 import 'package:mobile/providers/makeover_notifier.dart';
+import 'package:mobile/widgets/circle_icon_image.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -44,13 +46,55 @@ class HomePage extends ConsumerWidget {
               fit: BoxFit.cover,
               width: double.infinity,
             ),
-            GestureDetector(
-              onTap: () async {
-                await notifier.speakRandomShortMessageByDash();
-              },
-              child: Image.asset(
-                dressUpState.imagePath,
-                width: 200.w,
+            SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: Column(
+                      children: [
+                        if (notifier.showUserSpeechText)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // TODO: ログイン中のユーザーのアイコン画像を設定する。
+                              const CircleIconImage(
+                                imageUrl: '',
+                                diameter: 40.0,
+                                errorImagePath: ImagePaths.defaultUser,
+                              ),
+                              const SizedBox(width: 8.0),
+                              Flexible(
+                                child: ChatBubble(
+                                  message: state.userSpeechText,
+                                  tip: ChatBubbleTip.left,
+                                  maxLines: 2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        const SizedBox(height: 16.0),
+                        if (notifier.showDashSpeechText)
+                          ChatBubble(
+                            message: state.dashSpeechText,
+                            tip: ChatBubbleTip.bottom,
+                            maxLines: 4,
+                          ),
+                        const SizedBox(height: 8.0),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      await notifier.speakRandomShortMessageByDash();
+                    },
+                    child: Image.asset(
+                      dressUpState.imagePath,
+                      width: 200.w,
+                    ),
+                  ),
+                ],
               ),
             ),
             if (state.isStartEatingAnimation)
@@ -88,6 +132,20 @@ class HomePage extends ConsumerWidget {
                         width: 100.0,
                         child: Column(
                           children: [
+                            CircularElevatedButton(
+                              onPressed: state.isRecording
+                                  ? notifier.stopRecording
+                                  : notifier.startRecording,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(state.isRecording
+                                      ? Icons.stop
+                                      : Icons.mic),
+                                  Text(state.isRecording ? 'ストップ' : 'はなしかける'),
+                                ],
+                              ),
+                            ),
                             CircularElevatedButton(
                               onPressed: () async {
                                 notifier.setIsDelivering(true);

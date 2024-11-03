@@ -51,3 +51,6 @@ app.*.map.json
 
 # secret
 *.env
+
+# BlackListWords
+lib/constants/black_list_words.dart
