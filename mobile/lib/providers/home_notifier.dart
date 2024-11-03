@@ -41,6 +41,10 @@ class HomeNotifier extends _$HomeNotifier {
     setShowMenuSubButtons(!state.showMenuSubButtons);
   }
 
+  void setIsDelivering(bool isDelivering) {
+    state = state.copyWith(isDelivering: isDelivering);
+  }
+
   void setFeedCount(int feedCount) {
     state = state.copyWith(home: state.home?.copyWith(feedCount: feedCount));
     print('state: ${state}');

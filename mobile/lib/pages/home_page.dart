@@ -90,8 +90,19 @@ class HomePage extends ConsumerWidget {
                           children: [
                             CircularElevatedButton(
                               onPressed: () async {
+                                notifier.setIsDelivering(true);
                                 final feedCount =
                                     await feedCountNotifier.fetchFeedCount();
+                                notifier.setIsDelivering(false);
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'えさを補充しました！ 現在${state.home?.feedCount}個'),
+                                      duration: Duration(seconds: 1),
+                                    ),
+                                  );
+                                }
                                 print(feedCount);
                               },
                               backgroundColor:
@@ -216,6 +227,10 @@ class HomePage extends ConsumerWidget {
                   ),
                 ],
               ),
+            ),
+            Visibility(
+              visible: state.isDelivering,
+              child: const CircularProgressIndicator(),
             ),
           ],
         ),
