@@ -9,6 +9,7 @@ import 'package:mobile/pages/ranking_page.dart';
 import 'package:mobile/pages/settings_page.dart';
 import 'package:mobile/pages/top_page.dart';
 import 'package:mobile/pages/food_page.dart';
+import 'package:mobile/pages/auth_call_back.dart';
 
 /// プロジェクトの画面遷移に関するルーティング設定です。
 final router = GoRouter(
@@ -20,6 +21,15 @@ final router = GoRouter(
         return MaterialPage(
           key: state.pageKey,
           child: const LaunchPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RouterPaths.authCallback,
+      pageBuilder: (context, state) {
+        return MaterialPage(
+          key: state.pageKey,
+          child: const AuthCallbackPage(),
         );
       },
     ),
