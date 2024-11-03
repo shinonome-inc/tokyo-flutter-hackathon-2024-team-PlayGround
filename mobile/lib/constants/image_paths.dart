@@ -9,6 +9,8 @@ class ImagePaths {
   static const logo = 'assets/images/logo.png';
   static const dashDynamic = 'assets/images/dash_dynamic.png';
 
+  static const authLoading = 'assets/images/auth_loading.png';
+
   static const levelProgressBarHeart =
       'assets/images/level_progress_bar_heart.png';
   static const menuButtonIconAndText =
