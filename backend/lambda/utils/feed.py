@@ -70,11 +70,22 @@ def lambda_handler(event, context):
         except Exception as e:
             return {
                 'statusCode': 500,
+                'headers': {
+                'Access-Control-Allow-Origin': 'http://localhost:61172',  # 任意のオリジンからのアクセスを許可
+                'Access-Control-Allow-Headers': 'Content-Type',  # 必要に応じてヘッダーを指定
+                'Access-Control-Allow-Methods': 'OPTIONS,POST'  # 許可するメソッドを指定
+            },
                 'body': json.dumps(f'DynamoDBへのユーザー情報更新時にエラーが発生しました: {str(e)}')
             }
 
         return {
             'statusCode': 200,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',  
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',  
+                'Access-Control-Allow-Methods': 'OPTIONS,POST'  
+            },
             'body': json.dumps({
                 'characterLevel': new_level,
                 'currentExperience': user['characterExperience'],
@@ -85,6 +96,13 @@ def lambda_handler(event, context):
     else:
         return {
             'statusCode': 400,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',  
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',  
+                'Access-Control-Allow-Methods': 'OPTIONS,POST',
+                'Access-Control-Expose-Headers': 'Authorization, X-Custom-Header'  
+            },
             'body': json.dumps('本日の餌やり回数が上限に達しました', ensure_ascii=False)
         }
 

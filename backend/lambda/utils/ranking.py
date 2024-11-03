@@ -29,7 +29,9 @@ def lambda_handler(event, context):
             'statusCode': 200,
             'headers': {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': 'http://localhost:61172',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                'Access-Control-Allow-Methods': 'OPTIONS,GET',
             },
             'body': json.dumps(items, default=decimal_default)
         }
@@ -38,6 +40,12 @@ def lambda_handler(event, context):
         print(f"Error: {e}")
         return {
             'statusCode': 500,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                'Access-Control-Allow-Methods': 'OPTIONS,GET'
+            },
             'body': json.dumps({'message': 'Internal Server Error'})
         }
     

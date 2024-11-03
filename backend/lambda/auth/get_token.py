@@ -94,7 +94,9 @@ def lambda_handler(event, context):
             'statusCode': 200,
             'headers': {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',  
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization', 
+                'Access-Control-Allow-Methods': 'OPTIONS,POST' 
             },
             'body': json.dumps({'access_token': access_token})
         }
@@ -105,6 +107,8 @@ def lambda_handler(event, context):
             'headers': {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',  
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',  
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'  
             },
             'body': json.dumps({'error': str(e)})
         }

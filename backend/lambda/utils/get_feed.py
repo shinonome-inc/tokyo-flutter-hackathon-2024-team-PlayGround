@@ -137,10 +137,23 @@ def lambda_handler(event, context):
         except Exception as e:
             return {
                 'statusCode': 500,
+                'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',  
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',  
+                'Access-Control-Allow-Methods': 'OPTIONS,POST'  
+            },
                 'body': f"Error updating DynamoDB: {str(e)}"
             }
         return {
             'statusCode': 200,
+            'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',  
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',  
+            'Access-Control-Allow-Methods': 'OPTIONS,POST',
+            'Access-Control-Expose-Headers': 'Authorization, X-Custom-Header'  
+        },
             'body': json.dumps({'feedCount': feed_count})
         }
     
