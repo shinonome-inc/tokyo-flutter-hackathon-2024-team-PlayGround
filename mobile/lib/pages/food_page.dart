@@ -16,6 +16,7 @@ class FoodPage extends ConsumerWidget {
     final notifier = ref.read(foodNotifierProvider.notifier);
     final state = ref.watch(foodNotifierProvider);
     final homeNotifier = ref.read(homeNotifierProvider.notifier);
+    final homeState = ref.watch(homeNotifierProvider);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -41,19 +42,38 @@ class FoodPage extends ConsumerWidget {
                 },
                 onConfirm: () async {
                   await notifier.storeFood();
-                  await notifier.postFood();
+                  try {
+                    final feed = await notifier.postFood();
+                    homeNotifier.setHome(homeState.home?.copyWith(
+                      feedCount: feed.feedCount,
+                      characterLevel: feed.characterLevel,
+                      characterExperience: feed.currentExperience,
+                    ));
+                  } catch (e) {
+                    homeNotifier
+                        .setHome(homeState.home?.copyWith(feedCount: 0));
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('本日の上限に達しました。 また明日あげてください。'),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
+                    }
+                  }
                   if (context.mounted) {
                     context.go(RouterPaths.home);
                   }
                   WidgetsBinding.instance.addPostFrameCallback((_) async {
-                    await homeNotifier.giveFood();
+                    if (homeState.home?.feedCount != 0) {
+                      await homeNotifier.giveFood();
+                      await homeNotifier.fetchHome();
+                    }
                   });
                 },
                 values: notifier.values,
                 selectedValue: state,
-
-                ///foodCountをhomeNotifierから受け取る
-                foodCount: 5,
+                foodCount: homeState.home?.feedCount ?? 0,
                 confirtText: 'あげる',
               ),
             ),

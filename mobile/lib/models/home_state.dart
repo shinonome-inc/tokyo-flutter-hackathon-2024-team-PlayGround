@@ -14,6 +14,7 @@ class HomeState with _$HomeState {
     required bool isRecording,
     required String userSpeechText,
     required String dashSpeechText,
+    required bool isDelivering,
   }) = _HomeState;
 }
 
@@ -26,4 +27,5 @@ const initialHomeState = HomeState(
   isRecording: false,
   userSpeechText: '',
   dashSpeechText: '',
+  isDelivering: false,
 );
