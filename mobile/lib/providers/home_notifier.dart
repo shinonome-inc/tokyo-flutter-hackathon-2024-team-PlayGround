@@ -41,6 +41,11 @@ class HomeNotifier extends _$HomeNotifier {
     setShowMenuSubButtons(!state.showMenuSubButtons);
   }
 
+  void setFeedCount(int feedCount) {
+    state = state.copyWith(home: state.home?.copyWith(feedCount: feedCount));
+    print('state: ${state}');
+  }
+
   Future<void> fetchHome() async {
     if (state.isLoading) return;
 

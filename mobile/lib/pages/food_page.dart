@@ -42,7 +42,8 @@ class FoodPage extends ConsumerWidget {
                 },
                 onConfirm: () async {
                   await notifier.storeFood();
-                  await notifier.postFood();
+                  final feed = await notifier.postFood();
+                  homeNotifier.setFeedCount(feed.feedCount);
                   if (context.mounted) {
                     context.go(RouterPaths.home);
                   }
