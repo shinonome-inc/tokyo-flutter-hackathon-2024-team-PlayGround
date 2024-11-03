@@ -137,14 +137,14 @@ class HomeNotifier extends _$HomeNotifier {
         inputText: state.userSpeechText,
       );
       setDashSpeechText(generatedMessage.replaceAll('\n', ''));
-      await TextSpeaker.instance.speakText(state.dashSpeechText);
+      // await TextSpeaker.instance.speakText(state.dashSpeechText);
     } on GenerativeAIException {
       const message = TalkScripts.generativeAIExceptionMessage;
       setDashSpeechText(message);
-      await TextSpeaker.instance.speakText(message);
+      // await TextSpeaker.instance.speakText(message);
     } catch (e) {
       const message = TalkScripts.exceptionMessage;
-      setDashSpeechText(message);
+      // setDashSpeechText(message);
       await TextSpeaker.instance.speakText(message);
     } finally {
       setIsSpeaking(false);
