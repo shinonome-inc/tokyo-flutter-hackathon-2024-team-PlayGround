@@ -15,7 +15,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 part 'home_notifier.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class HomeNotifier extends _$HomeNotifier {
   final _speech = stt.SpeechToText();
 
@@ -64,6 +64,15 @@ class HomeNotifier extends _$HomeNotifier {
     setShowMenuSubButtons(!state.showMenuSubButtons);
   }
 
+  void setIsDelivering(bool isDelivering) {
+    state = state.copyWith(isDelivering: isDelivering);
+  }
+
+  void setFeedCount(int feedCount) {
+    state = state.copyWith(home: state.home?.copyWith(feedCount: feedCount));
+    print('state: ${state}');
+  }
+
   Future<void> fetchHome() async {
     if (state.isLoading) return;
 
@@ -97,6 +106,7 @@ class HomeNotifier extends _$HomeNotifier {
   Future<void> giveFood() async {
     setIsSpeaking(true);
     setIsStartEatingAnimation(true);
+    // fetchHome();
     await TextSpeaker.instance.speakText(
       TalkScripts.eatingMessage,
       isAfterDelay: true,
@@ -178,5 +188,11 @@ class HomeNotifier extends _$HomeNotifier {
 
   void onCompletedRecording() {
     setIsRecording(false);
+  }
+
+  Future<int> fetchFeedCount() async {
+    final feedCount = await RepositoriClient.instance.getFeedCount();
+    state = state.copyWith(home: state.home?.copyWith(feedCount: feedCount));
+    return feedCount;
   }
 }

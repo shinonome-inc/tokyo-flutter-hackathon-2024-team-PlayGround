@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +12,6 @@ import 'package:mobile/components/menu_sub_item_button.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/image_paths.dart';
 import 'package:mobile/constants/router_paths.dart';
-import 'package:mobile/models/dash.dart';
 import 'package:mobile/models/food_options.dart';
 import 'package:mobile/providers/dress_up_notifier.dart';
 import 'package:mobile/providers/feed_count_notifier.dart';
@@ -116,8 +117,12 @@ class HomePage extends ConsumerWidget {
                   SizedBox(height: 28.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 64.w),
-                    // TODO: 仮のデータなので取得したデータに置き換える。
-                    child: const LevelProgressBar(dash: sampleDash),
+                    child: LevelProgressBar(
+                      level: state.home?.characterLevel ?? 1,
+                      currentExp: state.home?.characterExperience ?? 0,
+                      maxExp: (10 * pow(2, ((state.home?.characterLevel ?? 1))))
+                          .toInt(),
+                    ),
                   ),
                   const Spacer(),
                   Row(
@@ -143,10 +148,18 @@ class HomePage extends ConsumerWidget {
                             ),
                             CircularElevatedButton(
                               onPressed: () async {
+                                notifier.setIsDelivering(true);
                                 final feedCount =
-                                    await feedCountNotifier.fetchFeedCount();
-
-                                ///TODO: えさの数をhomeNotifierに持たせる
+                                    await notifier.fetchFeedCount();
+                                notifier.setIsDelivering(false);
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('えさを補充しました！'),
+                                      duration: Duration(seconds: 1),
+                                    ),
+                                  );
+                                }
                                 print(feedCount);
                               },
                               backgroundColor:
@@ -270,6 +283,13 @@ class HomePage extends ConsumerWidget {
                     ],
                   ),
                 ],
+              ),
+            ),
+            Visibility(
+              visible: state.isDelivering,
+              child: Image.asset(
+                ImagePaths.haitatsu,
+                fit: BoxFit.fill,
               ),
             ),
           ],
