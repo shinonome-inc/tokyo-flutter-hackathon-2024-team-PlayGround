@@ -10,7 +10,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_notifier.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class HomeNotifier extends _$HomeNotifier {
   @override
   HomeState build() {
