@@ -87,32 +87,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           SettingsSection(
-                            title: '通知設定',
-                            child: Column(
-                              children: [
-                                SettingsItem(
-                                  title: 'プッシュ通知',
-                                  switchValue: state.enablePushNotification,
-                                  onSwitchChanged:
-                                      notifier.setEnablePushNotification,
-                                ),
-                                SizedBox(height: 8.h),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Dashちゃんが1週間空腹のときお知らせします',
-                                    style: TextStyle(
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: -0.1,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 20.h),
-                          SettingsSection(
                             title: 'サウンド',
                             child: Column(
                               children: [
