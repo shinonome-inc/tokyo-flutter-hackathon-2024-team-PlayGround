@@ -145,6 +145,8 @@ class HomePage extends ConsumerWidget {
                               onPressed: () async {
                                 final feedCount =
                                     await feedCountNotifier.fetchFeedCount();
+
+                                ///TODO: えさの数をhomeNotifierに持たせる
                                 print(feedCount);
                               },
                               backgroundColor:
