@@ -23,6 +23,12 @@ def lambda_handler(event, context):
     if not texts or len(texts) == 0:
         return {
             "statusCode": 422,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',  
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',  
+                'Access-Control-Allow-Methods': 'OPTIONS,POST'  
+            },
             "body": "Text not provided",
         }
     text = texts[0]
@@ -33,6 +39,9 @@ def lambda_handler(event, context):
         "statusCode": 200,
         "headers": {
             "Content-Type": "audio/mp3",
+            'Access-Control-Allow-Origin': '*',  
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',  
+            'Access-Control-Allow-Methods': 'OPTIONS,POST'  
         },
         "body": base64.b64encode(mp3).decode('utf-8'),
         "isBase64Encoded": True,
