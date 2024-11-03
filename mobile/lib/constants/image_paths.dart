@@ -38,6 +38,7 @@ class ImagePaths {
   static const foodCurry = 'assets/images/food_curry.png';
   static const foodMapoTofu = 'assets/images/food_mapo_tofu.png';
   static const foodTteokbokki = 'assets/images/food_tteokbokki.png';
+  static const haitatsu = 'assets/images/haitatsu.gif';
 
   static const foodWithEffectStep1 =
       'assets/images/food_with_effect/food_with_effect_step1.png';

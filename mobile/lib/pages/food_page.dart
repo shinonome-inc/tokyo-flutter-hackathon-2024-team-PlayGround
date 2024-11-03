@@ -42,13 +42,33 @@ class FoodPage extends ConsumerWidget {
                 },
                 onConfirm: () async {
                   await notifier.storeFood();
-                  final feed = await notifier.postFood();
-                  homeNotifier.setFeedCount(feed.feedCount);
+                  try {
+                    final feed = await notifier.postFood();
+                    homeNotifier.setHome(homeState.home?.copyWith(
+                      feedCount: feed.feedCount,
+                      characterLevel: feed.characterLevel,
+                      characterExperience: feed.currentExperience,
+                    ));
+                  } catch (e) {
+                    homeNotifier
+                        .setHome(homeState.home?.copyWith(feedCount: 0));
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('本日の上限に達しました。 また明日あげてください。'),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
+                    }
+                  }
                   if (context.mounted) {
                     context.go(RouterPaths.home);
                   }
                   WidgetsBinding.instance.addPostFrameCallback((_) async {
-                    await homeNotifier.giveFood();
+                    if (homeState.home?.feedCount != 0) {
+                      await homeNotifier.giveFood();
+                      await homeNotifier.fetchHome();
+                    }
                   });
                 },
                 values: notifier.values,

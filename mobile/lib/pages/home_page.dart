@@ -76,8 +76,9 @@ class HomePage extends ConsumerWidget {
                     child: LevelProgressBar(
                       level: state.home?.characterLevel ?? 1,
                       currentExp: state.home?.characterExperience ?? 0,
-                      maxExp: (10 * pow(2, state.home?.characterLevel ?? 1))
-                          .toInt(),
+                      maxExp:
+                          (10 * pow(2, ((state.home?.characterLevel ?? 5) + 1)))
+                              .toInt(),
                     ),
                   ),
                   const Spacer(),
@@ -92,14 +93,14 @@ class HomePage extends ConsumerWidget {
                               onPressed: () async {
                                 notifier.setIsDelivering(true);
                                 final feedCount =
-                                    await feedCountNotifier.fetchFeedCount();
+                                    await notifier.fetchFeedCount();
                                 notifier.setIsDelivering(false);
                                 if (context.mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
                                           'えさを補充しました！ 現在${state.home?.feedCount}個'),
-                                      duration: Duration(seconds: 1),
+                                      duration: const Duration(seconds: 1),
                                     ),
                                   );
                                 }
@@ -230,7 +231,10 @@ class HomePage extends ConsumerWidget {
             ),
             Visibility(
               visible: state.isDelivering,
-              child: const CircularProgressIndicator(),
+              child: Image.asset(
+                ImagePaths.haitatsu,
+                fit: BoxFit.fill,
+              ),
             ),
           ],
         ),
