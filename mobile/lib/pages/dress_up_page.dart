@@ -16,11 +16,14 @@ class DressUpPage extends ConsumerWidget {
     final state = ref.watch(dressUpNotifierProvider);
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
+      onPopInvokedWithResult: (didPop, result) async {
         if (didPop) {
           return;
         }
-        context.go(RouterPaths.home);
+        await notifier.storeDressUp();
+        if (context.mounted) {
+          context.push(RouterPaths.home);
+        }
       },
       child: Scaffold(
         body: Stack(

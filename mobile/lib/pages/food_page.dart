@@ -16,6 +16,7 @@ class FoodPage extends ConsumerWidget {
     final notifier = ref.read(foodNotifierProvider.notifier);
     final state = ref.watch(foodNotifierProvider);
     final homeNotifier = ref.read(homeNotifierProvider.notifier);
+    final homeState = ref.watch(homeNotifierProvider);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -50,7 +51,7 @@ class FoodPage extends ConsumerWidget {
                 },
                 values: notifier.values,
                 selectedValue: state,
-                foodCount: 5,
+                foodCount: homeState.home?.feedCount ?? 0,
                 confirtText: 'あげる',
               ),
             ),
