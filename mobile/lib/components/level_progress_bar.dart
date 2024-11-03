@@ -3,13 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/components/stroked_text.dart';
 import 'package:mobile/constants/app_colors.dart';
 import 'package:mobile/constants/image_paths.dart';
-import 'package:mobile/models/dash.dart';
 
 /// ダッシュちゃんの現在のレベルと経験値を表示します。
 class LevelProgressBar extends StatelessWidget {
-  const LevelProgressBar({super.key, required this.dash});
+  const LevelProgressBar({
+    super.key,
+    required this.level,
+    required this.currentExp,
+    required this.maxExp,
+  });
 
-  final Dash dash;
+  final int level;
+  final int currentExp;
+  final int maxExp;
 
   final _strokeWidth = 1.8;
   final _fontWeight = FontWeight.w500;
@@ -29,7 +35,7 @@ class LevelProgressBar extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: StrokedText(
-                  'Lv.${dash.level}',
+                  'Lv.$level',
                   textColor: AppColors.white,
                   strokeColor: AppColors.levelProgressBarOutline,
                   strokeWidth: _strokeWidth,
@@ -43,7 +49,7 @@ class LevelProgressBar extends StatelessWidget {
                 padding: const EdgeInsets.all(2.0),
                 color: AppColors.white,
                 child: LinearProgressIndicator(
-                  value: dash.currentExp / dash.maxExp,
+                  value: currentExp / maxExp,
                   backgroundColor: AppColors.levelProgressBarOutline,
                   valueColor: const AlwaysStoppedAnimation<Color>(
                     AppColors.levelProgressBarMain,
@@ -54,7 +60,7 @@ class LevelProgressBar extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: StrokedText(
-                  '${dash.currentExp} / ${dash.maxExp}',
+                  '$currentExp / $maxExp',
                   textColor: AppColors.white,
                   strokeColor: AppColors.levelProgressBarOutline,
                   strokeWidth: _strokeWidth,

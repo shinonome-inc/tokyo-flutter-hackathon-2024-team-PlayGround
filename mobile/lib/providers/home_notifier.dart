@@ -10,7 +10,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_notifier.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class HomeNotifier extends _$HomeNotifier {
   @override
   HomeState build() {
@@ -39,6 +39,15 @@ class HomeNotifier extends _$HomeNotifier {
 
   void toggleShowMenuSubButtons() {
     setShowMenuSubButtons(!state.showMenuSubButtons);
+  }
+
+  void setIsDelivering(bool isDelivering) {
+    state = state.copyWith(isDelivering: isDelivering);
+  }
+
+  void setFeedCount(int feedCount) {
+    state = state.copyWith(home: state.home?.copyWith(feedCount: feedCount));
+    print('state: ${state}');
   }
 
   Future<void> fetchHome() async {
@@ -74,11 +83,18 @@ class HomeNotifier extends _$HomeNotifier {
   Future<void> giveFood() async {
     setIsSpeaking(true);
     setIsStartEatingAnimation(true);
+    // fetchHome();
     await TextSpeaker.instance.speakText(
       TalkScripts.eatingMessage,
       isAfterDelay: true,
     );
     setIsSpeaking(false);
     setIsStartEatingAnimation(false);
+  }
+
+  Future<int> fetchFeedCount() async {
+    final feedCount = await RepositoriClient.instance.getFeedCount();
+    state = state.copyWith(home: state.home?.copyWith(feedCount: feedCount));
+    return feedCount;
   }
 }
