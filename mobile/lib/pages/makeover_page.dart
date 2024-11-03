@@ -15,11 +15,14 @@ class MakeoverPage extends ConsumerWidget {
     final state = ref.watch(makeoverNotifierProvider);
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
+      onPopInvokedWithResult: (didPop, result) async {
         if (didPop) {
           return;
         }
-        context.go(RouterPaths.home);
+        await notifier.storeMakeover();
+        if (context.mounted) {
+          context.push(RouterPaths.home);
+        }
       },
       child: Scaffold(
         body: Stack(

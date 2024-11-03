@@ -57,14 +57,14 @@ class HomeNotifier extends _$HomeNotifier {
     Home? home;
     try {
       home = await RepositoriClient.instance.fetchHome();
+      print('1$home');
     } catch (e) {
       print(e);
     } finally {
       setLoading(false);
     }
-
+    print('2$home');
     setHome(home);
-    print('fetched home: $home');
   }
 
   Future<void> speakRandomShortMessageByDash() async {

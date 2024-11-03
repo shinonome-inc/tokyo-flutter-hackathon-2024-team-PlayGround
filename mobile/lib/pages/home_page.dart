@@ -23,16 +23,16 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(homeNotifierProvider);
-    final notifier = ref.read(homeNotifierProvider.notifier);
+    final homeState = ref.watch(homeNotifierProvider);
+    final homeNotifier = ref.read(homeNotifierProvider.notifier);
     final dressUpState = ref.read(dressUpNotifierProvider);
     final makeoverState = ref.read(makeoverNotifierProvider);
     final foodState = ref.read(foodNotifierProvider);
     final feedCountNotifier = ref.read(feedCountNotifierProvider.notifier);
     return GestureDetector(
       onTap: () {
-        if (state.showMenuSubButtons) {
-          notifier.setShowMenuSubButtons(false);
+        if (homeState.showMenuSubButtons) {
+          homeNotifier.setShowMenuSubButtons(false);
         }
       },
       child: Scaffold(
@@ -46,19 +46,19 @@ class HomePage extends ConsumerWidget {
             ),
             GestureDetector(
               onTap: () async {
-                await notifier.speakRandomShortMessageByDash();
+                await homeNotifier.speakRandomShortMessageByDash();
               },
               child: Image.asset(
                 dressUpState.imagePath,
                 width: 200.w,
               ),
             ),
-            if (state.isStartEatingAnimation)
+            if (homeState.isStartEatingAnimation)
               Container(
                 width: 200.w,
                 margin: EdgeInsets.only(top: 80.h),
                 child: AnimatedImagesView(
-                  isStart: state.isStartEatingAnimation,
+                  isStart: homeState.isStartEatingAnimation,
                   imagePathList: foodState.imagePaths,
                   intervalMilliseconds: 1200,
                   delayedMilliseconds: 3500,
@@ -152,7 +152,7 @@ class HomePage extends ConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            if (state.showMenuSubButtons)
+                            if (homeState.showMenuSubButtons)
                               SizedBox(
                                 width: 130.0,
                                 child: Column(
@@ -211,7 +211,7 @@ class HomePage extends ConsumerWidget {
                               width: 100.0,
                               child: CircularElevatedButton(
                                 onPressed: () {
-                                  notifier.toggleShowMenuSubButtons();
+                                  homeNotifier.toggleShowMenuSubButtons();
                                 },
                                 backgroundColor: AppColors.menuButtonBackground,
                                 child: Image.asset(

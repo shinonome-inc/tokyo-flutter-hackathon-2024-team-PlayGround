@@ -17,7 +17,16 @@ class HomeState with _$HomeState {
 
 const initialHomeState = HomeState(
   isLoading: false,
-  home: null,
+  home: Home(
+    userName: "userName",
+    avatarUrl: "avatarUrl",
+    characterName: "characterName",
+    characterLevel: 0,
+    characterExperience: 0,
+    characterClothes: 'characterClothes',
+    characterBackground: "characterBackground",
+    feedCount: 0,
+  ),
   showMenuSubButtons: false,
   isStartEatingAnimation: false,
   isSpeaking: false,
