@@ -33,17 +33,36 @@ def lambda_handler(event, context):
         if not item:
             return {
                 'statusCode': 404,
+                'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',  
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',  
+                'Access-Control-Allow-Methods': 'OPTIONS,GET'  
+            },
                 'body': json.dumps({'error': 'User data not found'})
             }
 
         return {
             'statusCode': 200,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',  
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',  
+                'Access-Control-Allow-Methods': 'OPTIONS,GET',
+                'Access-Control-Expose-Headers': 'Authorization, X-Custom-Header'  
+            },
             'body': json.dumps(item, cls=DecimalEncoder)
     }
 
     except Exception as e:
         print(f"Error retrieving data: {e}")
         return {
-            'statusCode': 500,
-            'body': json.dumps({'error': 'Internal server error'})
-        }
+                'statusCode': 500,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                    'Access-Control-Allow-Methods': 'OPTIONS,GET'
+            },
+                'body': "Internal Server Error"
+            }
