@@ -3,11 +3,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/config/router.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:mobile/repositories/shared_preferences_repository.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await SharedPreferencesRepository.instance.initialize();
+  setUrlStrategy(PathUrlStrategy());
+  print('ENDPOINT: ${dotenv.env['ENDPOINT']}');
   runApp(
     const ProviderScope(
       child: MyApp(),

@@ -13,6 +13,7 @@ class SharedPreferencesRepository {
   SharedPreferencesRepository._();
 
   Future<void> initialize() async {
+    print('initialize SharedPreferencesRepository');
     _prefs = await SharedPreferences.getInstance();
   }
 
