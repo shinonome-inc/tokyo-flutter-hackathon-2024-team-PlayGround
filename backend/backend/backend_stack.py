@@ -7,7 +7,12 @@ from aws_cdk import (
     aws_apigateway as apigateway,
     aws_iam as iam,
     aws_dynamodb as dynamodb,
-    RemovalPolicy
+    RemovalPolicy,
+    aws_s3 as s3,
+    aws_s3_deployment as s3deploy,
+    aws_cloudfront as cloudfront,
+    aws_cloudfront_origins as origins,
+    aws_iam
 )
 from constructs import Construct
 import os
@@ -162,6 +167,7 @@ class BackendStack(Stack):
             self, 'VoiceVoxRepository', repository_name='voicevox-lambda'
         )
 
+        """
         # VoiceVox用のLambda関数の定義
         voice_lambda = _lambda.DockerImageFunction(
             self, "VoiceLambda",
@@ -172,14 +178,6 @@ class BackendStack(Stack):
             memory_size=3008,
             timeout=Duration.seconds(30),
             architecture=_lambda.Architecture.X86_64
-        )
-
-        """
-        alias = _lambda.Alias(
-            self, "VoiceLambdaAlias",
-            alias_name="prod",
-            version=voice_lambda.current_version,
-            provisioned_concurrent_executions=100  # プロビジョニング並行実行数
         )
         """
 
@@ -271,7 +269,8 @@ class BackendStack(Stack):
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
         ) 
-
+        
+        """
         # /voiceエンドポイント (Lambdaオーソライザを使用)
         voice_resource = api.root.add_resource("voice")
         voice_integration = apigateway.LambdaIntegration(voice_lambda)
@@ -281,6 +280,7 @@ class BackendStack(Stack):
             authorization_type=apigateway.AuthorizationType.CUSTOM,
             authorizer=authorizer
         )
+        """
 
         # CORSを有効にする
         token_resource.add_cors_preflight(
@@ -331,15 +331,85 @@ class BackendStack(Stack):
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
+
+        """"
         voice_resource.add_cors_preflight(
             allow_origins=["*"],  
             allow_methods=["POST", "OPTIONS"],  
             allow_headers=["Authorization", "Content-Type"], 
             allow_credentials=True 
         )
+        """
         
         # エンドポイントを出力
         cdk.CfnOutput(
             self, "ApiUrl",
             value=api.url
+        )
+
+        # Webプロジェクトデプロイ用のS3バケットの作成
+        bucket = s3.Bucket(
+            self,
+            "FlutterWebBucket",
+            public_read_access=False, 
+            block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
+            removal_policy=RemovalPolicy.DESTROY, 
+            auto_delete_objects=True,  
+        )
+
+        # CloudFront用のオリジンアクセスアイデンティティの作成
+        origin_access_identity = cloudfront.OriginAccessIdentity(self, "OAI")
+
+        # バケットへの読み取り権限を付与（バケットポリシーを使用）
+        bucket.add_to_resource_policy(
+            aws_iam.PolicyStatement(
+                actions=["s3:GetObject"],
+                resources=[bucket.arn_for_objects("*")],
+                principals=[aws_iam.CanonicalUserPrincipal(
+                    origin_access_identity.cloud_front_origin_access_identity_s3_canonical_user_id)],
+            )
+        )
+
+        # CloudFrontディストリビューションの作成
+        distribution = cloudfront.Distribution(
+            self,
+            "FlutterWebDistribution",
+            default_root_object="index.html",
+            default_behavior=cloudfront.BehaviorOptions(
+                origin=origins.S3Origin(
+                    bucket, origin_access_identity=origin_access_identity
+                ),
+                viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+            ),
+            error_responses=[
+                cloudfront.ErrorResponse(
+                    http_status=403,
+                    response_http_status=200,
+                    response_page_path="/index.html",
+                    ttl=Duration.minutes(0),
+                ),
+                cloudfront.ErrorResponse(
+                    http_status=404,
+                    response_http_status=200,
+                    response_page_path="/index.html",
+                    ttl=Duration.minutes(0),
+                ),
+            ],
+        )
+
+        # Flutter WebビルドファイルをS3バケットにデプロイ
+        s3deploy.BucketDeployment(
+            self,
+            "DeployFlutterWeb",
+            sources=[s3deploy.Source.asset("../mobile/build/web")],  
+            destination_bucket=bucket,
+            distribution=distribution,
+            distribution_paths=["/*"],  # キャッシュを全て無効化
+        )
+
+        # CloudFrontディストリビューションのドメイン名を出力
+        cdk.CfnOutput(
+            self,
+            "DistributionDomainName",
+            value='https://' + distribution.distribution_domain_name,
         )
