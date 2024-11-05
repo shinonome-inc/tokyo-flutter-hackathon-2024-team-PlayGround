@@ -52,11 +52,12 @@ dependencies:
   audioplayers: ^5.2.1
   path_provider: ^2.1.4
   flutter_tts: ^4.0.2
-  shared_preferences: ^2.3.2
   flutter_native_splash: ^2.4.2
   speech_to_text: ^7.0.0
   google_generative_ai: ^0.4.6
   universal_html: ^2.2.4
+  shared_preferences: ^2.3.2
+  shared_preferences_web: ^2.4.2
 
 dev_dependencies:
   flutter_test:
@@ -89,12 +90,12 @@ flutter:
     - assets/images/food_with_effect/
 
 flutter_native_splash:
-  color: '#ffffff'
-  image: 'assets/images/splash_android12.png'
+  color: "#ffffff"
+  image: "assets/images/splash_android12.png"
   fullscreen: true
   android_12:
-    icon_background_color: '#ffffff'
-    image: 'assets/images/splash_android12.png'
+    icon_background_color: "#ffffff"
+    image: "assets/images/splash_android12.png"
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

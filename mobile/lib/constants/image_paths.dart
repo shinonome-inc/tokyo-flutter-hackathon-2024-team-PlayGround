@@ -20,6 +20,8 @@ class ImagePaths {
   static const menuSubItemRanking = 'assets/images/menu_sub_item_ranking.png';
   static const menuSubItemSettings = 'assets/images/menu_sub_item_settings.png';
 
+  static const authLoading = 'assets/images/auth_loading.png';
+
   static const backgroundSpring = 'assets/images/background_spring.png';
   static const backgroundSummer = 'assets/images/background_summer.png';
   static const backgroundAutumn = 'assets/images/background_autumn.png';

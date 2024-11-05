@@ -11,6 +11,7 @@ import 'package:mobile/providers/top_notifier.dart';
 import 'package:mobile/repositories/secure_storage_repository.dart';
 import 'package:mobile/services/repositori_client.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TopPage extends ConsumerStatefulWidget {
   const TopPage({super.key});
@@ -22,45 +23,25 @@ class TopPage extends ConsumerStatefulWidget {
 class _TopPageState extends ConsumerState<TopPage> {
   final clientId = dotenv.env['GITHUB_CLIENT_ID']!;
   final baseUrl = dotenv.env['ENDPOINT']!;
-  final String redirectUri = 'https://shinonome.com';
-
-  late WebViewController _controller;
+  final String redirectUri =
+      'https://d35ev4qyh6i48b.cloudfront.net/auth-callback';
 
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController();
-
-    // WebViewControllerのカスタマイズ
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageStarted: (String url) {
-            // ページのURLがGitHubのリダイレクトURLになったとき認証コードを取得
-            if (url.startsWith(redirectUri)) {
-              final uri = Uri.parse(url);
-              final code = uri.queryParameters['code'];
-              print('code: $code');
-              if (code == null) return;
-
-              handleAuthCallback(code); // 認証コードを処理
-            }
-          },
-          onWebResourceError: (error) {
-            print('WebView error: $error');
-          },
-        ),
-      );
   }
 
-  // GitHubの認証ページをWebViewで表示
-  void _launchGitHubAuth() {
-    final notifier = ref.read(topNotifierProvider.notifier);
-    notifier.setShowWebView(true);
+  // GitHubの認証ページをブラウザで開く
+  void _launchGitHubAuth() async {
     final authorizationUrl =
         'https://github.com/login/oauth/authorize?client_id=$clientId&redirect_uri=$redirectUri&scope=repo,read:org,read:user,user:email';
-    _controller.loadRequest(Uri.parse(authorizationUrl));
+    if (await canLaunchUrl(Uri.parse(authorizationUrl))) {
+      await launchUrl(Uri.parse(authorizationUrl),
+          mode: LaunchMode.externalApplication);
+      print(authorizationUrl);
+    } else {
+      throw 'Could not launch $authorizationUrl';
+    }
   }
 
   Future<void> handleAuthCallback(String code) async {
@@ -122,13 +103,6 @@ class _TopPageState extends ConsumerState<TopPage> {
               ],
             ),
           ),
-          if (state.showWebView)
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              color: AppColors.white,
-              child: WebViewWidget(controller: _controller),
-            ),
         ],
       ),
     );
